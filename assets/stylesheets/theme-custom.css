@@ -1,0 +1,16 @@
+/* Add here all your CSS customizations */
+
+/*================= Keperluan Form (begin) =======================*/
+.form-group-margin-top {
+    margin-top: -15px;
+}
+
+.form-label-left {
+    font-weight: bold;
+}
+
+.errorForm label {
+    display: block;
+}
+
+/*================= Keperluan Form (end) =======================*/

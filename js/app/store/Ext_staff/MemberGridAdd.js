@@ -1,0 +1,38 @@
+/*
+    Param2 yg diperlukan ketika load Store ini
+    - SupplierGroupID
+*/
+
+Ext.define('Koltiva.store.Ext_staff.MemberGridAdd', {
+    extend: 'Ext.data.Store',
+    id: 'Koltiva.store.Ext_staff.MemberGridAdd',
+    storeId: 'Koltiva.store.Ext_staff.MemberGridAdd',
+    fields: ['MemberID','MemberDisplayID','FarmerName','SubDistrict','Village'],
+    autoLoad: false,
+    remoteSort: true,
+    pageSize: 30,
+    storeVar: false,
+    setStoreVar: function(value){
+        this.storeVar = value;
+    },
+    proxy: {
+        type: 'ajax',
+        url: m_api + '/ext_staff/suppliers',
+        reader: {
+            type: 'json',
+            root: 'data',
+            totalProperty: 'total'
+        }
+    },
+    listeners: {
+        beforeload: function(store, operation, options){
+            store.proxy.extraParams.StaffAssignmentID = this.storeVar.StaffAssignmentID;
+            store.proxy.extraParams.StaffID = this.storeVar.StaffID;
+            store.proxy.extraParams.textSearch = this.storeVar.textSearch;
+            store.proxy.extraParams.ProvinceID = this.storeVar.ProvinceID;
+            store.proxy.extraParams.DistrictID = this.storeVar.DistrictID;
+            store.proxy.extraParams.SubdistrictID = this.storeVar.SubdistrictID;
+            store.proxy.extraParams.VillageID = this.storeVar.VillageID;
+        }
+    }
+});

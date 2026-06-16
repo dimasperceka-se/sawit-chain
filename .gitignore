@@ -1,0 +1,28 @@
+# ---- Secrets / environment ----
+.env
+*.env
+!.env.example
+!palm-twin/.env.example
+note.txt
+deploy-remote-db.sh
+
+# ---- Dependencies / build output ----
+/api/vendor/
+node_modules/
+palm-twin/dist/
+palm-twin/node_modules/
+
+# ---- Runtime uploads & generated data (not source) ----
+/api/files/
+/api/uploads/
+/api/application/cache/
+/api/application/logs/
+/application/cache/
+/application/logs/
+sawitchain_full.sql.gz
+*.sql.gz
+
+# ---- OS / editor ----
+.DS_Store
+*.log
+Thumbs.db

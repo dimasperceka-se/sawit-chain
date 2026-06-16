@@ -1,0 +1,48 @@
+# ============================================================
+# Run the app pointed at the REMOTE MySQL database (no local DB container).
+#
+# Secrets/config come from a `.env` file in this folder (NOT committed).
+# Copy .env.example -> .env and fill in real values first.
+#
+#   Start:  docker compose -f docker-compose.remote.yml up -d --build
+#   Open:   http://<host>:8080
+#   Stop:   docker compose -f docker-compose.remote.yml down
+# ============================================================
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    image: palmoiltrace-app:remote
+    container_name: palmoiltrace-app
+    restart: unless-stopped
+    environment:
+      DB_HOST: "${DB_HOST}"
+      DB_PORT: "${DB_PORT:-3306}"
+      DB_NAME: "${DB_NAME}"
+      DB_USER: "${DB_USER}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      APP_LOCAL_AUTH: "${APP_LOCAL_AUTH:-1}"
+      AWS_SUPPRESS_PHP_DEPRECATION_WARNING: "true"
+      # URL the BROWSER uses to reach the palm-twin app embedded in the Maps menu.
+      # Local dev: http://localhost:5003. On a server set this to the public
+      # address/port (or reverse-proxy URL) of the palm-twin service.
+      PALM_TWIN_URL: "${PALM_TWIN_URL:-http://localhost:5003}"
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/application/cache
+      - /var/www/html/application/logs
+
+  # Standalone Palm Oil Digital Twin (React + Express), embedded in the Maps menu.
+  palm-twin:
+    build:
+      context: ./palm-twin
+    image: palm-twin:local
+    container_name: palm-twin
+    restart: unless-stopped
+    env_file:
+      - ./palm-twin/.env
+    ports:
+      - "${PALM_TWIN_PORT:-5003}:5003"

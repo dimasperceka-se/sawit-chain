@@ -1,0 +1,319 @@
+/*
+* @Author: nikolius
+* @Date:   2016-12-13 10:57:06
+* @Last Modified by:   nikolius
+* @Last Modified time: 2017-02-14 16:43:07
+*/
+body {
+   margin: 0;
+   padding: 0;
+   font-family: Calibri, Tahoma, Verdana, Helvetica, Arial;
+   font-size: 8px;
+   color: #000000;
+   background-color: #ffffff;
+}
+
+* {
+   box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.page {
+   width: 21cm;
+   height: 27.5cm;
+   padding-top: 0.5cm;
+   padding-bottom: 0.5cm;
+   padding-right: 0.5cm;
+   padding-left: 0.5cm;
+   margin: 0.2cm auto;
+   background: white;
+   /*border: 1px #D3D3D3 solid;
+   border-radius: 5px;
+   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);*/
+}
+
+@page {
+   size: A4 ;
+   margin: 0;
+}
+
+textarea {
+   font-family: Calibri, Verdana, Helvetica, Arial;
+   padding: 0;
+}
+
+a:link, a:visited {
+   color: #0066CC;
+   text-decoration: none
+}
+
+a:active, a:hover {
+   color: #008800;
+   text-decoration: underline
+}
+
+input {
+   border: 1px solid #000000;
+   background-color: #FFF;
+   font-size: 11px;
+   padding: 0;
+}
+
+.page-break {
+   page-break-before: always;
+}
+
+
+#mainContainer {
+   width:100%;
+   height:100%;
+   background-image: url("mapdot-1.png");
+   background-repeat: no-repeat;
+   background-position: top right;
+}
+
+#tableMainContainer {
+   position:relative;
+   top:0px;
+   left:0px;
+}
+
+#sideColumn {
+   width:30%;
+   max-width: 30%;
+   background-color: #11B1A7;
+   padding:4px 5px;
+}
+
+#photoPetani {
+   width:179px;
+}
+
+table#tabelDivSide tr td {
+   color:white;
+}
+
+.divSide {
+   width:100%;
+}
+
+#titleSideColum {
+   border-top: 1px solid white;
+   border-bottom: 1px solid white;
+   padding:3px;
+   font-size: 20px;
+   font-weight: bold;
+   line-height: 25px;
+   text-align: center;
+}
+
+#titleDescSideColum{
+   margin-top:10px;
+   font-size:13px;
+   text-align: center;
+   border-bottom: 1px solid white;
+   padding-bottom: 20px;
+}
+
+.titleh3SideColumn {
+   margin-top:10px;
+   font-size:16px;
+   font-weight: bold;
+   padding-bottom: 10px;
+   text-align: center;
+   border-bottom: 1px solid white;
+}
+
+.sideColumnTextDescription{
+    margin-top:8px;
+    font-size:9px;
+    text-align: left;
+}
+
+.tabelValueSideColumn {
+   margin-top:10px;
+}
+
+.tabelValueSideColumn tr td {
+   padding: 1px;
+}
+
+.tabelValueSideColumn .tdValue {
+   font-size: 21px;
+   font-weight: bold;
+   text-align: center;
+}
+
+.tabelValueSideColumn .tdDesc {
+   font-size: 11px;
+   text-align: center;
+   vertical-align: top;
+}
+
+.centerPos {
+   text-align: center;
+}
+
+#mainColumn {
+   width:70%;
+   padding-left:15px;
+}
+
+#tdMainTitle {
+   font-size:22px;
+   font-weight: bold;
+   color:#11B1A7;
+   vertical-align: top;
+   padding-top: 10px;
+}
+
+#tdBarcode {
+   text-align: center;
+   font:14px Calibri;
+   font-weight: bold;
+}
+
+.tabelValueMain tr td {
+   padding-right: 15px;
+   vertical-align: top;
+}
+
+.tdTitleMain {
+   font-size: 16px;
+   font-weight: bold;
+   color:#11B1A7;
+   border-bottom: 1px dotted #11B1A7;
+}
+
+.tdLabelMain {
+   font-size: 11px;
+   margin-bottom: 3px;
+}
+
+.tdValueMain {
+   width:100%;
+   font-size: 11px;
+   font-weight: bold;
+   background-color: #F1F1F1;
+   padding:2px;
+}
+
+.tabelListData {
+   border-spacing: 0;
+   border-collapse: collapse;
+}
+
+.tabelListDataSideColumn {
+   border-spacing: 0;
+   border-collapse: collapse;
+}
+
+.tabelListDataSmallerFont {
+   border-spacing: 0;
+   border-collapse: collapse;
+}
+
+.tabelListData tr th {
+   font-size: 11px;
+   font-weight: bold;
+   color:white;
+   padding:4px;
+   border-bottom: 1px solid white;
+}
+
+.tabelListData tr td {
+   font-size: 11px;
+   color:white;
+   padding:4px;
+   border-bottom: 1px solid white;
+}
+
+.tabelListDataSmallerFont tr th {
+   font-size: 9px;
+   font-weight: bold;
+   color:white;
+   padding:3px;
+   border-bottom: 1px solid white;
+}
+
+.tabelListDataSmallerFont tr td {
+   font-size: 9px;
+   color:white;
+   padding:3px;
+   border-bottom: 1px solid white;
+}
+
+.tabelListDataSideColumn tr th {
+   font-size: 10px;
+   color:white;
+   padding:3px;
+}
+
+.tabelListDataSideColumn tr td {
+   font-size: 10px;
+   color:white;
+   padding:3px;
+}
+
+.tabelListData tr.odd {
+   background-color: #11B1A7;
+}
+
+.tabelListData tr.even {
+   background-color: #1FA489;
+}
+
+.tabelListDataSideColumn tr.odd {
+   background-color: #11B1A7;
+}
+
+.tabelListDataSideColumn tr.even {
+   background-color: #1FA489;
+}
+
+.tabelListDataSmallerFont tr.odd {
+   background-color: #11B1A7;
+}
+
+.tabelListDataSmallerFont tr.even {
+   background-color: #1FA489;
+}
+
+.sideHorizontalLine {
+    margin: 2px 0px;
+    border-bottom: 1px solid white;
+}
+
+
+.tabelSideTotal {
+   border-spacing: 0;
+   border-collapse: collapse;
+}
+
+.tabelSideTotal tr.trValue {
+    font-size: 19px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.tabelSideTotal tr.trText {
+    vertical-align: top;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.tabelRightNurseryCount tr td {
+    font-size: 15px;
+    font-weight: bold;
+    color:#11B1A7;
+}
+
+.tabelFotoNursery {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.tabelFotoNursery tr td {
+    padding: 0px;
+}

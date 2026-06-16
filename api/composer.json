@@ -1,0 +1,20 @@
+{
+    "require": {
+        "mikehaertl/phpwkhtmltopdf": "^2.1",
+        "fabpot/goutte": "^3.1",
+        "endroid/qr-code": "^3.6",
+        "aws/aws-sdk-php": ">=3.158 <3.280",
+        "web-token/jwt-signature": "^1.0",
+        "lcobucci/jwt": "^3.4"
+    },
+    "autoload": {
+        "psr-4": {"pmill\\AwsCognito\\": "src/"}
+    },
+    "config": {
+        "policy": {
+            "advisories": {
+                "block": false
+            }
+        }
+    }
+}

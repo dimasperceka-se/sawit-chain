@@ -1,0 +1,129 @@
+
+/* 
+    Created on : Sep 27, 2014, 8:01:48 PM
+    Author     : imamteguh1@gmail.com
+*/
+
+   body {
+        font-family: 'Ubuntu', serif;
+        /*font-size:.25em;*/
+        /*font-size: 48px;*/
+    }
+    .container{
+        background-color: #c0c0c0;
+    }
+    .reportLayout{
+        background-color: #fff;
+        position: relative;
+        top:0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+    .content{
+        color:#000;  
+        padding: 30px;
+    }
+    h1,h3 {
+        color:#172385;
+    }
+    .head{
+        color: #0D1973;          
+        margin-top: -40px; 
+        margin-bottom: -20px;
+    }
+    .total{
+        float:right;
+        color: #0D1973;  
+        margin-right: 0px;
+        margin-left: 40px;
+        /*font-size:.25em;*/
+        border-bottom: #E6E8E6;  border-bottom-width: thin; border-bottom-style: dotted;
+    }
+    .total2{
+        float: right;
+        /*font-size:.25em;*/
+    }
+    .subtotal{
+        float: right;
+        margin-right: 0px;
+        font-size: 1px;
+        border-bottom: #E6E8E6;  border-bottom-width: thin; border-bottom-style: dotted;
+    }
+    .subtotal2{
+         color: #0D1973;  
+        float: right;
+        margin-right: 0px;
+        /*font-size: 12px;*/
+    }
+    .indent20{
+        margin-left: 20px;
+        /*font-size:.25em;*/
+    }
+    .indent40{
+        margin-left: 40px;
+        /*font-size:.25em;*/
+    }
+    .balance{
+        float: right;
+        margin-right: 0px;
+        /*font-size: 12px;*/
+    }
+    .trsummary{
+       background-color:#F1F8E9; color: #000; /*font-size: 12px;*/ text-align:center;
+    }
+    h1{
+        margin-top: -10px;
+    }
+    h5{
+        margin-top: -20px;
+    }
+    h6{
+        margin-top: -20px;
+    }
+
+
+.tablereport {
+  color: #333;
+  font-family: sans-serif;
+  /*font-size:.2em;*/
+  font-weight: 300;
+  text-align: left;
+  
+  border-spacing: 0;
+  border: 1px solid #EBEBEB;
+  /*width: 90%;*/
+  margin: 20px auto;
+}
+
+thead tr:first-child {
+  background: #428bca;
+  color: #fff;
+  border: none;
+}
+
+th {font-weight: bold;}
+th:first-child, td:first-child {padding: 0 15px 0 20px;}
+
+/*thead tr:last-child th {border-bottom: 2px solid #ddd;}*/
+
+tbody tr:hover {background-color: #f0fbff;}
+tbody tr:last-child td {border: none;}
+tbody td {border-bottom: 1px solid #ddd;}
+
+td:last-child {
+  padding-right: 10px;
+}
+
+.button {
+  color: #428bca;
+  text-align: center;
+  text-decoration: none;
+  padding-left: 10px;
+}
+
+.button:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

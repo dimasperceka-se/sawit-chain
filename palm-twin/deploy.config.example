@@ -1,0 +1,9 @@
+# Copy this file to `deploy.config` (gitignored) and fill in your server details.
+#   cp deploy.config.example deploy.config
+
+SERVER_USER=ubuntu                 # SSH user on the server
+SERVER_HOST=YOUR.SERVER.IP         # server IP or hostname
+APP_DIR=/var/www/palm-twin         # where the repo is cloned on the server
+DOMAIN=palmtwin.dimasperceka.com   # public domain (served via nginx)
+BRANCH=main
+HOST_PORT=5003                     # host port nginx proxies to (container listens on 5003)

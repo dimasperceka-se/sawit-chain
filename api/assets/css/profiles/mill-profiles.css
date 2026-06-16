@@ -1,0 +1,261 @@
+/*
+* @Author: nikolius
+* @Date:   2018-01-02 17:13:57
+* @Last Modified by:   nikolius
+* @Last Modified time: 2018-01-17 12:13:07
+*/
+
+body {
+   margin: 0;
+   padding: 0;
+   font-family: Calibri, Tahoma, Verdana, Helvetica, Arial;
+   font-size: 10px;
+   color: #000000;
+   background-color: #ffffff;
+}
+
+* {
+   box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.page {
+   width: 21cm;
+   height: 29.3cm;
+   padding-top: 0.5cm;
+   padding-bottom: 0cm;
+   padding-right: 0.5cm;
+   padding-left: 0.5cm;
+   margin: 0.2cm auto;
+   background: white;
+   page-break-after:always;
+   position: relative;
+   /*border: 1px #D3D3D3 solid;*/
+   /*border-radius: 5px;
+   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);*/
+}
+
+@page {
+   size: A4 ;
+   margin: 0;
+}
+
+footer {
+    position: absolute;
+    bottom: -10;
+    right: 0;
+    height: 35px;
+    margin: 0px 10px 13px 0px;
+    color: #000;
+    width: 96.5%;
+}
+
+.tabelFooter {
+   border-spacing: 0;
+   border-collapse: collapse;
+}
+
+.tabelFooter tr td {
+    padding: 5px;
+    color: white;
+    border: none;
+}
+
+.tabelFooter tr td.kolomKiri {
+    background-color: #283646;
+}
+
+.tabelFooter tr td.kolomKanan {
+    background-color: #A9A5A8;
+}
+
+textarea {
+    font-family: Calibri, Trebuchet MS, Tahoma, Helvetica, Arial;
+    /*font-family: Trebuchet MS, Tahoma, Helvetica, Arial;*/
+    padding: 0;
+}
+a:link, a:visited {
+    color: #0066CC;
+    text-decoration: none
+}
+a:active, a:hover {
+    color: #008800;
+    text-decoration: underline
+}
+input {
+    border: 1px solid #000000;
+    background-color: #FFF;
+    font-size: 11px;
+    padding: 0;
+}
+.page-break {
+    page-break-before: always;
+}
+#mainContainer {
+    width: 100%;
+    height: 100%;
+    background-image: url("mapdot-1.png");
+    background-repeat: no-repeat;
+    background-position: top right;
+}
+#tableMainContainer {
+    position: relative;
+    top: 0px;
+    left: 0px;
+}
+#sideColumn {
+    width: 30%;
+    max-width: 30%;
+    background-color: #233543;
+    padding: 8px 13px;
+}
+#photoPetani {
+    width: 179px;
+}
+table#tabelDivSide tr td {
+    color: white;
+}
+.divSide {
+    width: 100%;
+}
+#titleSideColum {
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    padding: 3px;
+    font-size: 22px;
+    color:white;
+    font-weight: bold;
+    line-height: 25px;
+    text-align: center;
+}
+.smallerHeader {
+    font-size: 16px;
+}
+#titleDescSideColum {
+    margin-top: 10px;
+    font-size: 13px;
+    text-align: center;
+    border-bottom: 1px solid white;
+    padding-bottom: 20px;
+}
+.titleh3SideColumn {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    text-align: center;
+    border-bottom: 1px solid white;
+}
+.tabelValueSideColumn {
+    margin-top: 10px;
+}
+.tabelValueSideColumn tr td {
+    padding: 1px;
+}
+.tabelValueSideColumn .tdValue {
+    font-size: 21px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+.tabelValueSideColumn .tdDesc {
+    font-size: 11px;
+    color: white;
+    text-align: center;
+    vertical-align: top;
+}
+.centerPos {
+    text-align: center;
+}
+#mainColumn {
+    width: 70%;
+    padding-left: 15px;
+}
+#tdMainTitle {
+    font-size: 30px;
+    font-weight: bold;
+    color: #233543;
+    vertical-align: top;
+    padding-top: 10px;
+}
+#tdBarcode {
+    text-align: center;
+    font-size: :14px;
+    font-weight: bold;
+}
+.tabelValueMain tr td {
+    padding-right: 15px;
+}
+.tdTitleMain {
+    font-size: 18px;
+    font-weight: bold;
+    color: #233543;
+}
+.tdLabelMain {
+    font-size: 11px;
+    margin-bottom: 3px;
+}
+.tdValueMain {
+    width: 100%;
+    font-size: 11px;
+    font-weight: bold;
+    background-color: #F1F1F1;
+    padding: 2px;
+}
+.tabelListData {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+.tabelListData tr th {
+    font-size: 11px;
+    font-weight: bold;
+    color: white;
+    padding: 4px;
+}
+.tabelListData tr td {
+    font-size: 11px;
+    color: white;
+    padding: 4px;
+}
+.tabelListData tr.odd {
+    background-color: #AAA7A9;
+}
+.tabelListData tr.even {
+    background-color: #283646;
+}
+.sideTabelHeader {
+    color: white;
+    text-align: center;
+    font-size: 14px;
+}
+.tabelListDataSide {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+.tabelListDataSide tr th {
+    font-size: 11px;
+    font-weight: bold;
+    color: white;
+    padding: 4px;
+}
+.tabelListDataSide tr td {
+    font-size: 11px;
+    color: #376F93;
+    padding: 4px;
+    border-top: 1px solid #5995BC;
+}
+.sideValueHeadingText {
+    text-align: center;
+    color: white;
+    font-size: 28px;
+}
+.sideHeadingText {
+    font-size: 14px;
+    font-weight: bold;
+}
+.sideValueHeading {
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}

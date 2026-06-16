@@ -1,0 +1,28 @@
+# ============================================================
+# Hot reload for local development.
+#
+# Docker Compose merges this file on top of docker-compose.yml AUTOMATICALLY,
+# so the normal commands already give you hot reload:
+#
+#   docker compose up -d        # hot reload ON  (uses this override)
+#   docker compose down
+#
+# To run the plain baked image instead (no hot reload), bypass the override:
+#
+#   docker compose -f docker-compose.yml up -d
+#
+# How it works: the whole project folder is bind-mounted into the container's
+# document root, so every edit to PHP / JS / CSS on the host is live on the next
+# request / browser refresh — no rebuild, no restart. OPcache is not enabled in
+# the image, so PHP files are re-read on every request.
+#
+# Note: api/vendor comes from the host (it already exists here), so Composer is
+# not re-run. application/cache and application/logs are kept as container-managed
+# volumes so the app's scratch files don't show up in `git status`.
+# ============================================================
+services:
+  app:
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/application/cache
+      - /var/www/html/application/logs

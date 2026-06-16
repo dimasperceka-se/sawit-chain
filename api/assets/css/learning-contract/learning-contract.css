@@ -1,0 +1,151 @@
+/*
+* @Author: nikolius
+* @Date:   2016-09-19 10:34:02
+* @Last Modified by:   nikolius
+* @Last Modified time: 2016-09-19 14:44:12
+*/
+body {
+   margin: 0;
+   padding: 0;
+   font-family: Calibri, Tahoma, Verdana, Helvetica, Arial;
+   font-size: 8px;
+   color: #000000;
+   background-color: #ffffff;
+}
+
+.page {
+   width: 21cm;
+   height: 27.5cm;
+   padding-top: 0.5cm;
+   padding-right: 0.5cm;
+   padding-left: 0.5cm;
+   margin: 0.2cm auto;
+   background: white;
+}
+
+@page {
+   size: A4 ;
+   margin: 0;
+}
+
+textarea {
+   font-family: Calibri, Verdana, Helvetica, Arial;
+   padding: 0;
+}
+
+a:link, a:visited {
+   color: #0066CC;
+   text-decoration: none
+}
+
+a:active, a:hover {
+   color: #008800;
+   text-decoration: underline
+}
+
+input {
+   border: 1px solid #000000;
+   background-color: #FFF;
+   font-size: 11px;
+   padding: 0;
+}
+
+.page-break {
+    page-break-before: always;
+}
+
+#mainContainer {
+    width:100%;
+    height:100%;
+}
+
+#tdBarcode {
+   text-align: center;
+   font:14px Calibri;
+   font-weight: bold;
+   padding-left: 10px;
+}
+
+#wrapQr {
+    background-color: white;
+}
+
+#tdTitleMainTabel {
+    color: white;
+}
+
+#tdTitleMainTabel h2 {
+    font-weight: bold;
+    font-size: 36px;
+    margin: 0px;
+}
+
+#tdTitleMainTabel h1 {
+    font-weight: bold;
+    font-size: 40px;
+    margin: 0px;
+}
+
+.tdTitleMain {
+   font-size: 16px;
+   font-weight: bold;
+   color:#4C81E0;
+   border-bottom: 1px dotted #4C81E0;
+   margin:0px;padding:0px;
+}
+
+.tabelValueMain tr td {
+    padding-right: 15px;
+    vertical-align:top;
+}
+
+.tdLabelMain {
+    font-size: 11px;
+    margin-bottom: 3px;
+}
+
+.tdValueMain {
+    width:100%;
+    font-size: 11px;
+    font-weight: bold;
+    background-color: #F1F1F1;
+    padding:2px;
+}
+
+#titleListTabel {
+    color: #3598DC;
+    font-size: 20px;
+    margin: 0px;
+}
+
+.tabelListItem {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.tabelListItem tr td {
+    font-size: 13px;
+    vertical-align: top;
+    padding: 6px;
+}
+
+.tabelListItem tr.odd {
+   background-color: #EFEFF0;
+}
+
+.tabelListItem tr.even {
+   background-color: #DCDDDE;
+}
+
+.tabelListItem tr td.tdNoKiri {
+    text-align: right;
+}
+
+.tdTextTabel {
+    font-size: 13px;
+    vertical-align: top;
+}
+
+.txtTanggal {
+    font-size: 15px;
+}

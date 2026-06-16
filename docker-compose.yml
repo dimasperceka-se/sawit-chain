@@ -1,0 +1,62 @@
+# ============================================================
+# PalmOilTrace — full local stack (database + application).
+#
+#   Start:  docker compose up -d --build
+#   Open:   http://localhost:8080      (login: partner.demo / Password1234!)
+#   Stop:   docker compose down        (add -v to also wipe the database)
+#
+# First start builds the images and imports ~1GB of data — be patient
+# (several minutes). After that it starts instantly.
+# ============================================================
+services:
+  db:
+    build: ./docker/db
+    image: palmoiltrace-db:latest
+    container_name: palmoiltrace-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: palmoiltrace_demo
+      MYSQL_USER: palmoiltrace
+      MYSQL_PASSWORD: palmoiltrace
+    ports:
+      - "33106:3306"            # host:container (33106 avoids clashing with a local MySQL)
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+      start_period: 600s        # first boot imports the dump
+    networks: [palmoiltrace]
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    image: palmoiltrace-app:latest
+    container_name: palmoiltrace-app
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: palmoiltrace_demo
+      DB_USER: palmoiltrace
+      DB_PASSWORD: palmoiltrace
+      APP_LOCAL_AUTH: "1"        # enables the offline login bypass (demo only)
+      AWS_SUPPRESS_PHP_DEPRECATION_WARNING: "true"
+    ports:
+      - "8080:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [palmoiltrace]
+
+volumes:
+  db_data:
+    name: palmoiltrace-db-data
+
+networks:
+  palmoiltrace:
+    name: palmoiltrace-net

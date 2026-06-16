@@ -1,0 +1,218 @@
+body.login-page{
+    width: 100%;
+    height: 100%;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: #FFF !important;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-box .logo > img{
+    height: 54px;
+}
+@media(max-width: 480px){
+    .login-box .logo > img{
+        height: 37px;
+    }
+}
+.login-page .row{
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+    z-index: 21;
+}
+.mt-10{
+    margin-top: 10px !important;
+}
+@media(max-width: 768px){
+    .login-page .row{
+        display: block;
+        width: 100%;
+    }
+}
+.login-box > .panel{
+    background: #FFF;
+    border-radius: 5px 0 5px 5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+.login-box .panel-heading{
+    position: absolute;
+    right: 15px;
+    top: 27px;
+    padding: 14px 15px;
+    border-bottom: none;
+}
+@media(max-width: 480px){
+    .login-box .panel-heading{
+        top: 14px;
+    }
+}
+.login-box .panel-heading h5{
+    margin: 0;
+}
+.login-box .panel-body{
+    margin-top: 15px;
+    border-top: 6px solid #ccc;
+    border-top-left-radius: 5px;
+}
+.login-page .alert-warning{
+    background-color: #ffb400;
+    color: #3e2e07;
+    border-radius: 0;
+    width: 100%;
+    font-size: 13px;
+    line-height: 14px;
+}
+#privacyAlert{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 100%;
+    padding: 7px 0;
+    border: none;
+}
+#privacyAlert p{
+    margin: 0;
+    padding: 7px 10px;
+}
+#privacyAlert .btn{
+    margin-right: 25px;
+    max-height: 30px;
+}
+@media(max-width: 1045px){
+    #privacyAlert .btn{
+        position: relative;
+        top: 7px;
+    }
+}
+.login-page .btn-pill{
+    border-radius: 50px;
+}
+.login-page .btn-sm{
+    padding: 5px 17px;
+}
+.login-page .btn-secondary{
+    background-color: #5a6169;
+    border-color: #5a6169;
+    box-shadow: none;
+    color: #fff;
+}
+.login-page .btn-secondary:hover,
+.login-page .btn-secondary:active,
+.login-page .btn-secondary:focus,
+.login-page .btn-secondary:visited{
+    color: #fff;
+    background-color: #4e545b;
+    border-color: #5a6169;
+    box-shadow: 0 5px 15px rgba(0,0,0,.05), 0 4px 10px rgba(90,97,105,.25);
+}
+.login-page .art{
+    position: absolute;
+    top : 90px;
+    z-index: 20;
+    max-width: 90%;
+    text-align: center;
+}
+.login-page .art > h4{
+    margin: 11px;
+}
+@media(max-width: 1000px){
+    .login-page .art{
+        position: relative;
+        top: -10px;
+        max-width: 100%;
+    }    
+    .login-page .art h4,
+    .login-page .art p{
+        display: none;
+    }
+}
+
+.login-page .footer-col{
+    padding-bottom: 7px;
+}
+@media(min-width: 1400px){
+    .login-page .footer .row{
+        max-width: 70%;
+        margin: 0 auto;
+    }
+    .login-box{
+        margin-top: 25px;
+    }
+    .login-page .footer-col{
+        padding-bottom: 27px;
+    }
+    .login-page .art > p{
+        margin: 12px;
+    }
+}
+.footer-col + .footer-col{
+    border-left: 1px solid rgba(0, 0, 0, 0.25) !important;
+}
+.login-page .footer h5{
+    margin: 10px 5px 15px;
+}
+.login-page .footer a{
+    color: #ccc;
+    text-decoration: none;
+}
+.login-page .footer img{
+    margin: 3px 4px;
+}
+.login-page .footer .list-inline{
+    font-size: 13px;
+}
+.login-page .footer .list-inline > li{
+    margin: 3px 4px;
+}
+.login-page .social-icons{
+    list-style: none;
+    padding: 0;
+    margin-left: 0;
+}
+.login-page .social-icons img{
+    width: 30px;
+    margin: 3px 0;
+}
+.login-page .social-icons > li > a{
+    filter: grayscale(100%);
+}
+.login-page .social-icons > li > a:hover{
+    filter: grayscale(0);
+}
+
+.login-page .footer-compact .navbar-brand{
+    padding: 10px;
+}
+.login-page .footer-nav-compact{
+    list-style: none;
+    padding: 0;
+    margin-left: 0;
+    float: right;
+}
+.login-page .footer-nav-compact > li{
+    display: inline-block;
+    padding: 0 7px;
+}
+.login-page .footer-nav-compact > li > a{
+    display: block;
+    height: 50px;
+    padding: 15px 7px;
+    font-size: 20px;
+    color: #ccc;
+}
+.login-page .footer-nav-compact > li > a:hover,
+.login-page .footer-nav-compact > li > a:active,
+.login-page .footer-nav-compact > li > a:focus,
+.login-page .footer-nav-compact > li > a:visited{
+    color: #FFF;
+}
+.compact-link + .compact-link{
+    border-left: 1px solid rgba(0, 0, 0, 0.25) !important;
+}

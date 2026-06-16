@@ -1,0 +1,807 @@
+
+.xpreviewimage_iframe img {
+    width : 787px;
+}
+.shrinkToFit {
+    width : 787px;
+    text-align: center;
+}
+/*body {
+    background-color: white;
+}*/
+.widget .icon img {
+    width: 100%;
+}
+.widget .data-info {
+    float: none;
+}
+.widget.widget-tile {
+    height: 140px;
+}
+legend {
+    font-size: 1em;
+    margin-bottom: 0;
+    border: none;
+    width: auto;
+}
+
+/*Berubah gk disini*/
+.x-panel-body-default {
+    background: #FFFFFF none repeat scroll 0 0 !important;
+}
+.x-toolbar-footer {
+    background: rgba(233, 206, 90, 0.3) none repeat scroll 0 0 !important;
+}
+.x-form-cb-label {
+    font-size: 1em;
+}
+
+/* BACKGROUND TRANSITIONS */
+/* Fade */
+.hvr-fade {
+    /*display: inline-block;*/
+    vertical-align: middle;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: color, background-color;
+    transition-property: color, background-color;
+}
+.hvr-fade:hover, .hvr-fade:focus, .hvr-fade:active {
+    background-color: #95130b;
+    color: white;
+}
+.custom-breadcrumb {
+    background-color: #ffffff;
+    margin-bottom: 0;
+    padding: 6px 0;
+}
+.sidebar-elements .icon > img {
+    width: 32px;
+}
+.nav-items .nano-content img {
+    width: 32px;
+}
+
+
+/*Panel Advance Filter*/
+
+.panelAdvFilter .x-panel-header-text, .panelAdvFilter .x-form-item-label, .comboAdvFilterItemList, .panelAdvFilter .x-component-default {
+    font-size: 11px;
+}
+
+.x-table-layout-cell-top-align td.x-table-layout-cell {
+    vertical-align: top;
+}
+
+.panelAdvFilter .x-panel-body  {
+    background-color: white !important;
+}
+/*Panel Advance Filter*/
+
+input:-moz-read-only[type=text] {
+    background-color: #CFD3D4;
+}
+
+input:read-only {
+    background-color: #CFD3D4;
+}
+
+textarea:read-only {
+    background-color: #CFD3D4;
+}
+
+input:not([readonly]):focus {
+    background-color: white !important;
+}
+
+textarea:not([readonly]):focus {
+    background-color: white !important;
+}
+
+.ext-mb-error {
+    background-image: url("icon-error.gif");
+    background-repeat: no-repeat;
+}
+
+.ext-mb-info {
+    background-image: url("icon-info.gif");
+    background-repeat: no-repeat;
+}
+
+.ext-mb-success {
+    background-image: url("icon-success.png");
+    background-repeat: no-repeat;
+}
+
+.ext-mb-warning {
+    background-image: url("icon-warning.gif");
+    background-repeat: no-repeat;
+}
+
+.x-form-layout-table {
+    border-collapse: separate;
+    border-spacing: 0 4px !important;
+}
+
+/*Profession Farmer (Begin)*/
+#panelFoto-body {
+    width: 135px !important;
+}
+/*Profession Farmer (End)*/
+
+.tabSce .x-tab-default-active .x-tab-inner {
+    color: white !important;
+}
+
+#divSceLebarPanjangNursery {
+    height: 38px !important;
+}
+
+.x-window-body-default {
+    background: #ffffff none repeat scroll 0 0 !important;
+}
+
+.x-mask {
+    background: #ffffff none repeat scroll 0 0;
+    opacity: 0.7;
+}
+
+/*Style Info Box Adopt Obs*/
+.htmlAlertBoxAdoptObs {
+    font: 11px Tahoma;
+}
+
+.htmlAlertBoxAdoptObs .judulList {
+    font: 11px Tahoma;
+    text-decoration: underline;
+}
+
+.htmlAlertBoxAdoptObs h3.headingUtama {
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0px; padding: 0px;
+}
+
+.htmlAlertBoxAdoptObs h4.headingSekunder {
+    font-size: 12px;
+    font-weight: bold;
+    font-style: italic;
+    margin: 0px; padding: 0px;
+    margin-top: 4px;
+}
+
+.htmlAlertBoxAdoptObs .ulList {
+    margin: 0px; padding: 0px;
+    margin-left: 10px;
+}
+
+.htmlAlertBoxAdoptObs .ulList li {
+    margin: 0px; padding: 0px;
+    padding-left: 3px;
+    font: 11px Tahoma;
+}
+.x-mask {
+    background: #f0f0f0 none repeat scroll 0 0;
+    opacity: 0.7;
+}
+
+.companyLabel{
+    color: #ffffff;
+    font-weight: bold;
+    /*font-style: italic;*/
+    font-size: 12px;
+    margin-bottom: 0px;
+    border-bottom: 1px solid #8B657C;
+    padding-left : 10px;
+    padding-top : 5px;
+    padding-bottom : 5px;
+    background-color: #969594 !important;
+    border-top-left-radius: 6px !important;
+    border-top-right-radius: 6px !important;
+}
+
+
+
+/*Farmer Comparison (begin)*/
+#contFarmerComparison .judulUtama {
+    margin: 0px; padding: 0px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+#contFarmerComparison .subJudul {
+    margin: 0px; padding: 0px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#contFarmerComparison .tabelList {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+#contFarmerComparison .tabelList tr th {
+    font-size: 11px;
+    font-weight: bold;
+    color:white;
+    padding:4px;
+    border-bottom: 1px solid white;
+}
+
+#contFarmerComparison .tabelList tr td {
+    font-size: 11px;
+    font-weight: bold;
+    /*color:#969696;*/
+    color:black;
+    padding:4px;
+    border-bottom: 1px solid white;
+}
+
+#contFarmerComparison .tabelList tr.rowHeader {
+    background-color: #589C14;
+}
+
+#contFarmerComparison .tabelList tr:nth-child(even) {
+    background-color: #F4F4F4;
+}
+
+#contFarmerComparison .tabelList tr:nth-child(odd):not(:first-child) {
+    background-color: #E8E8E8;
+}
+
+/*Farmer Comparison (end)*/
+
+.widget-icon img {
+    width: 100%;
+}
+.widget-download-list {
+    margin-bottom: 20px;
+    border: 1px solid lightgray;
+}
+.widget-download-list > .widget-head {
+    line-height: 18px;
+}
+.widget-download-list .widget-head .value {
+    font-size: 23px;
+    font-weight: 300;
+    padding-bottom: 7px;
+}
+.widget-download-list .widget-head .desc {
+    font-size: 14px;
+}
+.widget-download-list > .widget-head {
+    background-color: #ffffff;
+    color: #555555;
+    height: 140px;
+}
+.widget-list.colapsed {
+    display: none;
+}
+.widget-list.expanded {
+    display: block;
+}
+.widget-list .label {
+    color: #555555;
+    font-size: 100%;
+    font-weight: 300;
+}
+.widget-list .value {
+    float: right;
+}
+.rowValid .x-grid-cell{
+    color:black;
+}
+.rowInvalid  .x-grid-cell{
+    background-color: #ff9a47 !important;
+    color:#603109;
+}
+
+/* Box Informasi Data Grid (begin) */
+.gridInformationContainer {
+    float: right;
+    display: inline-block;
+    padding: 14px;
+    margin: 6px 0 6px 0;
+    border: 1px solid white;
+    border-radius: 11px;
+    background-color: #46A7F5;
+    color: white;
+}
+
+.gridInformationContainer h4 {
+    font-weight: bold;
+    margin: 0px; padding: 0px;
+}
+
+.gridInformationContainer ul {
+    margin-top: 5px;
+}
+/* Box Informasi Data Grid (end) */
+
+.subtitleForm {
+    margin:12px 0px 5px 0px;font-style:italic;font-weight:bold;color: #479720;
+}
+
+.bgToolbarTitlePanel {
+    background-color:#E9CE5A;
+    padding: 4px 9px;
+}
+
+#header_title_farmer {
+    margin:10px 5px 10px 0px; padding: 2px 2px 2px 0px;
+    font-size: 22px;
+    font-family: Calibri;
+    font-weight: lighter;
+    color:#565656;
+}
+
+/*Style dalam Grid Column (Begin)*/
+.DivContentGridColumn {
+    padding: 5px;
+    font-size: 11px;
+    white-space:normal !important;
+}
+/*Style dalam Grid Column (End)*/
+
+
+/*Style dalam Module Video (Begin)*/
+.DivContentHtml {
+    font-size: 12px;
+    white-space:normal !important;
+}
+
+.DivCustomContentHtmlNoData {
+    background-color: #589C14;
+    width:30%;
+
+    -webkit-box-shadow: 6px 7px 15px 0px rgba(194,161,120,1);
+    -moz-box-shadow: 6px 7px 15px 0px rgba(194,161,120,1);
+    box-shadow: 6px 7px 15px 0px rgba(194,161,120,1);
+
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 0px solid #54ed21;
+
+    padding:12px 30px;
+    margin:0px auto;
+    color:white;
+}
+
+.cms_video_overlay {
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.cms_video_overlay .thumbnail {
+    display: block;
+}
+
+.cms_video_playWrapper {
+    position: absolute; z-index: 1;
+    top: 85px;
+    left:130px;
+    opacity: 1;
+}
+
+.cms_video_overlay:hover {
+    opacity: 0.7;
+}
+
+.cms_video_info {
+    font-size: 10px;
+    font-style: italic;
+}
+
+.DivNewsContent img {
+    float:left;
+    margin:0 15px 15px 0;
+}
+/*Style dalam Module Video (End)*/
+
+/*==================================== Replace Default Style (BEGIN)===================================*/
+.x-grid-cell-inner {
+    color: #616B78;
+}
+
+.x-form-item-label {
+    font: normal 13px/22px 'Open Sans',Helvetica,Arial,sans-serif !important;
+}
+
+.x-form-item, .x-form-field {
+    font: normal 13px/22px 'Open Sans',Helvetica,Arial,sans-serif !important;
+}
+
+.x-grid-empty {
+    background-color: white;
+}
+
+.x-grid-cell-inner-row-numberer {
+    text-align: center !important;
+    padding-top:7px !important;
+}
+
+/*==================================== Replace Default Style (BEGIN)===================================*/
+
+/*==================================== Apply New Style on Modul Farmer (BEGIN)===================================*/
+#divCommonContentRegion {
+    background-color: #F0F0F0;
+}
+
+.Sfr_BoxFilterCommonContentRegion {
+    float:right;
+    padding:4px 10px;
+    background-color: #FFFFFF;
+    /*border:1px solid gray;*/
+    border-radius: 22px;
+}
+
+.Sfr_BoxInfoDataGrid_Title {
+    font-size:24px;
+}
+
+.Sft_UlListInfoDataGrid {
+    margin:0px; padding: 0px;
+}
+
+.Sft_UlListInfoDataGrid li {
+    list-style: none;
+    margin-top:5px;
+}
+
+.Sft_ListInfoDataGrid, .Sft_ListInfoDataGrid a {
+    color:#895608;
+}
+
+.Sft_ListInfoDataGrid a:hover {
+    color: #eca73e;
+    cursor: pointer;
+}
+
+.Sft_ListIconInfoDataGrid {
+    background-color: #895608;
+    padding:4px;
+    border-radius: 20px;
+}
+
+.Sfr_BtnConMenuWhite {
+    font-size: 11px !important;
+    font-weight: normal !important;
+    background-color: white !important;
+    background-image: none !important;
+    border-style: none !important;
+    padding: 4px 8px !important;
+    color:#364351 !important;
+}
+
+.Sfr_BtnConMenuWhite .x-menu-item-link {
+    line-height: 18px;
+    padding: 0 4px 0 22px;
+}
+
+.Sfr_BtnGridGreen {
+    font-size: 11px !important;
+    font-weight: normal !important;
+    background-color: #00A043 !important;
+    background-image: none !important;
+    border-style: none !important;
+    padding: 4px 8px !important;
+    color:white !important;
+}
+.Sfr_BtnGridGreen .x-btn-inner {
+    color:white !important;
+    font-size: 11px !important;
+}
+.x-Sfr_BtnGridGreen-Hover {
+    background: #22DE71 !important;
+}
+
+.Sfr_BtnGridPaleBlue {
+    font-size: 11px !important;
+    font-weight: normal !important;
+    background-color: #D8E7FF !important;
+    background-image: none !important;
+    border-style: none !important;
+    padding: 4px 8px !important;
+    color:#798398 !important;
+}
+.Sfr_BtnGridPaleBlue .x-btn-inner {
+    color:#798398 !important;
+    font-size: 11px !important;
+}
+.x-Sfr_BtnGridPaleBlue-Hover {
+    background: #E3E9F5 !important;
+}
+
+.Sfr_BtnGridBlue {
+    font-size: 11px !important;
+    font-weight: normal !important;
+    background-color: #567DE5 !important;
+    background-image: none !important;
+    border-style: none !important;
+    padding: 4px 8px !important;
+    color:white !important;
+}
+.Sfr_BtnGridBlue .x-btn-inner {
+    color:white !important;
+    font-size: 11px !important;
+}
+.x-Sfr_BtnGridBlue-Hover {
+    background: #7395EF !important;
+}
+
+.Sfr_TxtfieldSearchGrid input {
+    background-color: #ECF1F2 !important;
+    /*border-style: none !important;*/
+    border:1px solid #dedede !important;
+    color: #7B7D7E !important;
+    padding: 5px 8px 5px 35px;
+    border-radius: 9px;
+    background-image:url(search-black.png);
+    background-position: 10px 5px;
+	background-repeat: no-repeat;
+}
+
+.x-toolbar .x-toolbar-text {
+    font-weight: bold !important;
+}
+
+.Sfr_GridNew .x-column-header {
+    border:none !important;
+    font-weight: bold;
+    background-color: white !important;
+    color:#4A5463 !important;
+}
+
+.Sfr_GridNew .x-column-header-trigger {
+    border:none !important;
+}
+
+.Sfr_GridNew .x-panel-body-default {
+    background-color: white !important;
+}
+
+.Sfr_GridColPlaces {
+    padding: 0px 0px 0px 18px;
+    background-image:url(place.png);
+    background-position: 0px -1px;
+	background-repeat: no-repeat;
+}
+
+.Sfr_GridColPhone {
+    padding: 0px 0px 0px 18px;
+    background-image:url(phone.png);
+    background-position: 0px -1px;
+	background-repeat: no-repeat;
+}
+
+.Sfr_GridColBold {
+    font-weight: bold;
+}
+
+.Sfr_GridColGreenRounded {
+    padding: 4px 12px 4px 12px;
+    border-radius: 6px;
+    background-color: #A4F97D;
+    color: #11B150;
+}
+
+.Sfr_GridColYellowRounded {
+    padding: 4px 12px 4px 12px;
+    border-radius: 6px;
+    background-color: rgb(239, 243, 22);
+    color: rgb(127, 135, 179);
+}
+
+.Sfr_GridColRedRounded {
+    padding: 4px 12px 4px 12px;
+    border-radius: 6px;
+    background-color: #e72c2c;
+    color: white;
+}
+
+.Sfr_GridColLightBlueRounded {
+    padding: 4px 12px 4px 12px;
+    border-radius: 6px;
+    background-color: #4954f0;
+    color: white;
+}
+
+.Sfr_PanelLayoutFormContainer .x-form-layout-table {
+    border-collapse: collapse !important;
+}
+
+.Sfr_FormBrowseBtn .x-form-file-btn {
+    border-style: none !important;
+    background: #009E42 !important;
+    font-weight: normal !important;
+}
+
+.Sfr_FormBrowseBtn .x-btn-default-small .x-btn-inner {
+    font-weight: normal !important;
+}
+
+.Sfr_BtnFormGreen {
+    font-size: 12px !important;
+    font-weight: normal !important;
+    background-color: #00A043 !important;
+    background-image: none !important;
+    border-style: none !important;
+    padding: 6px 14px !important;
+    color:white !important;
+}
+
+.Sfr_BtnFormGreen .x-btn-inner {
+    color:white !important;
+    font-size: 12px !important;
+}
+
+.x-Sfr_BtnFormGreen-Hover {
+    background: #22DE71 !important;
+}
+
+.Sfr_BtnFormBlue {
+    font-size: 12px !important;
+    font-weight: normal !important;
+    background-color: #567DE5 !important;
+    background-image: none !important;
+    border-style: none !important;
+    padding: 6px 14px !important;
+    color:white !important;
+}
+
+.Sfr_BtnFormBlue .x-btn-inner {
+    color:white !important;
+    font-size: 12px !important;
+}
+
+.x-Sfr_BtnFormBlue-Hover {
+    background: #8ca4e5 !important;
+}
+
+
+.Sfr_BtnFormGrey {
+    font-size: 12px !important;
+    font-weight: normal !important;
+    background-color: #848D98 !important;
+    background-image: none !important;
+    border-style: none !important;
+    padding: 6px 14px !important;
+    color:white !important;
+}
+
+.Sfr_BtnFormGrey .x-btn-inner {
+    color:white !important;
+    font-size: 12px !important;
+}
+
+.x-Sfr_BtnFormGrey-Hover {
+    background: #a9b2bd !important;
+}
+
+
+.Sfr_TabForm .x-tab-default-active .x-tab-inner {
+    color: white !important;
+}
+
+.Sfr_TabForm .x-tab-bar-plain {
+    background: white !important;
+    border-style: none !important;
+}
+
+.Sfr_TabForm .x-panel-body-default {
+    background: white !important;
+}
+
+.Sfr_PanelLayoutForm .x-toolbar-footer {
+    background: #ebf7f9 !important;
+    border-top: 1px solid #e8e0e0 !important;
+}
+
+.Sfr_PanelSubLayoutForm .x-panel-body-default {
+    background: white !important;
+}
+
+.Sfr_PanelSubLayoutFormRoundedGray .x-panel-body-default {
+    background: white !important;
+}
+
+.Sfr_PanelSubLayoutFormRoundedGray .x-panel-header {
+    background-color: #848D98 !important;
+    border-top-left-radius: 6px !important;
+    border-top-right-radius: 6px !important;
+}
+
+.Sfr_LayoutPopupWindows .x-toolbar-footer {
+    background: #ebf7f9 !important;
+    border-top: 1px solid #e8e0e0 !important;
+}
+
+.Sfr_LayoutPopupWindows .x-window-body-default {
+    background: white !important;
+}
+
+.Sfr_LayoutPopupWindows .x-panel-body-default {
+    background: white !important;
+}
+
+.Sfr_ContDataNotFound {
+    height: 80px;
+    width: '100%';
+    margin : auto;
+    text-align: center;
+    padding-top:6px;
+
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 2px;
+    color: #DBDBDB;
+}
+
+.Sfr_ConMenu {
+    border-radius:6px;
+}
+
+.Sfr_ConMenu .x-panel-body-default {
+    background: #ffffff none repeat scroll 0 0 !important
+}
+
+.Sfr_ConMenu .x-menu-item-active {
+    background-color: #D7E9FD !important;
+}
+
+.Sfr_FormInputMandatory .x-form-item-label:after {
+    content:" *";
+    color:red;
+}
+
+.Sfr_GridNew .x-column-header {
+    border:none !important;
+    font-weight: bold;
+    background-color: white !important;
+    color:#4A5463 !important;
+}
+
+.Sfr_GridNew .x-column-header-trigger {
+    border:none !important;
+}
+
+.Sfr_GridNew .x-panel-body-default {
+    background-color: white !important;
+}
+
+.Sfr_GridNew .bgToolbarTitlePanel {
+    background-color: white !important;
+}
+
+/*==================================== Apply New Style on Modul Farmer (END)===================================*/
+
+.ext-label-type-disabled {
+    opacity: 0.3;
+}
+ 
+.qtip-survey-explanation {
+    padding:5px 8px;
+}
+
+/* posisi button talks us modul qisqus agar tidak tumpang tindih dengan scroll*/
+.qcw-container{
+    margin-right: 30px;
+}
+
+/* select combo dashboard */
+.DashCombo {
+    border-width: 2px;
+    box-shadow: none;
+    padding: 2px 4px !important;
+    height: 28px;
+    font-size: 12px;
+}

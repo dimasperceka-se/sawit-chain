@@ -1,0 +1,334 @@
+/*
+* @Author: nikolius
+* @Date:   2016-06-03 14:20:21
+* @Last Modified by:   nikolius
+* @Last Modified time: 2018-04-02 11:39:29
+*/
+body {
+   margin: 0;
+   padding: 0;
+   font-family: Calibri, Tahoma, Verdana, Helvetica, Arial;
+   color: #000000;
+   background-color: #ffffff;
+}
+
+* {
+   box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.datalabelInside {
+   position:absolute;
+}
+   
+#datalabelInside1 {
+   color:#fff;
+   left:-150px;
+}
+
+.page {
+   width: 21cm;
+   height: 29.3cm;
+   padding-top: 0.5cm;
+   padding-bottom: 0cm;
+   padding-right: 0.5cm;
+   padding-left: 0.5cm;
+   margin: 0.2cm auto;
+   background: white;
+   page-break-after:always;
+   position: relative;
+   /*border: 1px #D3D3D3 solid;*/
+   /*border-radius: 5px;
+   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);*/
+}
+
+@page {
+   size: A4 ;
+   margin: 0;
+}
+
+table{   
+   font-size: 12px;
+}
+
+table th {
+   text-align: left;
+   background-color: #F59518 !important;
+   color: white;
+}
+
+.table {
+   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+   border-collapse: collapse;
+   width: 100%;
+   border: 3px solid #F59518;
+   font-size: 7pt;
+}
+
+.table td, .table th {
+   border: 1px solid #ddd;
+   padding: 8px;
+}
+
+.table tr:nth-child(even){background-color: #f2f2f2;}
+
+.table tr:hover {background-color: #ddd;}
+
+footer {
+    position: absolute;
+    /* bottom: -10; */
+    right: 0;
+    height: 35px;
+    margin: 0px 10px 13px 0px;
+    color: #000;
+    width: 96.5%;
+}
+
+.tabelFooter {
+   border-spacing: 0;
+   border-collapse: collapse;
+}
+
+.tabelFooter tr td {
+    padding: 5px;
+    color: white;
+    border: none;
+}
+
+.tabelFooter tr td.kolomKiri {
+    background-color: #FF6433;
+}
+
+.tabelFooter tr td.kolomKanan {
+    background-color: #FD8B3D;
+}
+
+textarea {
+   font-family: Calibri, Verdana, Helvetica, Arial;
+   padding: 0;
+}
+
+a:link, a:visited {
+   color: #0066CC;
+   text-decoration: none
+}
+
+a:active, a:hover {
+   color: #008800;
+   text-decoration: underline
+}
+
+input {
+   border: 1px solid #000000;
+   background-color: #FFF;
+   font-size: 11px;
+   padding: 0;
+}
+
+.page-break {
+   page-break-before: always;
+}
+
+
+#mainContainer {
+   width:100%;
+   height:100%;
+   background-image: url("mapdot-1.png");
+   background-repeat: no-repeat;
+   background-position: top right;
+}
+
+#mainContainerPolygon {
+   width:100%;
+   height:88.5%;
+   background-image: url("mapdot-1.png");
+   background-repeat: no-repeat;
+   background-position: top right;
+}
+
+#tableMainContainer {
+   position:relative;
+   top:0px;
+   left:0px;
+}
+
+#sideColumn {
+   width:30%;
+   max-width: 30%;
+   background-color: #95130A;
+   padding:8px 13px;
+}
+
+#photoPetani {
+   width:179px;
+}
+
+table#tabelDivSide tr td {
+   color:white;
+}
+
+.divSide {
+   width:100%;
+}
+
+#titleSideColum {
+   border-top: 1px solid white;
+   border-bottom: 1px solid white;
+   padding:3px;
+   font-size: 18px;
+   font-weight: bold;
+   line-height: 25px;
+   text-align: center;
+}
+
+#titleDescSideColum{
+   margin-top:10px;
+   font-size:13px;
+   text-align: center;
+   border-bottom: 1px solid white;
+   padding-bottom: 20px;
+}
+
+.titleh3SideColumn {
+   margin-top:10px;
+   font-size:14px;
+   font-weight: bold;
+   padding-bottom: 10px;
+   text-align: center;
+   border-bottom: 1px solid white;
+}
+
+.tabelValueSideColumn {
+   margin-top:10px;
+}
+
+.tabelValueSideColumn tr td {
+   padding: 1px;
+}
+
+.tabelValueSideColumn .tdValue {
+   font-size: 21px;
+   font-weight: bold;
+   text-align: center;
+}
+
+.tabelValueSideColumn .tdDesc {
+   font-size: 11px;
+   text-align: center;
+   vertical-align: top;
+}
+
+.centerPos {
+   text-align: center;
+}
+
+#mainColumn {
+   width:70%;
+   padding-left:15px;
+}
+
+#tdMainTitle {
+   font-size:26px;
+   font-weight: bold;
+   color:#95130A;
+   vertical-align: top;
+   padding-top: 10px;
+}
+
+#tdBarcode {
+   text-align: center;
+   font:14px Calibri;
+   font-weight: bold;
+}
+
+.tabelValueMain tr td {
+   padding-right: 15px;
+}
+
+.tdTitleMain {
+   font-size: 18px;
+   font-weight: bold;
+   color:#95130A;
+   border-bottom: 1px dotted #95130A;
+}
+
+.tdLabelMain {
+   font-size: 11px;
+   margin-bottom: 3px;
+}
+
+.tdValueMain {
+   width:100%;
+   font-size: 11px;
+   font-weight: bold;
+   background-color: #F1F1F1;
+   padding:2px;
+}
+
+.tabelListData {
+   border-spacing: 0;
+   border-collapse: collapse;
+}
+
+.tabelListData tr th {
+   text-align: center;
+   font-size: 11px;
+   font-weight: bold;
+   color:white;
+   padding:4px;
+   border-bottom: 1px solid white;
+}
+
+.tabelListData tr td {
+   font-size: 11px;
+   color:white;
+   padding:4px;
+   border-bottom: 1px solid white;
+}
+
+.tabelListData tr.odd {
+   background-color: #95130A;
+}
+
+.tabelListData tr.even {
+   background-color: #f68f48;
+}
+
+
+.tabelListDataSide {
+   border-spacing: 0;
+   border-collapse: collapse;
+}
+
+.tabelListDataSide tr th {
+   font-size: 11px;
+   font-weight: bold;
+   color:white;
+   padding:4px;
+   border-bottom: 1px solid #fdb061;
+}
+
+.tabelListDataSide tr td {
+   font-size: 11px;
+   color:white;
+   padding:4px;
+   border-bottom: 1px solid #fdb061;
+}
+
+.tabelListDataSide tr.odd {
+   background-color: #95130A;
+}
+
+.tabelListDataSide tr.even {
+   background-color: #f68f48;
+}
+
+.note {
+   font-size: 11px;
+   float: right;
+   padding-right: 10px;
+}
+
+.note ul {
+   padding-inline-start: 15px !important;
+}

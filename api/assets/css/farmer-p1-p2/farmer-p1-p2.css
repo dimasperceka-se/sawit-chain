@@ -1,0 +1,136 @@
+/*
+* @Author: nikolius
+* @Date:   2017-01-24 11:33:07
+* @Last Modified by:   nikolius
+* @Last Modified time: 2017-01-26 11:03:32
+*/
+body {
+   margin: 0;
+   padding: 0;
+   font-family: Calibri, Tahoma, Verdana, Helvetica, Arial;
+   font-size: 10px;
+   color: #000000;
+   background-color: #ffffff;
+}
+
+* {
+   box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.page {
+   width: 21cm;
+   height: 29cm;
+   padding-top: 0.5cm;
+   padding-bottom: 0cm;
+   padding-right: 0.5cm;
+   padding-left: 0.5cm;
+   margin: 0.2cm auto;
+   background: white;
+   page-break-after:always;
+   position: relative;
+   /*border-radius: 5px;
+   border: 1px #D3D3D3 solid;
+   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);*/
+}
+
+@page {
+   size: A4 ;
+   margin: 0;
+}
+
+textarea {
+   font-family: Calibri, Verdana, Helvetica, Arial;
+   padding: 0;
+}
+
+a:link, a:visited {
+   color: #0066CC;
+   text-decoration: none
+}
+
+a:active, a:hover {
+   color: #008800;
+   text-decoration: underline
+}
+
+input {
+   border: 1px solid #000000;
+   background-color: #FFF;
+   font-size: 8px;
+   padding: 2;
+}
+
+.page-break {
+   page-break-before: always;
+}
+
+footer {
+    position: absolute;
+    bottom: -5;
+    right: 0;
+    float: right;
+    height: 35px;
+    margin: 0px 10px 0px 0px;
+    color: #000;
+    text-align: right;
+    padding: 20px 30px;
+    width: 180px;
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+table tr td, table tr th {
+    font-size: 10px;
+    border: 1px solid black;
+    padding: 2px;
+}
+
+.tabelNoBorder tr td, .tabelNoBorder tr th {
+    border: none;
+}
+
+.flexBox {
+    display: flex;align-items: center;
+}
+
+.borderHitam {
+    border: 1px solid black;
+    margin: 0px;
+    padding: 10px;
+}
+
+.judulHalaman {
+    font-size: 16px;
+    margin: 0px; padding: 0px;
+    text-align: center;
+}
+
+.bgBiru {
+    background-color: #9CC2E5;
+}
+
+.tabelHeader {
+    background-color: #99CCFF;
+    font-weight: bold;
+}
+
+.leftValue {
+    background-color: #DEEAF6;
+}
+
+.topTabelValue {
+    background-color: #DEEAF6;
+    vertical-align: top;
+}
+
+.rataAtas td {
+    vertical-align: top;
+}
+
+.td-with-value td {
+  padding-left: 5px;
+}

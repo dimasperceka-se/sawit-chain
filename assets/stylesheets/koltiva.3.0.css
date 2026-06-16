@@ -1,0 +1,326 @@
+html{
+    zoom:100%;
+}
+html,
+body{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.3;
+    color: #012345;
+}
+
+.primary-color{ color: #95130b; }
+.bg-primary{ background-color: #95130b; }
+
+.secondary-color{ color: #fff; }
+.bg-secondary{ background-color: #fff; }
+
+.highlight-color{ color: #95130b;}
+.bg-highlight{ background-color: #95130b; }
+
+.bg-gray{
+    background: #fff;
+}
+
+.left-panel{
+    background-color: #AFE1F4;
+    display: flex;
+    height: 100vh;
+    align-items: center;
+}
+
+.right-panel{
+    /*background-color: #f3f5f4;*/
+    background-color: #ffff;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+
+.welcome{
+    width: 93%;
+    position: absolute;
+    top: 20px;
+}
+.welcome h1,
+.welcome h4{
+    margin: 0;
+}
+
+.product-name{
+    color: #95130b;
+    font-weight: 700;
+    font-size: 42px;
+    letter-spacing: -3px;
+}
+
+.product-name > span{
+    color: #148c32;
+    font-weight: 300;
+}
+
+.lang-button{
+    border-radius: 10px;
+    padding: 1px 8px;
+    background-color: #148c32;
+    border-color: #148c32;
+    color: #fafafa;
+}
+
+.ktv-carousel-indicators{
+    bottom: -35px;
+    left: 15px;
+}
+
+.welcome-footer{
+    width: 96%;
+    position: absolute;
+    bottom: 20px;
+    font-size: 12px;
+}
+
+.welcome-footer-links{
+    margin-top: 10px;
+}
+.welcome-footer-links a{
+    color: #012345;
+    font-size: 14px;
+}
+.welcome-footer-links li.link-icon > a{
+    font-size: 21px;
+}
+
+.form-content{
+    width: 80%;
+    margin-top: 10px;
+}
+
+.form-content.width-small{
+    width: 400px;
+}
+.form-content.width-medium{
+    width: 800px;
+}
+
+@media(max-width: 991px){
+    .form-content.width-small,
+    .form-content.width-medium{
+        width: 88%;
+    }
+}
+
+.form-info{
+    margin: 10px 0 20px;
+}
+.form-info > .col-md-9,
+.form-info > .col-md-3{
+    padding: 0;
+}
+
+.form-info h4,
+.form-info p{
+    margin: 0;
+}
+
+.form-info h4{
+    font-weight: 900;
+}
+
+.login-form .form-group{
+    margin-bottom: 20px;
+}
+
+.login-form .form-text{
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.login-form.no-left-padding .col-md-7,
+.login-form.no-left-padding .col-md-5{
+    padding-left: 0;
+}
+
+@media(max-width: 991px){
+    .login-form.no-left-padding .col-md-7,
+    .login-form.no-left-padding .col-md-5{
+        padding-right: 0;
+    }
+}
+
+.login-footer{
+    width: 100%;
+    max-width: 100%;
+    position: absolute;
+    bottom: 0px;
+    font-size: 14px;
+    color: #fafafa;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.forgot-footer{
+    width: 100%;
+    max-width: 100%;
+    position: absolute;
+    bottom: 0;
+    font-size: 14px;
+    color: #9da3a8;
+    /*padding: 15px 0;*/
+    padding: 0;
+    text-align: center;
+}
+
+.mt-10{
+    margin-top: 10px !important;
+}
+
+.mt-20{
+    margin-top: 20px !important;
+}
+
+.mt-40{
+    margin-top: 40px !important;
+}
+
+.width-100{
+    width: 100%;
+}
+
+.text-uppercase{
+    text-transform: uppercase;
+}
+
+.text-small{
+    font-size: 12px;
+}
+
+.horizontal-divider{
+    width: 100%;
+    height: 1px;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+.horizontal-divider span{
+    background: #f3f5f4;
+    position: relative;
+    left: 45%;
+    top: -12px;
+    padding: 1px 10px;
+}
+
+.st-button{
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    background-color: #95130b;
+    color: #fff;
+    /*border-radius: 100px;*/
+    filter: brightness(100%);
+}
+
+.st-button:hover,
+.st-button:active,
+.st-button:focus,
+.st-button:visited{
+    /*background-color: #95130b;*/
+    filter: brightness(115%);
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,.05), 0 4px 10px rgba(90,97,105,.25);
+}
+
+.sso-button{
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    border-radius: 100px;
+}
+
+@media(max-width: 991px){
+    .left-panel{
+        display: none;
+    }
+}
+
+/* Bootstrap Hack */
+.welcome .badge{
+    margin: 10px 0;
+    font-weight: normal;
+}
+
+.list-group{
+    margin: 0;
+}
+
+.input-group .form-control{
+    border-right: none;
+}
+
+.form-control{
+    box-shadow: none;
+}
+
+.input-group-addon{
+    background-color: #fff;
+    border-left: none !important;
+}
+
+.password-rules{
+    padding-left: 16px;
+    list-style: none;
+}
+.password-rules > li::before{
+    font-family: 'FontAwesome';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    content: "\f10c";
+    margin-right: 5px;
+    margin-left: -15px;
+}
+.password-rules > li.pass{
+    color: #349346;
+}
+.password-rules > li.pass::before{
+    content: "\f058";
+}
+.password-rules > li.fail{
+    color: #f12424;
+}
+.password-rules > li.fail::before{
+    content: "\f057";
+}
+.flex {
+    display: flex;
+}
+.side-logo {
+    width: 25%;
+}
+.logo {
+    width: 50%;
+}
+/* ----------- Laptop ----------- */
+.img-logo {
+    width: 220px;
+}
+@media screen 
+and (min-device-width: 1200px) 
+and (max-device-width: 1600px) 
+and (-webkit-min-device-pixel-ratio: 1) {
+    .img-logo {
+        width: 220px;
+    }
+}
+/* ----------- Phone ----------- */
+@media only screen and (max-width: 600px) {
+    .img-logo {
+        width: 80px;
+    }
+}
+
+.center-walpaper {
+    display: block;
+    margin: 0 auto;
+}

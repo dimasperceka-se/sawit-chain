@@ -1,0 +1,593 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap");
+@font-face {
+  src: url(../fonts/Pe-icon-7-stroke.ttf);
+}
+
+.black-color {
+  color: #22232a;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+.login-screen {
+  height: 94vh;
+}
+
+.login-screen.lite {
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(24.49%, rgba(26, 27, 29, 0.58)), color-stop(74.11%, rgba(255, 255, 255, 0.7)));
+  background: linear-gradient(360deg, rgba(26, 27, 29, 0.58) 24.49%, rgba(255, 255, 255, 0.7) 74.11%);
+  mix-blend-mode: normal;
+}
+
+.login-screen.lite .img-bg {
+  z-index: -1;
+}
+
+.login-screen .logo-top {
+  width: 330px;
+  height: 60px;
+}
+
+.login-screen .logo-top-left {
+  left: -10px;
+}
+
+.login-screen .card-login {
+  background: #ffffff;
+  border-radius: 15px;
+  max-width: 400px;
+  width: 100%;
+  padding: 2rem 20px;
+  position: absolute;
+  top: 50%;
+  left: 84.4%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.login-screen .input-style i {
+  color: #999;
+}
+
+.login-screen .input-style input[type="email"] {
+  padding: 13px 1rem 13px 3rem;
+}
+
+.login-screen .input-style input {
+  color: #121314;
+  font-weight: 400;
+  border: 1px solid #dbdbdb;
+  border-radius: 10px;
+  padding: 13px 3rem;
+}
+
+.login-screen .input-style input:focus {
+  border: 1px solid #4a90e2;
+  color: #121314;
+}
+
+.login-screen .input-style .new-icon {
+  font-size: 24px;
+  vertical-align: middle;
+}
+
+.login-screen .input-style .look-off {
+  display: none;
+}
+
+.login-screen .btn-login-bg,
+.login-screen .btn-login-transparent {
+  background: #95130A;
+  border-radius: 10px;
+  border: 1px solid #95130A;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.login-screen .btn-login-bg:hover,
+.login-screen .btn-login-transparent:hover {
+  background: #c1403a;
+  border: 1px solid #c1403a;
+}
+
+.login-screen .btn-login-transparent {
+  background: transparent;
+  color: #95130A;
+}
+
+.login-screen .btn-login-transparent:hover {
+  background: transparent;
+}
+
+.login-screen .agreement {
+  color: #676768;
+}
+
+.login-screen .terms {
+  color: #121314;
+  font-weight: 500;
+}
+
+.login-screen .forgot {
+  color: #676768;
+  margin: 18px 0;
+  font-size: 16px;
+}
+
+.login-screen .forgot a {
+  -webkit-transition: all 0.1s;
+  transition: all 0.1s;
+  font-size: 16px;
+  color: #95130A;
+}
+
+.login-screen .footer {
+  height: 6vh;
+  background: #95130A;
+}
+
+.login-screen .footer p {
+  line-height: 6vh;
+  font-size: 14px;
+}
+
+.login-screen .img-footer {
+  width: 235px;
+  margin: 0 auto;
+}
+
+.login-screen .logo-top {
+  width: 70px;
+}
+
+.login-screen .logo-top-left {
+  width: 200px;
+}
+
+.reset-password,
+.verification-code,
+.new-password {
+  height: 100vh;
+}
+
+.reset-password .alert-wrong,
+.verification-code .alert-wrong,
+.new-password .alert-wrong {
+  margin-top: 16px;
+  background: rgba(208, 38, 48, 0.1);
+  border: 1px solid #d02630;
+  border-radius: 10px;
+  padding: 17.5px 20px;
+  color: #d02630;
+}
+
+.reset-password .alert-wrong p,
+.verification-code .alert-wrong p,
+.new-password .alert-wrong p {
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+.reset-password .alert-success,
+.verification-code .alert-success,
+.new-password .alert-success {
+  margin-top: 16px;
+  background: rgba(35, 176, 103, 0.1);
+  border: 1px solid #c1403a;
+  border-radius: 10px;
+  padding: 17.5px 20px;
+  color: #c1403a;
+}
+
+.reset-password .alert-success p,
+.verification-code .alert-success p,
+.new-password .alert-success p {
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+.reset-password .img-logo,
+.verification-code .img-logo,
+.new-password .img-logo {
+  width: 204px;
+  height: 38px;
+  margin-top: 46px;
+}
+
+.reset-password .card-reset,
+.reset-password .card-verification,
+.reset-password .card-new-password,
+.verification-code .card-reset,
+.verification-code .card-verification,
+.verification-code .card-new-password,
+.new-password .card-reset,
+.new-password .card-verification,
+.new-password .card-new-password {
+  max-width: 450px;
+  width: 100%;
+  position: absolute;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  padding: 0 20px;
+}
+
+.reset-password .card-reset h1,
+.reset-password .card-verification h1,
+.reset-password .card-new-password h1,
+.verification-code .card-reset h1,
+.verification-code .card-verification h1,
+.verification-code .card-new-password h1,
+.new-password .card-reset h1,
+.new-password .card-verification h1,
+.new-password .card-new-password h1 {
+  font-size: 36px;
+  color: #121314;
+  font-weight: 500;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.reset-password .card-reset .desc,
+.reset-password .card-verification .desc,
+.reset-password .card-new-password .desc,
+.verification-code .card-reset .desc,
+.verification-code .card-verification .desc,
+.verification-code .card-new-password .desc,
+.new-password .card-reset .desc,
+.new-password .card-verification .desc,
+.new-password .card-new-password .desc {
+  font-size: 16px;
+  color: #676768;
+}
+
+.reset-password .card-reset .input-style label,
+.reset-password .card-verification .input-style label,
+.reset-password .card-new-password .input-style label,
+.verification-code .card-reset .input-style label,
+.verification-code .card-verification .input-style label,
+.verification-code .card-new-password .input-style label,
+.new-password .card-reset .input-style label,
+.new-password .card-verification .input-style label,
+.new-password .card-new-password .input-style label {
+  color: #3c3d3e;
+}
+
+.reset-password .card-reset .input-style i,
+.reset-password .card-verification .input-style i,
+.reset-password .card-new-password .input-style i,
+.verification-code .card-reset .input-style i,
+.verification-code .card-verification .input-style i,
+.verification-code .card-new-password .input-style i,
+.new-password .card-reset .input-style i,
+.new-password .card-verification .input-style i,
+.new-password .card-new-password .input-style i {
+  color: #999;
+}
+
+.reset-password .card-reset .input-style input,
+.reset-password .card-verification .input-style input,
+.reset-password .card-new-password .input-style input,
+.verification-code .card-reset .input-style input,
+.verification-code .card-verification .input-style input,
+.verification-code .card-new-password .input-style input,
+.new-password .card-reset .input-style input,
+.new-password .card-verification .input-style input,
+.new-password .card-new-password .input-style input {
+  color: #121314;
+  font-weight: 400;
+  border: 1px solid #dbdbdb;
+  border-radius: 10px;
+  padding: 13px 5rem 13px 3rem;
+}
+
+.reset-password .card-reset .input-style input:focus,
+.reset-password .card-verification .input-style input:focus,
+.reset-password .card-new-password .input-style input:focus,
+.verification-code .card-reset .input-style input:focus,
+.verification-code .card-verification .input-style input:focus,
+.verification-code .card-new-password .input-style input:focus,
+.new-password .card-reset .input-style input:focus,
+.new-password .card-verification .input-style input:focus,
+.new-password .card-new-password .input-style input:focus {
+  border: 1px solid #4a90e2;
+  color: #121314;
+}
+
+.reset-password .card-reset .input-style i,
+.reset-password .card-verification .input-style i,
+.reset-password .card-new-password .input-style i,
+.verification-code .card-reset .input-style i,
+.verification-code .card-verification .input-style i,
+.verification-code .card-new-password .input-style i,
+.new-password .card-reset .input-style i,
+.new-password .card-verification .input-style i,
+.new-password .card-new-password .input-style i {
+  font-size: 24px;
+  vertical-align: middle;
+}
+
+.reset-password .card-reset .btn-login-bg,
+.reset-password .card-verification .btn-login-bg,
+.reset-password .card-new-password .btn-login-bg,
+.verification-code .card-reset .btn-login-bg,
+.verification-code .card-verification .btn-login-bg,
+.verification-code .card-new-password .btn-login-bg,
+.new-password .card-reset .btn-login-bg,
+.new-password .card-verification .btn-login-bg,
+.new-password .card-new-password .btn-login-bg {
+  background: #95130A;
+  border-radius: 10px;
+  border: 1px solid #95130A;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.reset-password .card-reset .btn-login-bg:hover,
+.reset-password .card-verification .btn-login-bg:hover,
+.reset-password .card-new-password .btn-login-bg:hover,
+.verification-code .card-reset .btn-login-bg:hover,
+.verification-code .card-verification .btn-login-bg:hover,
+.verification-code .card-new-password .btn-login-bg:hover,
+.new-password .card-reset .btn-login-bg:hover,
+.new-password .card-verification .btn-login-bg:hover,
+.new-password .card-new-password .btn-login-bg:hover {
+  background: #c1403a;
+  border: 1px solid #c1403a;
+}
+
+.reset-password .help,
+.verification-code .help,
+.new-password .help {
+  font-size: 16px;
+  color: #121314;
+}
+
+.reset-password .return,
+.verification-code .return,
+.new-password .return {
+  font-size: 16px;
+  color: #95130A;
+}
+
+.reset-password .footer,
+.verification-code .footer,
+.new-password .footer {
+  height: 37px;
+  background: #22232a;
+}
+
+.reset-password .footer p,
+.verification-code .footer p,
+.new-password .footer p {
+  line-height: 37px;
+  font-size: 12.8px;
+}
+
+.reset-password #form-input.invalid .input-style::before,
+.verification-code #form-input.invalid .input-style::before,
+.new-password #form-input.invalid .input-style::before {
+  content: "";
+  position: absolute;
+  right: 10%;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  background: url("/img/attention.svg");
+  background-size: cover;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.reset-password #form-input.valid i,
+.verification-code #form-input.valid i,
+.new-password #form-input.valid i {
+  color: #d02630;
+}
+
+.reset-password #form-input.valid .input-style::before,
+.verification-code #form-input.valid .input-style::before,
+.new-password #form-input.valid .input-style::before {
+  content: "";
+  position: absolute;
+  right: 10%;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  background: url("/img/check.svg");
+  background-size: cover;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.reset-password #form-input.error .form-input,
+.verification-code #form-input.error .form-input,
+.new-password #form-input.error .form-input {
+  border: 1px solid red;
+}
+
+.reset-password #form-input-confirm-password.error .form-input,
+.verification-code #form-input-confirm-password.error .form-input,
+.new-password #form-input-confirm-password.error .form-input {
+  border: 1px solid red;
+}
+
+.reset-password #form-input-code.error .form-input,
+.verification-code #form-input-code.error .form-input,
+.new-password #form-input-code.error .form-input {
+  border: 1px solid red;
+}
+
+.reset-password #form-input-password.error .form-input,
+.verification-code #form-input-password.error .form-input,
+.new-password #form-input-password.error .form-input {
+  border: 1px solid red;
+}
+
+.verification-code .card-verification .input-style input::-webkit-outer-spin-button,
+.verification-code .card-verification .input-style input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.verification-code .card-verification .input-style input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.verification-code .card-verification .input-style input {
+  padding: 13px 2.5rem 13px 1rem;
+}
+
+.verification-code .card-verification .input-style input:focus {
+  color: #121314;
+}
+
+.verification-code .card-verification .desc span {
+  font-weight: bold;
+  color: #121314;
+}
+
+.verification-code #form-input.invalid .input-style::before, .verification-code #form-input.valid .input-style::before {
+  right: 3%;
+}
+
+.verification-code .return {
+  font-size: 16px;
+  color: #121314;
+}
+
+.verification-code .return a {
+  color: #95130A;
+}
+
+.new-password .input-style .new-icon,
+.new-password .input-style .new-icon2 {
+  font-size: 24px;
+  vertical-align: middle;
+}
+
+.new-password .input-style .look-off,
+.new-password .input-style .look-off2 {
+  display: none;
+}
+
+.new-password .alert-previous-password {
+  color: #c62836;
+  font-size: 16px;
+  margin-top: 8px;
+}
+
+.new-password .alert-previous-password i {
+  font-size: 20px;
+  width: 16px;
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+@media (max-width: 400px) {
+  .login-screen .card-login {
+    max-width: 286px !important;
+  }
+  .login-screen .input-style input {
+    padding: 9.5px 3rem;
+  }
+  .login-screen .input-style input[type="email"] {
+    padding: 9.5px 1rem 9.5px 3rem;
+  }
+  .reset-password .card-reset .icon-title,
+  .verification-code .card-verification .icon-title,
+  .new-password .card-new-password .icon-title {
+    width: 60px;
+  }
+  .reset-password .card-reset h1,
+  .reset-password .card-verification h1,
+  .reset-password .card-new-password h1,
+  .verification-code .card-reset h1,
+  .verification-code .card-verification h1,
+  .verification-code .card-new-password h1,
+  .new-password .card-reset h1,
+  .new-password .card-verification h1,
+  .new-password .card-new-password h1 {
+    font-size: 24px;
+  }
+  .reset-password .card-reset .desc,
+  .reset-password .card-verification .desc,
+  .reset-password .card-new-password .desc,
+  .verification-code .card-reset .desc,
+  .verification-code .card-verification .desc,
+  .verification-code .card-new-password .desc,
+  .new-password .card-reset .desc,
+  .new-password .card-verification .desc,
+  .new-password .card-new-password .desc,
+  .reset-password .alert-wrong p,
+  .verification-code .alert-wrong p,
+  .new-password .alert-wrong p,
+  .reset-password .help,
+  .verification-code .help,
+  .new-password .help,
+  .reset-password .return,
+  .verification-code .return,
+  .new-password .return,
+  .new-password .alert-previous-password {
+    font-size: 14px;
+  }
+  .reset-password .card-reset .btn-login-bg,
+  .reset-password .card-verification .btn-login-bg,
+  .reset-password .card-new-password .btn-login-bg,
+  .verification-code .card-reset .btn-login-bg,
+  .verification-code .card-verification .btn-login-bg,
+  .verification-code .card-new-password .btn-login-bg,
+  .new-password .card-reset .btn-login-bg,
+  .new-password .card-verification .btn-login-bg,
+  .new-password .card-new-password .btn-login-bg {
+    font-size: 16px;
+  }
+  .reset-password .img-logo,
+  .verification-code .img-logo,
+  .new-password .img-logo {
+    margin: 2.5rem auto;
+    width: 150px;
+    height: auto;
+  }
+}
+
+@media (max-width: 1024px) {
+  .login-screen {
+    height: 100vh;
+  }
+  .login-screen .card-login {
+    left: 50%;
+    top: 60%;
+    max-width: 350px;
+    padding: 1rem 20px;
+  }
+  .login-screen .card-login.lite {
+    top: 50%;
+  }
+  .login-screen .btn-login-bg,
+  .login-screen .btn-login-transparent {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1280px !important;
+  }
+}
+/*# sourceMappingURL=styles.css.map */
+
+#ajaxImgLoad {
+  display: none;
+}
+
+#boxFailed {
+  display: none;
+}
+
+#boxSuccess {
+  display: none;
+}

@@ -1,0 +1,20 @@
+<?php
+/******************************************
+ *  Author : n1colius.lau@gmail.com   
+ *  Created On : Thu Oct 10 2019
+ *  File : awscognito.php
+ *******************************************/
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+$config['awscog'] = [
+    'credentials' => [
+        'key' => 'AKIAXV2QEJE4IP55ZX3Z',
+        'secret' => '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',
+    ],
+    'region' => 'ap-southeast-1',
+    'version' => 'latest',
+
+    'app_client_id' => '7to7phde8s8pebko61oqi2jd03', //Applykan sesuai userpool yg mau dituju
+    'app_client_secret' => '131mv2k54r7g5lobdsjaoklqqam6e2falkfq55n2t70t8puhvph6', //Applykan sesuai userpool yg mau dituju
+    'user_pool_id' => 'ap-southeast-1_QThWy9WiF' //Applykan sesuai userpool yg mau dituju
+];

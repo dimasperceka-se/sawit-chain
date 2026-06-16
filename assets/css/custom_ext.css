@@ -1,0 +1,397 @@
+/*==================================== Apply New Style on Modul Farmer (BEGIN)===================================*/
+#divCommonContentRegion {
+    background-color: #FFFFFF;
+}
+
+.Sfr_BoxFilterCommonContentRegion {
+    float:right;
+    padding:4px 10px;
+    background-color: #FFFFFF;
+    
+}
+
+.Sfr_BoxInfoDataGrid_Title {
+    font-size:24px;
+}
+
+.Sft_UlListInfoDataGrid {
+    margin:0px; padding: 0px;
+}
+
+.Sft_UlListInfoDataGrid li {
+    list-style: none;
+    margin-top:5px;
+}
+
+.Sft_ListInfoDataGrid, .Sft_ListInfoDataGrid a {
+    color:#895608;
+}
+
+.Sft_ListInfoDataGrid a:hover {
+    color: #eca73e;
+}
+
+.Sft_ListIconInfoDataGrid {
+    background-color: #895608;
+    padding:4px;
+    border-radius: 20px;
+}
+
+.Sfr_BtnConMenuWhite {
+    font-size: 11px !important;
+    font-weight: normal !important;
+    background-color: white !important;
+    background-image: none !important;
+    border-style: none !important;
+    padding: 4px 8px !important;
+    color:#364351 !important;
+}
+
+.Sfr_BtnConMenuWhite .x-menu-item-link {
+    line-height: 18px;
+    padding: 0 4px 0 22px;
+}
+
+.Sfr_BtnGridGreen {
+    font-size: 11px !important;
+    font-weight: normal !important;
+    background-color: #00A043 !important;
+    background-image: none !important;
+    border-style: none !important;
+    padding: 4px 8px !important;
+    color:white !important;
+}
+.Sfr_BtnGridGreen .x-btn-inner {
+    color:white !important;
+    font-size: 11px !important;
+}
+.x-Sfr_BtnGridGreen-Hover {
+    background: #22DE71 !important;
+}
+
+.Sfr_BtnGridPaleBlue {
+    font-size: 11px !important;
+    font-weight: normal !important;
+    background-color: #D8E7FF !important;
+    background-image: none !important;
+    border-style: none !important;
+    padding: 4px 8px !important;
+    color:#798398 !important;
+}
+.Sfr_BtnGridPaleBlue .x-btn-inner {
+    color:#798398 !important;
+    font-size: 11px !important;
+}
+.x-Sfr_BtnGridPaleBlue-Hover {
+    background: #E3E9F5 !important;
+}
+
+.Sfr_BtnGridBlue {
+    font-size: 11px !important;
+    font-weight: normal !important;
+    background-color: #567DE5 !important;
+    background-image: none !important;
+    border-style: none !important;
+    padding: 4px 8px !important;
+    color:white !important;
+}
+.Sfr_BtnGridBlue .x-btn-inner {
+    color:white !important;
+    font-size: 11px !important;
+}
+.x-Sfr_BtnGridBlue-Hover {
+    background: #7395EF !important;
+}
+
+.Sfr_BtnGridRed {
+    font-size: 11px !important;
+    font-weight: normal !important;
+    background-color: #E85232 !important;
+    background-image: none !important;
+    border-style: none !important;
+    padding: 4px 8px !important;
+    color:white !important;
+}
+.Sfr_BtnGridRed .x-btn-inner {
+    color:white !important;
+    font-size: 11px !important;
+}
+.x-Sfr_BtnGridRed-Hover {
+    background: #EEA393 !important;
+}
+
+
+.Sfr_TxtfieldSearchGrid input {
+    background-color: #ECF1F2 !important;
+    /*border-style: none !important;*/
+    border:1px solid #dedede !important;
+    color: #7B7D7E !important;
+    padding: 5px 8px 5px 35px;
+    border-radius: 9px;
+    background-image:url(search-black.png);
+    background-position: 10px 5px;
+	background-repeat: no-repeat;
+}
+
+.Sfr_ComboSearchGrid input {
+    background-color: #ECF1F2 !important;
+    /*border-style: none !important;*/
+    border:0px solid #dedede !important;
+    color: #7B7D7E !important;
+    padding: 5px 8px 5px 35px;
+    background-image:url("../../images/icons/new/add-filter.png");
+    background-position: 10px 5px;
+    background-repeat: no-repeat;
+}
+
+
+.x-toolbar .x-toolbar-text {
+    font-weight: bold !important;
+}
+
+.Sfr_GridNew .x-column-header {
+    border:none !important;
+    font-weight: bold;
+    background-color: white !important;
+    color:#4A5463 !important;
+}
+
+.Sfr_GridNew .x-column-header-trigger {
+    border:none !important;
+}
+
+.Sfr_GridNew .x-panel-body-default {
+    background-color: white !important;
+}
+
+.Sfr_GridColPlaces {
+    padding: 0px 0px 0px 18px;
+    background-image:url(place.png);
+    background-position: 0px -1px;
+	background-repeat: no-repeat;
+}
+
+.Sfr_GridColPhone {
+    padding: 0px 0px 0px 18px;
+    background-image:url(phone.png);
+    background-position: 0px -1px;
+	background-repeat: no-repeat;
+}
+
+.Sfr_GridColBold {
+    font-weight: bold;
+}
+
+.Sfr_GridColGreenRounded {
+    padding: 4px 12px 4px 12px;
+    border-radius: 6px;
+    background-color: #A4F97D;
+    color: #11B150;
+}
+
+.Sfr_GridColGreen2Rounded {
+    padding: 4px 12px 4px 12px;
+    border-radius: 6px;
+    background-color: #589C14;
+    color: white;
+}
+
+.Sfr_GridColYellowRounded {
+    padding: 4px 12px 4px 12px;
+    border-radius: 6px;
+    background-color: rgb(239, 243, 22);
+    color: rgb(127, 135, 179);
+}
+
+.Sfr_GridColRedRounded {
+    padding: 4px 12px 4px 12px;
+    border-radius: 6px;
+    background-color: #e72c2c;
+    color: white;
+}
+
+.Sfr_GridColLightBlueRounded {
+    padding: 4px 12px 4px 12px;
+    border-radius: 6px;
+    background-color: #4954f0;
+    color: white;
+}
+
+.Sfr_PanelLayoutFormContainer .x-form-layout-table {
+    border-collapse: collapse !important;
+    background: white;
+}
+
+.Sfr_FormBrowseBtn .x-form-file-btn {
+    border-style: none !important;
+    background: #009E42 !important;
+    font-weight: normal !important;
+}
+
+.Sfr_FormBrowseBtn .x-btn-default-small .x-btn-inner {
+    font-weight: normal !important;
+}
+
+.Sfr_BtnFormGreen {
+    font-size: 12px !important;
+    font-weight: normal !important;
+    background-color: #00A043 !important;
+    background-image: none !important;
+    border-style: none !important;
+    padding: 6px 14px !important;
+    color:white !important;
+}
+
+.Sfr_BtnFormGreen .x-btn-inner {
+    color:white !important;
+    font-size: 12px !important;
+}
+
+.x-Sfr_BtnFormGreen-Hover {
+    background: #22DE71 !important;
+}
+
+.Sfr_BtnFormBlue {
+    font-size: 12px !important;
+    font-weight: normal !important;
+    background-color: #567DE5 !important;
+    background-image: none !important;
+    border-style: none !important;
+    padding: 6px 14px !important;
+    color:white !important;
+}
+
+.Sfr_BtnFormBlue .x-btn-inner {
+    color:white !important;
+    font-size: 12px !important;
+}
+
+.x-Sfr_BtnFormBlue-Hover {
+    background: #8ca4e5 !important;
+}
+
+
+.Sfr_BtnFormGrey {
+    font-size: 12px !important;
+    font-weight: normal !important;
+    background-color: #848D98 !important;
+    background-image: none !important;
+    border-style: none !important;
+    padding: 6px 14px !important;
+    color:white !important;
+}
+
+.Sfr_BtnFormGrey .x-btn-inner {
+    color:white !important;
+    font-size: 12px !important;
+}
+
+.x-Sfr_BtnFormGrey-Hover {
+    background: #a9b2bd !important;
+}
+
+
+.Sfr_BtnFormRed {
+    font-size: 12px !important;
+    font-weight: normal !important;
+    background-color: #FF0000 !important;
+    background-image: none !important;
+    border-style: none !important;
+    padding: 6px 14px !important;
+    color:white !important;
+}
+
+.Sfr_BtnFormRed .x-btn-inner {
+    color:white !important;
+    font-size: 12px !important;
+}
+
+.x-Sfr_BtnFormRed-Hover {
+    background: #66a80f !important;
+}
+
+
+.Sfr_TabForm .x-tab-default-active .x-tab-inner {
+    color: white !important;
+}
+
+.Sfr_TabForm .x-tab-bar-plain {
+    background: white !important;
+    border-style: none !important;
+}
+
+.Sfr_TabForm .x-panel-body-default {
+    background: white !important;
+}
+
+.Sfr_PanelLayoutForm .x-toolbar-footer {
+    margin-top:10px;
+    background: #ebf7f9 !important;
+    border: 1px solid #e8e0e0 !important;
+}
+
+.Sfr_PanelSubLayoutForm .x-panel-body-default {
+    background: white !important;
+}
+
+.Sfr_PanelSubLayoutFormRoundedGray .x-panel-body-default {
+    background: white !important;
+}
+
+.Sfr_PanelSubLayoutFormRoundedGray .x-panel-body-default {
+    background: white !important;
+}
+
+.Sfr_PanelLayoutFormContainer .x-panel-body-default {
+    background: white !important;
+}
+
+.Sfr_PanelSubLayoutFormRoundedGray .x-panel-header {
+    background-color: #848D98 !important;
+    border-top-left-radius: 6px !important;
+    border-top-right-radius: 6px !important;
+}
+
+.Sfr_LayoutPopupWindows .x-toolbar-footer {
+    background: #ebf7f9 !important;
+    border-top: 1px solid #e8e0e0 !important;
+}
+
+.Sfr_LayoutPopupWindows .x-window-body-default {
+    background: white !important;
+}
+
+.Sfr_LayoutPopupWindows .x-panel-body-default {
+    background: white !important;
+}
+
+.Sfr_ContDataNotFound {
+    height: 80px;
+    width: '100%';
+    margin : auto;
+    text-align: center;
+    padding-top:6px;
+
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 2px;
+    color: #DBDBDB;
+}
+
+.Sfr_ConMenu {
+    border-radius:6px;
+}
+
+.Sfr_ConMenu .x-panel-body-default {
+    background: #ffffff none repeat scroll 0 0 !important
+}
+
+.Sfr_ConMenu .x-menu-item-active {
+    background-color: #D7E9FD !important;
+}
+
+.Sfr_FormInputMandatory .x-form-item-label:after {
+    content:" *";
+    color:red;
+}
+
