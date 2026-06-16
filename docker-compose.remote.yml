@@ -29,7 +29,9 @@ services:
       # address/port (or reverse-proxy URL) of the palm-twin service.
       PALM_TWIN_URL: "${PALM_TWIN_URL:-http://localhost:5003}"
     ports:
-      - "${APP_PORT:-8080}:80"
+      # Loopback-only: reachable by the host's nginx reverse proxy, NOT the
+      # public internet. This is what makes trusting X-Forwarded-Proto safe.
+      - "127.0.0.1:${APP_PORT:-8080}:80"
     volumes:
       - .:/var/www/html
       - /var/www/html/application/cache
@@ -45,4 +47,4 @@ services:
     env_file:
       - ./palm-twin/.env
     ports:
-      - "${PALM_TWIN_PORT:-5003}:5003"
+      - "127.0.0.1:${PALM_TWIN_PORT:-5003}:5003"
