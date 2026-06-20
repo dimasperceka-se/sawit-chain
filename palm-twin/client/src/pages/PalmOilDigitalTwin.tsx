@@ -1405,10 +1405,17 @@ export default function PalmOilDigitalTwin() {
       const tiles = tilesInBounds(map.getBounds(), z);
       if (tiles.length > 60) return;
 
+      // GFW VIIRS dynamic tiles reject date windows wider than ~90 days (HTTP
+      // 403 -> empty layer), so clamp the request to the last 90 days of the range.
+      const FIRE_MAX_DAYS = 90;
+      const minStartMs = new Date(endDate).getTime() - FIRE_MAX_DAYS * 86400000;
+      const reqStart =
+        new Date(startDate).getTime() < minStartMs
+          ? new Date(minStartMs).toISOString().slice(0, 10)
+          : startDate;
+
       const results = await Promise.all(
-        tiles.map((t) =>
-          fetchFireFeatures(t.z, t.x, t.y, startDate, endDate)
-        )
+        tiles.map((t) => fetchFireFeatures(t.z, t.x, t.y, reqStart, endDate))
       );
       if (cancelled || id !== reqId) return;
 
@@ -1416,7 +1423,7 @@ export default function PalmOilDigitalTwin() {
       const markers: L.Marker[] = [];
       const points: { lat: number; lng: number }[] = [];
       let logged = false;
-      const startMs = new Date(startDate).getTime();
+      const startMs = new Date(reqStart).getTime();
       const endMs = new Date(endDate).getTime();
       const confs = ["h", "n", "l"];
       for (const arr of results) {
@@ -2179,7 +2186,6 @@ export default function PalmOilDigitalTwin() {
                           { label: "7d", days: 7 },
                           { label: "30d", days: 30 },
                           { label: "90d", days: 90 },
-                          { label: "1y", days: 365 },
                         ].map((p) => (
                           <button
                             key={p.label}
