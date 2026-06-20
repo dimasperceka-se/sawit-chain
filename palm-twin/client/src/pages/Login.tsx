@@ -100,7 +100,7 @@ export default function Login() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     try {
-      const res = await fetch("/api/login", {
+      const res = await fetch(`${import.meta.env.BASE_URL}api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim(), password }),

@@ -10,6 +10,11 @@ RUN npm install
 # App source
 COPY . .
 
+# Sub-path to serve under (default "/"). Pass --build-arg APP_BASE=/twin/ to
+# serve behind a reverse-proxy sub-path; vite.config.ts reads process.env.APP_BASE.
+ARG APP_BASE=/
+ENV APP_BASE=${APP_BASE}
+
 # Build the client bundle into dist/public
 RUN npm run build
 

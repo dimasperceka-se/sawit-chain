@@ -41,6 +41,10 @@ services:
   palm-twin:
     build:
       context: ./palm-twin
+      args:
+        # "/" for local (served at root on :5003); "/twin/" when reverse-proxied
+        # under portal.sawitchain.com/twin. Set PALM_TWIN_BASE in .env on the server.
+        APP_BASE: "${PALM_TWIN_BASE:-/}"
     image: palm-twin:local
     container_name: palm-twin
     restart: unless-stopped

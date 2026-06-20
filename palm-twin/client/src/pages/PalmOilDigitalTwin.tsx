@@ -1467,7 +1467,7 @@ export default function PalmOilDigitalTwin() {
 
   // Fetch peatland filter options once
   useEffect(() => {
-    fetch("/api/peatland/filters")
+    fetch(`${import.meta.env.BASE_URL}api/peatland/filters`)
       .then((r) => r.json())
       .then((data) =>
         setFilterOpts({
@@ -1532,7 +1532,7 @@ export default function PalmOilDigitalTwin() {
       }
 
       try {
-        const res = await fetch(`/api/peatland/features?${params.toString()}`);
+        const res = await fetch(`${import.meta.env.BASE_URL}api/peatland/features?${params.toString()}`);
         if (!res.ok) return;
         const geojson = await res.json();
         if (cancelled || id !== reqId) return;
@@ -1645,7 +1645,7 @@ export default function PalmOilDigitalTwin() {
       );
 
       try {
-        const res = await fetch(`/api/palmoil/mills?${params.toString()}`);
+        const res = await fetch(`${import.meta.env.BASE_URL}api/palmoil/mills?${params.toString()}`);
         if (!res.ok) return;
         const geojson = await res.json();
         if (cancelled || id !== reqId) return;

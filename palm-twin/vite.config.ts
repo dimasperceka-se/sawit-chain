@@ -4,6 +4,9 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
 export default defineConfig({
+  // Sub-path the app is served under. Root ("/") for local/standalone; set
+  // APP_BASE=/twin/ at build time to serve behind a reverse-proxy sub-path.
+  base: process.env.APP_BASE || "/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
