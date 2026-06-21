@@ -271,9 +271,6 @@ Ext.override(Ext.menu.Menu, {
                         <?php
                     }
                     ?>
-                    <li class="dropdown">
-                        <a target="_blank" href="<?php echo base_url(); ?>api/files/documents/palmoiltrace-web-manual.pdf" title="<?php echo lang('Download Manual Book')?>" role="button" aria-expanded="false"><span class="icon s7-notebook"></span><span class="indicator hidden" id="icon_manual_book"></span></a>
-                    </li>
                     <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><span class="icon s7-bell"></span><span class="indicator hidden" id="notif-indicator"></span></a>
                         <ul class="dropdown-menu am-notifications">
                             <li>
@@ -290,9 +287,6 @@ Ext.override(Ext.menu.Menu, {
                             </li>
                         </ul>
                     </li>
-                    <?php if ($filter_by): ?>
-                        <?php echo $this->load->view('list_filter', compact('filter_by', 'filter_label', 'filter_title', 'filter_list'), TRUE); ?>
-                    <?php endif ?>
 
                     <li class="dropdown">
 

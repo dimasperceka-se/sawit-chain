@@ -1,6 +1,6 @@
 <?php
 $baseurlcheck = rtrim(trim(base_url()),'/');
-$title        = "Koltiva | KoltiTrace Palm Oil";
+$title        = "SawitChain | Traceability System for Palm Oil";
 
 if($this->config->item('url_gar') == $baseurlcheck) {
     $title = "GAR | KoltiTrace Palm Oil";
@@ -11,7 +11,7 @@ if($this->config->item('url_gar') == $baseurlcheck) {
 
 <head>
     <title><?= $title ?></title>
-    <link href="https://app.palmoiltrace.com/img/favicon.png" rel="shortcut icon">
+    <link href="/assets/new/img/sawitchain-favicon.png" rel="shortcut icon">
     <!-- Basic -->
     <meta charset="UTF-8">
 
@@ -73,10 +73,10 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                     <p style="text-align: center;">Effective Date: 1 January 2021</p>
                     <p><strong>&nbsp;</strong></p>
                     <p>
-                        Koltiva AG and its affiliate PT Koltiva (The <strong>“Koltiva”</strong> or <strong>“We”</strong>, <strong>“Us”</strong>, <strong>“Our”</strong>) has a high commitment to the protection of your data. Your data security (both personal data and other data that you entrust to us) is our main responsibility and priority.
+                        PT Sawitchain (The <strong>“Sawitchain”</strong> or <strong>“We”</strong>, <strong>“Us”</strong>, <strong>“Our”</strong>) has a high commitment to the protection of your data. Your data security (both personal data and other data that you entrust to us) is our main responsibility and priority.
                     </p>
                     <p>
-                    This Privacy Policy (The <strong>“Privacy”</strong>) governs how We collect and use your data when you operate PalmoilTrace Application from Koltiva (The <strong> " PalmoilTrace Application" </strong>or <strong>" PalmoilTrace "</strong>).
+                    This Privacy Policy (The <strong>“Privacy”</strong>) governs how We collect and use your data when you operate PalmoilTrace Application from PT Sawitchain (The <strong> " PalmoilTrace Application" </strong>or <strong>" PalmoilTrace "</strong>).
                     </p>
                     <p>
                         By logging in and accessing our PalmoilTrace Application, you have agreed and bound by the things contained in this policy. Therefore, we hope you read this Policy to ensure that you understand how we handle your data.
@@ -85,7 +85,7 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                         <strong>How We Collect Your Data</strong>
                     </p>
                     <p>
-                       Koltiva is an integrated agricultural technology company that provides software solutions and services specifically made for end-to-end business processes. One of our products is PalmoilTrace. PalmoilTrace provides complete information about farmer data, agricultural and plantation data, Social, Environmental and Economic data obtained from data on Supply Chain farmers, data history and traceability regarding products that have been sold. When you use the PalmoilTrace Application, you directly or indirectly provide your data to Us that We will protect and use in the methods that is set in this Policy. We can collect your data in the form of:
+                       Sawitchain is an integrated agricultural technology company that provides software solutions and services specifically made for end-to-end business processes. One of our products is PalmoilTrace. PalmoilTrace provides complete information about farmer data, agricultural and plantation data, Social, Environmental and Economic data obtained from data on Supply Chain farmers, data history and traceability regarding products that have been sold. When you use the PalmoilTrace Application, you directly or indirectly provide your data to Us that We will protect and use in the methods that is set in this Policy. We can collect your data in the form of:
                     </p>
                     <ul>
                         <li>
@@ -147,7 +147,7 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                             Enter information in any form into PalmoilTrace Application
                         </li>
                         <li>
-                            Signed the consent letter to give the data to Koltiva;
+                            Signed the consent letter to give the data to Sawitchain;
                         </li>
                     </ul>
                     <br>
@@ -156,7 +156,7 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                     </p>
                     
                     <p>
-                    We will store Your data as long as You use Our PalmoilTrace Application and We will delete Your data after You no longer use Our PalmoilTrace Application or when you ask Us to delete it. As long as You use Our PalmoilTrace Application, Koltiva can update the PalmoilTrace Application system that You use any time, and You need to know that the renewal activity of the PalmoilTrace Application can use Your internet costs.
+                    We will store Your data as long as You use Our PalmoilTrace Application and We will delete Your data after You no longer use Our PalmoilTrace Application or when you ask Us to delete it. As long as You use Our PalmoilTrace Application, Sawitchain can update the PalmoilTrace Application system that You use any time, and You need to know that the renewal activity of the PalmoilTrace Application can use Your internet costs.
                     </p>
                     
                     <p>
@@ -248,19 +248,19 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                         </p>
                     <li>
                         Securing your data when in transit and at rest
-                            <p>All communications between Koltiva and You are encrypted using advanced encryption technologies such as HTTPS and Transport Layer Security (TLS), and We require this encryption technology is used for all communications. This technique is applied so even if someone tries to 'eavesdrop' on your communication, they will still not be able to decryption to steal Your data.
+                            <p>All communications between Sawitchain and You are encrypted using advanced encryption technologies such as HTTPS and Transport Layer Security (TLS), and We require this encryption technology is used for all communications. This technique is applied so even if someone tries to 'eavesdrop' on your communication, they will still not be able to decryption to steal Your data.
                             </p>
                     </li>
                     
                     <li>
                             User Management
-                            <p>We establish very strict internal procedures to prevent employees or other Users from gaining access to Your account outside the limited data needed to provide the assistance You need or resolve problems. Koltiva keeps records of all access that has been given, and We audit this record regularly to ensure Your security.
+                            <p>We establish very strict internal procedures to prevent employees or other Users from gaining access to Your account outside the limited data needed to provide the assistance You need or resolve problems. Sawitchain keeps records of all access that has been given, and We audit this record regularly to ensure Your security.
                             </p>
                     </li>
                     </ul>
                  
                     <p><strong>Childs Privacy</strong></p>
-                    <p>PalmoilTrace application from Koltiva does not allow to be used by Children under the age of 15.</p>
+                    <p>PalmoilTrace application from Sawitchain does not allow to be used by Children under the age of 15.</p>
                     <p>We do not always know that users of our PalmoilTrace Application are under 15 years old. If you are a parent and you know that the user of the PalmoilTrace application is your child, please contact us as soon as possible. If We know that the data that We have collected is data from children under the age and without verification from Parents, We will take steps to delete the data from Our system.</p>
                     <p><strong>Your Rights</strong></p>
                     <ul>
@@ -291,10 +291,10 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                     <p>If there are questions about this Privacy or the way We collect or handling your data, please contact us at:</p>
                     <ul>
                         <li>
-                        E-mail: helpdesk@Koltiva.com
+                        E-mail: helpdesk@Sawitchain.com
                         </li>
                         <li>
-                        Our Website at http://www.Koltiva.com/
+                        Our Website at http://www.Sawitchain.com/
                         </li>
                         <li>
                         Telephone: +6221 – 3970 2013 / +6221 – 3973 2013
@@ -316,7 +316,7 @@ if($this->config->item('url_gar') == $baseurlcheck) {
 
     <footer>
         <div style="text-align: center; background-color: #95130b; font-size: 14px; color: #fafafa; padding:1em">
-            <p style="text-align: center;"><?php echo date('Y'); ?> Koltiva AG and All It's Affiliates</p>
+            <p style="text-align: center;"><?php echo date('Y'); ?> Sawitchain AG and All It's Affiliates</p>
         </div>
     </footer>
 

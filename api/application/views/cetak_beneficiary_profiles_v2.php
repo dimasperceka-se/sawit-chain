@@ -494,8 +494,8 @@ a[href="https://www.google.com/intl/en-US_US/help/terms_maps.html"] {
                 <td class="kolomKanan" width="70%" align="right">
                     <table width="100%">
                     <tr>
-                        <td style="letter-spacing: 0.1em;font-size: 11px" width="60%">Copyright &copy <?php echo date('Y')?> by PT Koltiva</td>
-                        <td style="letter-spacing: 0.1em;font-size: 11px" width="40%" align="right">www.koltiva.com</td>
+                        <td style="letter-spacing: 0.1em;font-size: 11px" width="60%">Copyright &copy <?php echo date('Y')?> by PT SawitChain</td>
+                        <td style="letter-spacing: 0.1em;font-size: 11px" width="40%" align="right">www.sawitchain.com</td>
                     </tr>
                     </table>
                 </td>
@@ -945,8 +945,8 @@ a[href="https://www.google.com/intl/en-US_US/help/terms_maps.html"] {
                 <td class="kolomKanan" width="70%" align="right">
                     <table width="100%">
                     <tr>
-                        <td style="letter-spacing: 0.1em;font-size: 11px" width="60%">Copyright &copy <?php echo date('Y')?> by PT Koltiva</td>
-                        <td style="letter-spacing: 0.1em;font-size: 11px" width="40%" align="right">www.koltiva.com</td>
+                        <td style="letter-spacing: 0.1em;font-size: 11px" width="60%">Copyright &copy <?php echo date('Y')?> by PT SawitChain</td>
+                        <td style="letter-spacing: 0.1em;font-size: 11px" width="40%" align="right">www.sawitchain.com</td>
                     </tr>
                     </table>
                 </td>

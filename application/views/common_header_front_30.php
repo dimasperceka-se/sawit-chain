@@ -1,6 +1,6 @@
 <?php
 $baseurlcheck = rtrim(trim(base_url()),'/');
-$title        = "Koltiva | KoltiTrace Palm Oil";
+$title        = "SawitChain | Traceability System for Palm Oil";
 
 if($this->config->item('url_gar') == $baseurlcheck) {
     $title = "GAR | KoltiTrace Palm Oil";
@@ -13,7 +13,7 @@ if($this->config->item('url_gar') == $baseurlcheck) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title><?= $title ?></title>
-    <link href="https://dptwplzs7m8x9.cloudfront.net/web/logo/koltiva_k_green_square.png" rel="shortcut icon">
+    <link href="/assets/new/img/sawitchain-full-logo.png" rel="shortcut icon">
 
     <meta name="keywords" content="PalmOilTrace" />
     <meta name="description" content="PalmOilTrace">

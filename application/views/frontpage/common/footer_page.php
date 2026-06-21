@@ -8,7 +8,7 @@
 ?>
                 <div class="navbar navbar-bottom">
                     <p style="color:#51B451;float: none;font-size:0.9em;margin-bottom:5px!important;margin-top:-125px!important;" class="navbar-text text-center">
-                        <b>&nbsp; &copy; 2013 - <?php echo date('Y')?> PT. Koltiva, All rights reserved</b>
+                        <b>&nbsp; &copy; 2013 - <?php echo date('Y')?> PT. SawitChain, All rights reserved</b>
                     </p>
                 </div>
 
