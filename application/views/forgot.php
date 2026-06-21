@@ -1,6 +1,6 @@
 <?php
 $baseurlcheck = rtrim(trim(base_url()),'/');
-$title        = "Koltiva | KoltiTrace Palm Oil";
+$title        = "SawitChain | Traceability System for Palm Oil";
 
 if($this->config->item('url_gar') == $baseurlcheck) {
     $title = "GAR | KoltiTrace Palm Oil";

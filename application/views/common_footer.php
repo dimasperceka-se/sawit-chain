@@ -46,8 +46,6 @@
                         <div class="nano-content">
                             <div class="content">
                                 <h2><?php echo lang('Announcement') ?></h2>
-                                <ul id="announcement">
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -55,12 +53,6 @@
                         <div class="nano-content">
                             <div class="content">
                                 <h2><?php echo lang('Documents') ?></h2>
-                                <ul id="document">
-                                    <li>
-                                        <div class="icon"><span class="icon s7-file"></span></div>
-                                        <div class="content"><a target="_blank" href="<?php echo base_url()?>system/login/tor_view/yes"><?php echo lang('Privacy Policy (Terms of Use)')?></a></div>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -367,63 +359,6 @@ function loadScript(scriptName, callback) {
 
    });
 </script>
-
-<!-- ======================================= FreshDesk (Begin) ====================================== -->
-<script src="https://wchat.freshchat.com/js/widget.js"></script>
-<script>
-var FreshChatReturnId = '<?php echo $_SESSION['FreshChatReturnId'] ?>';
-window.fcWidget.init({
-    token: "b99ff1c4-af14-4de7-8d1e-ea5317a615d2", //"9f242220-5264-40b7-a7dd-9feb88283f22",
-    host: "https://wchat.freshchat.com",
-    externalId: "palmoilweb-<?php echo $_SESSION['username'] ?>",
-    firstName: "<?php echo $_SESSION['realname'] ?>",
-    lastName: "",
-    email: "<?php echo $_SESSION['UserEmail'] ?>",
-    phone: "<?php echo $_SESSION['Phonenumber'] ?>",
-    restoreId: FreshChatReturnId
-});
-
-
-window.fcWidget.user.get(function(resp) {
-    var status = resp && resp.status,
-        data = resp && resp.data;
-
-    if (status !== 200) {
-        window.fcWidget.user.setProperties({
-            externalId: "palmoilweb-<?php echo $_SESSION['username'] ?>",
-            firstName: "<?php echo $_SESSION['realname'] ?>",
-            lastName: "",
-            email: "<?php echo $_SESSION['UserEmail'] ?>",
-            phone: "<?php echo $_SESSION['Phonenumber'] ?>",
-            restoreId: FreshChatReturnId
-        });
-
-        window.fcWidget.on('user:created', function(resp) {
-            var status = resp && resp.status,
-                data = resp && resp.data;
-
-            if (status === 200) {
-                if (data.restoreId) {
-                    // Update restoreId in your database
-                    Ext.Ajax.request({
-                        waitMsg: 'Please Wait',
-                        url: m_api + '/staffuser/update_freshchat_id',
-                        method: 'POST',
-                        params: {
-                            restoredId: data.restoreId
-                        },
-                        success: function (rp, o) {
-                            console.log(`freshchat updated`);
-                        }
-                    });
-
-                }
-            }
-        });
-    }
-});
-</script>
-<!-- ======================================= FreshDesk (End)   ====================================== -->
 
 
 </body>

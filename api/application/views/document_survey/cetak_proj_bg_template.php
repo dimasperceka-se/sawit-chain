@@ -11,7 +11,7 @@
         <table class="tabelNoBorder" width="100%" border="0" cellpadding="2">
             <tr>
                 <td width="100%" align="right" style="vertical-align:middle;">
-                    <img src="https://dptwplzs7m8x9.cloudfront.net/web/logo/koltiva_logo.svg" style="max-width:90%; max-height:90%; max-width:120px;">
+                    <img src="/assets/new/img/sawitchain-logo.png" style="max-width:90%; max-height:90%; max-width:120px;">
                 </td>
             </tr>
         </table>

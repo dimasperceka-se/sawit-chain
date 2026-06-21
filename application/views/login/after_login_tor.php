@@ -8,13 +8,13 @@
 <!doctype html>
 <html class="fixed">
     <head>
-        <title>Koltitrace</title>
-        <link rel="icon" href="<?php echo base_url('assets/new/img/koltiva_logo.png'); ?>" />
+        <title>SawitChain</title>
+        <link rel="icon" href="<?php echo base_url('assets/new/img/sawitchain-logo.png'); ?>" />
         <!-- Basic -->
         <meta charset="UTF-8">
 
-        <meta name="keywords" content="SupplychainTrace" />
-        <meta name="description" content="SupplychainTrace">
+        <meta name="keywords" content="SawitChain" />
+        <meta name="description" content="SawitChain">
 
         <!-- Mobile Metas -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -137,86 +137,86 @@
 
                             <h3>Terms of Use are effective on 01 January, 2021.</h3>
 
-                            <p>These terms are binding and begin to apply to You (Customers or Invited Users) when You start accessing the KoltiTrace Application from Koltiva AG and its affiliate PT Koltiva (The "Koltiva" or "Us”, “We”, “Our”).</p>
+                            <p>These terms are binding and begin to apply to You (Customers or Invited Users) when You start accessing the SawitChain Application from SawitChain AG and its affiliate PT SawitChain (The "SawitChain" or "Us”, “We”, “Our”).</p>
 
-                            <p>By registering to use the Koltiva KoltiTrace Application, You declare that You have read and understood these Terms & Conditions, and consider to have the authority to act on behalf of anyone registered to use Our KoltiTrace Application.</p>
+                            <p>By registering to use the SawitChain SawitChain Application, You declare that You have read and understood these Terms & Conditions, and consider to have the authority to act on behalf of anyone registered to use Our SawitChain Application.</p>
 
-                            <p>Koltiva has the right to change these Terms & Conditions anytime, and it will take effect when the new or revised Terms & Conditions are attached to the KoltiTrace Application. Koltiva will attempt to announce changes to You via email or notification through the KoltiTrace Application. Because it is quite possible that these Terms & Conditions will change from time after time, it is Your duty to ensure that You have read, understood and agreed to the latest Terms & Conditions available on the KoltiTrace Application.</p>
+                            <p>SawitChain has the right to change these Terms & Conditions anytime, and it will take effect when the new or revised Terms & Conditions are attached to the SawitChain Application. SawitChain will attempt to announce changes to You via email or notification through the SawitChain Application. Because it is quite possible that these Terms & Conditions will change from time after time, it is Your duty to ensure that You have read, understood and agreed to the latest Terms & Conditions available on the SawitChain Application.</p>
 
-                            <h5>Using KoltiTrace Application</h5>
+                            <h5>Using SawitChain Application</h5>
                             <p>
-                                This KoltiTrace Application is owned, and provided by Koltiva
+                                This SawitChain Application is owned, and provided by SawitChain
                                 and is made to provide You with the following:
                             </p>
                             <ul>
-                                <li>Manage all suppliers, traders, processors, and processing in KoltivaTrace </li>
+                                <li>Manage all suppliers, traders, processors, and processing in SawitChain </li>
                                 <li>Manage all commodities and trading commodities across the globe</li>
                                 <li>Manage all sustainability project across all sourcing country</li>
                             </ul>
 
                             <h5>Availability of Our Services</h5>
                             <p>
-                                Unless required by applicable laws and regulations, Koltiva does
+                                Unless required by applicable laws and regulations, SawitChain does
                                 not provide any warranty, expressed or implied, and makes no
-                                representations regarding the KoltiTrace Application. Specially,
-                                even though the KoltiTrace Application is well implemented,
-                                Koltiva does not declare and guarantee that:
+                                representations regarding the SawitChain Application. Specially,
+                                even though the SawitChain Application is well implemented,
+                                SawitChain does not declare and guarantee that:
                             </p>
                             <ul>
-                                <li>KoltiTrace Application is free of viruses and other damage; or</li>
-                                <li>User access to the KoltiTrace Application can be used onward or undisturbed, because the use of this KoltiTrace Application also depends on cellular signals and also the condition of the hardware.</li>
+                                <li>SawitChain Application is free of viruses and other damage; or</li>
+                                <li>User access to the SawitChain Application can be used onward or undisturbed, because the use of this SawitChain Application also depends on cellular signals and also the condition of the hardware.</li>
                             </ul>
 
                             <h5>Your Obligation</h5>
                             <ol>
                                 <li>General Obligation
                                     <p>
-                                        You must make sure that You only use the KoltiTrace
+                                        You must make sure that You only use the SawitChain
                                         Application for Your business needs that is right and
                                         legally, with the Terms and Conditions and notifications
-                                        announced by Koltiva or the conditions listed in the
-                                        KoltiTrace Application. The account that You have can only
+                                        announced by SawitChain or the conditions listed in the
+                                        SawitChain Application. The account that You have can only
                                         be run by yourself, and if You want Your account to be run
-                                        by someone else, there must be prior approval by Koltiva.
-                                        You pledge and release Koltiva and other interested parties
+                                        by someone else, there must be prior approval by SawitChain.
+                                        You pledge and release SawitChain and other interested parties
                                         in connection with any liability, loss, cost and damage
-                                        suffered by Koltiva and other interested parties as a direct
+                                        suffered by SawitChain and other interested parties as a direct
                                         or indirect result of Your actions inconsistently with or
-                                        violating part of these Terms & Conditions. Koltiva has the
+                                        violating part of these Terms & Conditions. SawitChain has the
                                         right (at its sole discretion) to obtain exclusive defense
                                         and control over everything related to Your compensation, in
-                                        which case You must assist and work with Koltiva to carry
+                                        which case You must assist and work with SawitChain to carry
                                         out the defense.
                                     </p>
                                 </li>
                                 <li>Access term
                                     <p>
                                         You must ensure that all the usernames and passwords needed
-                                        to access the KoltiTrace Application are stored securely and
-                                        confidentially. You must immediately notify Koltiva of Your
+                                        to access the SawitChain Application are stored securely and
+                                        confidentially. You must immediately notify SawitChain of Your
                                         unauthorized use of your password, or other security
-                                        violations, and Koltiva will reset your password, and You
-                                        must take all other actions that Koltiva considers important
+                                        violations, and SawitChain will reset your password, and You
+                                        must take all other actions that SawitChain considers important
                                         enough to maintain or improve the security of the computer
-                                        system and the Koltiva network, and Your access to our
-                                        KoltiTrace Application.
+                                        system and the SawitChain network, and Your access to our
+                                        SawitChain Application.
                                         <br />
                                         As a condition of these Terms, when accessing and using the
-                                        KoltiTrace Application, you must:
+                                        SawitChain Application, you must:
                                         <ul>
-                                            <li>Do not try to weaken the security or integrity of the KoltiTrace Application system or the Koltiva network;</li>
-                                            <li>Do not use or abuse the KoltiTrace Application in any way that can interfere with the ability of other users to use the KoltiTrace Application;</li>
+                                            <li>Do not try to weaken the security or integrity of the SawitChain Application system or the SawitChain network;</li>
+                                            <li>Do not use or abuse the SawitChain Application in any way that can interfere with the ability of other users to use the SawitChain Application;</li>
                                             <li>Not trying to get unauthorized access to any material other than those that have been stated clearly that you have obtained permission to access it;</li>
-                                            <li>Not sending, or entering into the KoltiTrace Application: any file that can damage other people's computer tools or software;</li>
-                                            <li>Do not try to change, copy, emulate, and disassemble data or system of KoltiTrace Application.</li>
+                                            <li>Not sending, or entering into the SawitChain Application: any file that can damage other people's computer tools or software;</li>
+                                            <li>Do not try to change, copy, emulate, and disassemble data or system of SawitChain Application.</li>
                                         </ul>
                                     </p>
                                 </li>
                                 <li>Usage Limits
-                                    <p>The use of the KoltiTrace Application can be restricted according to the access rights and responsibilities of each user and You can see the restrictions on the KoltiTrace Application user interface.</p>
+                                    <p>The use of the SawitChain Application can be restricted according to the access rights and responsibilities of each user and You can see the restrictions on the SawitChain Application user interface.</p>
                                 </li>
                                 <li>Responsibility for Compensation
-                                    <p>You release Koltiva from all: claims, claims, costs of loss, damage and loss arising as a result of your violation of the Terms and Conditions set forth in this Agreement, or any obligations that You may have to Koltiva.</p>
+                                    <p>You release SawitChain from all: claims, claims, costs of loss, damage and loss arising as a result of your violation of the Terms and Conditions set forth in this Agreement, or any obligations that You may have to SawitChain.</p>
                                 </li>
                             </ol> 
                             <h5>Confidentiality and Privacy</h5>
@@ -229,37 +229,37 @@
                                     <ul>
                                         <li>It has become public knowledge other than because of violations of this provision;</li>
                                         <li>Received from third parties who legally obtained it, and did not have an obligation to limit disclosure;</li>
-                                        <li>Develop by Koltiva itself.</li>
+                                        <li>Develop by SawitChain itself.</li>
                                     </ul>
                                 </li>
                                 <li>Privacy
-                                    <p>Koltiva owns and maintains a privacy policy that explains and defines the parties obligations to respect personal information. You are advised to read our privacy policy first, and you will be deemed to have agreed to the policy when you agree to these terms & conditions.</p>
+                                    <p>SawitChain owns and maintains a privacy policy that explains and defines the parties obligations to respect personal information. You are advised to read our privacy policy first, and you will be deemed to have agreed to the policy when you agree to these terms & conditions.</p>
                                 </li>
                             </ul>
 
                             <h5>Intellectual Property Rights</h5>
-                            <p>Copyright and any Intellectual Property Rights that attached to this KoltiTrace Application are owned by Koltiva.</p>
-                            <p>Ownership and all Intellectual Property Rights contained in Data is still your property. It is strongly recommended that you keep a copy of all data that you input into the KoltiTrace Application. Koltiva adheres to the policy and undergoes the best procedures to prevent data loss, including daily system routines for backing up data, but makes no guarantees that there will never be data loss.</p>
-                            <p>As regulated in the applicable laws and in Indonesia regulations that connection with Intellectual Property Rights, no part of the KoltiTrace Application is permitted to be reproduced, copied, published, made or transmitted in any form in any way without the consent of Koltiva. Failure not to follow this article will result in you being subject to civil and criminal sanctions in accordance with applicable laws and regulations.</p>
+                            <p>Copyright and any Intellectual Property Rights that attached to this SawitChain Application are owned by SawitChain.</p>
+                            <p>Ownership and all Intellectual Property Rights contained in Data is still your property. It is strongly recommended that you keep a copy of all data that you input into the SawitChain Application. SawitChain adheres to the policy and undergoes the best procedures to prevent data loss, including daily system routines for backing up data, but makes no guarantees that there will never be data loss.</p>
+                            <p>As regulated in the applicable laws and in Indonesia regulations that connection with Intellectual Property Rights, no part of the SawitChain Application is permitted to be reproduced, copied, published, made or transmitted in any form in any way without the consent of SawitChain. Failure not to follow this article will result in you being subject to civil and criminal sanctions in accordance with applicable laws and regulations.</p>
 
                             <h5>Guarantee and Recognition</h5>
                             <ol>
-                                <li>You acknowledge that you have the authority to use the KoltiTrace Application, and to access information and Data that you input into the KoltiTrace Application, including any information or Data entered into the KoltiTrace Application by anyone you have authorized to use the KoltiTrace Application.</li>
-                                <li>You are also authorized to access information and data that has been processes, which is provided to you through of the use of KoltiTrace Application.</li>
-                                <li>Koltiva is not responsible to anyone other than you, and there is no intention in this Agreement to benefit anyone other than you. If you use the KoltiTrace Application on behalf of or to benefit someone other than you (as well as a legal entity or not, or others), you agree that:
+                                <li>You acknowledge that you have the authority to use the SawitChain Application, and to access information and Data that you input into the SawitChain Application, including any information or Data entered into the SawitChain Application by anyone you have authorized to use the SawitChain Application.</li>
+                                <li>You are also authorized to access information and data that has been processes, which is provided to you through of the use of SawitChain Application.</li>
+                                <li>SawitChain is not responsible to anyone other than you, and there is no intention in this Agreement to benefit anyone other than you. If you use the SawitChain Application on behalf of or to benefit someone other than you (as well as a legal entity or not, or others), you agree that:
                                 <ul>
                                     <li>You are responsible for ensuring that you have the right to do so;</li>
-                                    <li>You are responsible for authorizing to anyone that you provide the access for information or data, and you agree that Koltiva does not have the responsibility to provide access to the information or data to anyone without your authorization, and may show any request to obtain information to You are to be served;</li>
-                                    <li>You release Koltiva from any claim or loss related to: Koltiva's refusal to provide access to your information or data to anyone in accordance with this provision; Provision of information or data by Koltiva to anyone based on your authorization.</li>
+                                    <li>You are responsible for authorizing to anyone that you provide the access for information or data, and you agree that SawitChain does not have the responsibility to provide access to the information or data to anyone without your authorization, and may show any request to obtain information to You are to be served;</li>
+                                    <li>You release SawitChain from any claim or loss related to: SawitChain's refusal to provide access to your information or data to anyone in accordance with this provision; Provision of information or data by SawitChain to anyone based on your authorization.</li>
                                 </ul>
                                 </li>
-                                <li>To determine that our KoltiTrace Application meets your needs and can be used in accordance with the objectives is your own responsibility.</li>
+                                <li>To determine that our SawitChain Application meets your needs and can be used in accordance with the objectives is your own responsibility.</li>
                             </ol>
                             <h5>Others General Provisions</h5>
                             <ol>
-                                <li>You cannot transfer the rights to another person without the written consent of Koltiva.</li>
+                                <li>You cannot transfer the rights to another person without the written consent of SawitChain.</li>
                                 <li>If there is a conflict between the two parties, it will try to be resolved by discussion first to reach an agreement. If such an agreement is not reached, then both parties agree to resolve the issue through legal procedures.</li>
-                                <li>Any notification given based on these Terms by one party to another must be made in writing via email and will be deemed to have been given at the time the transmission was made. Notification to Koltiva must be sent to support@koltiva.com or to another e-mail address notified to you by Koltiva. Notifications to you will be sent to the email address you provided when making your access to our KoltiTrace Application.</li>
+                                <li>Any notification given based on these Terms by one party to another must be made in writing via email and will be deemed to have been given at the time the transmission was made. Notification to SawitChain must be sent to support@sawitchain.com or to another e-mail address notified to you by SawitChain. Notifications to you will be sent to the email address you provided when making your access to our SawitChain Application.</li>
                             </ol>
                         </div>
 
@@ -283,8 +283,8 @@
 
         <div class="forgot-footer bg-gray">
             <ul class="list-inline">
-                <li><span>@<?php echo date('Y'); ?> Koltiva and All Its Affiliates</span></li>
-                <li><a href="https://koltiva.com/privacy-policy.php" target="_blank" rel="noopener noreferrer">Privacy Policies</a></li>
+                <li><span>@<?php echo date('Y'); ?> SawitChain and All Its Affiliates</span></li>
+                <li><a href="https://sawitchain.com/privacy-policy.php" target="_blank" rel="noopener noreferrer">Privacy Policies</a></li>
                 <li><a href="#">Terms of Use</a></li>
             </ul>
         </div>

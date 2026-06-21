@@ -1,6 +1,6 @@
 <?php
 $baseurlcheck = rtrim(trim(base_url()),'/');
-$title        = "Koltiva | KoltiTrace Palm Oil";
+$title        = "SawitChain | Traceability System for Palm Oil";
 
 if($this->config->item('url_gar') == $baseurlcheck) {
     $title = "GAR | KoltiTrace Palm Oil";
@@ -11,7 +11,7 @@ if($this->config->item('url_gar') == $baseurlcheck) {
 
 <head>
     <title><?= $title ?></title>
-    <link href="https://app.palmoiltrace.com/img/favicon.png" rel="shortcut icon">
+    <link href="/assets/new/img/sawitchain-favicon.png" rel="shortcut icon">
     <!-- Basic -->
     <meta charset="UTF-8">
 
@@ -74,13 +74,13 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                     <p><strong>&nbsp;</strong></p>
                     <br>   
                 <p>
-                These terms are binding and begin to apply to You (Customers or Invited Users) when You start accessing the PalmoilTrace Application from Koltiva AG and its affiliate PT Koltiva (the <strong>"Koltiva"</strong> or <strong>"Us"</strong>,<strong> ”We”</strong>,<strong>“Our”</strong>).
+                These terms are binding and begin to apply to You (Customers or Invited Users) when You start accessing the PalmoilTrace Application from SawitChain AG and its affiliate PT SawitChain (the <strong>"SawitChain"</strong> or <strong>"Us"</strong>,<strong> ”We”</strong>,<strong>“Our”</strong>).
                 </p>
                 <p>
-                By registering to use the Koltiva PalmoilTrace Application, You declare that You have read and understood these Terms & Conditions, and consider to have the authority to act on behalf of anyone registered to use Our PalmoilTrace Application.
+                By registering to use the SawitChain Application, You declare that You have read and understood these Terms & Conditions, and consider to have the authority to act on behalf of anyone registered to use Our PalmoilTrace Application.
                 </p>
                 <p>
-                Koltiva has the right to change these Terms & Conditions anytime, and it will take effect when the new or revised Terms & Conditions are attached to the PalmoilTrace Application. Koltiva will attempt to announce changes to You via email or notification through the PalmoilTrace Application. Because it is quite possible that these Terms & Conditions will change from time after time, it is Your duty to ensure that You have read, understood and agreed to the latest Terms & Conditions available on the PalmoilTrace Application.
+                SawitChain has the right to change these Terms & Conditions anytime, and it will take effect when the new or revised Terms & Conditions are attached to the PalmoilTrace Application. SawitChain will attempt to announce changes to You via email or notification through the PalmoilTrace Application. Because it is quite possible that these Terms & Conditions will change from time after time, it is Your duty to ensure that You have read, understood and agreed to the latest Terms & Conditions available on the PalmoilTrace Application.
                 </p>
 
                 <br>
@@ -88,23 +88,23 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                     <strong>Using PalmoilTrace Application</strong>
                 </p>
                 <p>
-                This PalmoilTrace Application is owned, operated and provided by Koltiva and is made to provide You with the following:
+                This PalmoilTrace Application is owned, operated and provided by SawitChain and is made to provide You with the following:
                 </p>
                 <ul>
                     <li>
                     Information relating to farmer data, agriculture and plantation data, Social, Environmental and Economic data obtained from farmer Supply Chain data, history data and traceability regarding products that have been sold;
                     </li>
                     <li>
-                    Collection of data and / or your personal information as requested by Koltiva to be uploaded in the PalmoilTrace Application;  
+                    Collection of data and / or your personal information as requested by SawitChain to be uploaded in the PalmoilTrace Application;  
                     </li>
                     <li>
-                    General information on Koltiva
+                    General information on SawitChain
                     </li>
                 </ul>
 
                 <br>
                 <p><strong>Availability of Our Services</strong></p>
-                <p>Unless required by applicable laws and regulations, Koltiva does not provide any warranty, expressed or implied, and makes no representations regarding the PalmoilTrace Application. Specially, even though the PalmoilTrace Application is well implemented, Koltiva does not declare and guarantee that:</p>
+                <p>Unless required by applicable laws and regulations, SawitChain does not provide any warranty, expressed or implied, and makes no representations regarding the PalmoilTrace Application. Specially, even though the PalmoilTrace Application is well implemented, SawitChain does not declare and guarantee that:</p>
                 <ul>
                     <li>
                     PalmoilTrace Application is free of viruses and other damage; or
@@ -125,24 +125,24 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                         You must make sure that You only use the PalmoilTrace Application for Your business needs that is right and legally, with the Terms and Conditions and notifications 
                         </p>
                         <p>
-                        announced by Koltiva or the conditions listed in the PalmoilTrace Application. The account that You have can only be run by yourself, and if You want Your account to be run by someone else, there must be prior approval by Koltiva.
+                        announced by SawitChain or the conditions listed in the PalmoilTrace Application. The account that You have can only be run by yourself, and if You want Your account to be run by someone else, there must be prior approval by SawitChain.
                         </p>
                         <p>
-                        You pledge and release Koltiva and other interested parties in connection with any liability, loss, cost and damage suffered by Koltiva and other interested parties as a direct or indirect result of Your actions inconsistently with or violating part of these Terms & Conditions. Koltiva has the right (at its sole discretion) to obtain exclusive defence and control over everything related to Your compensation, in which case You must assist and work with Koltiva to carry out the defence.
+                        You pledge and release SawitChain and other interested parties in connection with any liability, loss, cost and damage suffered by SawitChain and other interested parties as a direct or indirect result of Your actions inconsistently with or violating part of these Terms & Conditions. SawitChain has the right (at its sole discretion) to obtain exclusive defence and control over everything related to Your compensation, in which case You must assist and work with SawitChain to carry out the defence.
                         </p>
                         <p>
                         <br>
                         <strong>2. Access term</strong>
                         </p>
                         <p>
-                        You must ensure that all the usernames and passwords needed to access the PalmoilTrace Application are stored securely and confidentially. You must immediately notify Koltiva of Your unauthorized use of your password, or other security violations, and Koltiva will reset your password, and You must take all other actions that Koltiva considers important enough to maintain or improve the security of the computer system and the Koltiva network, and Your access to our PalmoilTrace Application.
+                        You must ensure that all the usernames and passwords needed to access the PalmoilTrace Application are stored securely and confidentially. You must immediately notify SawitChain of Your unauthorized use of your password, or other security violations, and SawitChain will reset your password, and You must take all other actions that SawitChain considers important enough to maintain or improve the security of the computer system and the SawitChain network, and Your access to our PalmoilTrace Application.
                         </p>
                         <p>
                         As a condition of these Terms, when accessing and using the PalmoilTrace Application, you must:
                         </p>
                         <ul>
                             <li style="list-style: none;">
-                            • Do not try to weaken the security or integrity of the PalmoilTrace Application system or the Koltiva network;
+                            • Do not try to weaken the security or integrity of the PalmoilTrace Application system or the SawitChain network;
                             </li>
                             <li style="list-style: none;">
                             • Do not use or abuse the PalmoilTrace Application in any way that can interfere with the ability of other users to use the PalmoilTrace Application;
@@ -166,7 +166,7 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                         <strong> 4. Responsibility for Compensation</strong>
                         </p>
                         <p>
-                        You release Koltiva from all: claims, claims, costs of loss, damage and loss arising as a result of your violation of the Terms and Conditions set forth in this Agreement, or any obligations that You may have to Koltiva.
+                        You release SawitChain from all: claims, claims, costs of loss, damage and loss arising as a result of your violation of the Terms and Conditions set forth in this Agreement, or any obligations that You may have to SawitChain.
                         </p>
                     </ul>
 
@@ -189,7 +189,7 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                             •	Received from third parties who legally obtained it, and did not have an obligation to limit disclosure;
                             </li>
                             <li style="list-style: none;">
-                            •	Develop by Koltiva itself.
+                            •	Develop by SawitChain itself.
                             </li>
                         </ul>
                     </li>
@@ -197,16 +197,16 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                     <li>
                         <p><strong>Privacy</strong></p>
                         <p>
-                        Koltiva owns and maintains a privacy policy that explains and defines the parties obligations to respect personal information. You are advised to read our privacy policy first, and you will be deemed to have agreed to the policy when you agree to these terms & conditions.
+                        SawitChain owns and maintains a privacy policy that explains and defines the parties obligations to respect personal information. You are advised to read our privacy policy first, and you will be deemed to have agreed to the policy when you agree to these terms & conditions.
                         </p>
                     </li>
                 </ul>
 
                 <br>
                 <p><strong>Intellectual Property Rights</strong></p>
-                <p>Copyright and any Intellectual Property Rights that attached to this PalmoilTrace Application are owned by Koltiva.</p>
-                <p>Ownership and all Intellectual Property Rights contained in Data is still your property. It is strongly recommended that you keep a copy of all data that you input into the PalmoilTrace Application. Koltiva adheres to the policy and undergoes the best procedures to prevent data loss, including daily system routines for backing up data, but makes no guarantees that there will never be data loss.</p>
-                <p>As regulated in the applicable laws and in Indonesia regulations that connection with Intellectual Property Rights, no part of the PalmoilTrace Application is permitted to be reproduced, copied, published, made or transmitted in any form in any way without the consent of Koltiva. Failure not to follow this article will result in you being subject to civil and criminal sanctions in accordance with applicable laws and regulations.</p>
+                <p>Copyright and any Intellectual Property Rights that attached to this PalmoilTrace Application are owned by SawitChain.</p>
+                <p>Ownership and all Intellectual Property Rights contained in Data is still your property. It is strongly recommended that you keep a copy of all data that you input into the PalmoilTrace Application. SawitChain adheres to the policy and undergoes the best procedures to prevent data loss, including daily system routines for backing up data, but makes no guarantees that there will never be data loss.</p>
+                <p>As regulated in the applicable laws and in Indonesia regulations that connection with Intellectual Property Rights, no part of the PalmoilTrace Application is permitted to be reproduced, copied, published, made or transmitted in any form in any way without the consent of SawitChain. Failure not to follow this article will result in you being subject to civil and criminal sanctions in accordance with applicable laws and regulations.</p>
                 
                 <br>
                 <p><strong>Guarantee and Recognition</strong></p>
@@ -218,17 +218,17 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                     You are also authorized to access information and data that has been processes, which is provided to you through of the use of PalmoilTrace Application.
                     </li>
                     <li>
-                    Koltiva is not responsible to anyone other than you, and there is no intention in this Agreement to benefit anyone other than you. If you use the PalmoilTrace Application on behalf of or to benefit someone other than you (as well as a legal entity or not, or others), you agree that:
+                    SawitChain is not responsible to anyone other than you, and there is no intention in this Agreement to benefit anyone other than you. If you use the PalmoilTrace Application on behalf of or to benefit someone other than you (as well as a legal entity or not, or others), you agree that:
                     </li>
                     <ul>
                         <li style="list-style: none;">
                         •	You are responsible for ensuring that you have the right to do so;
                         </li>
                         <li style="list-style: none;">
-                        •	You are responsible for authorizing to anyone that you providing the access for information or data, and you agree that Koltiva does not have the responsibility to provide access to the information or data to anyone without your authorization, and may show any request to obtain information to You are to be served;
+                        •	You are responsible for authorizing to anyone that you providing the access for information or data, and you agree that SawitChain does not have the responsibility to provide access to the information or data to anyone without your authorization, and may show any request to obtain information to You are to be served;
                         </li>
                         <li style="list-style: none;">
-                        •	You release Koltiva from any claim or loss related to: Koltiva refusal to provide access to your information or data to anyone in accordance with this provision; Provision of information or data by Koltiva to anyone based on your authorization.
+                        •	You release SawitChain from any claim or loss related to: SawitChain refusal to provide access to your information or data to anyone in accordance with this provision; Provision of information or data by SawitChain to anyone based on your authorization.
                         </li>
                     </ul>
                     <li>
@@ -240,13 +240,13 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                 <p><strong>Others General Provisions</strong></p>
                 <ol>
                     <li>
-                    You cannot transfer the rights to another person without the written consent of Koltiva.
+                    You cannot transfer the rights to another person without the written consent of SawitChain.
                     </li>
                     <li>
                     If there is a conflict between the two parties, it will try to be resolved by discussion first to reach an agreement. If such an agreement is not reached, then both parties agree to resolve the issue through legal procedures by selecting the legal position of the Republic of Indonesia.
                     </li>
                     <li>
-                    Any notification given based on these Terms by one party to another must be made in writing via email and will be deemed to have been given at the time the transmission was made. Notification to Koltiva must be sent to helpdesk@koltiva.com or to another e-mail address notified to you by Koltiva. Notifications to you will be sent to the email address you provided when making your access to our PalmoilTrace Application.
+                    Any notification given based on these Terms by one party to another must be made in writing via email and will be deemed to have been given at the time the transmission was made. Notification to SawitChain must be sent to helpdesk@SawitChain.com or to another e-mail address notified to you by SawitChain. Notifications to you will be sent to the email address you provided when making your access to our PalmoilTrace Application.
                     </li>
                 </ol>
 
@@ -261,7 +261,7 @@ if($this->config->item('url_gar') == $baseurlcheck) {
 
     <footer>
         <div style="text-align: center; background-color: #95130b; font-size: 14px; color: #fafafa; padding:1em">
-            <p style="text-align: center;"><?php echo date('Y'); ?> Koltiva AG and All It's Affiliates</p>
+            <p style="text-align: center;"><?php echo date('Y'); ?> SawitChain AG and All It's Affiliates</p>
         </div>
     </footer>
 

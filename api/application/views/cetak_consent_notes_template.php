@@ -11,7 +11,7 @@
         <table class="tabelNoBorder" width="100%" border="0" cellpadding="2">
             <tr>
                 <td width="100%" align="right" style="vertical-align:middle;">
-                    <img src="https://dptwplzs7m8x9.cloudfront.net/web/logo/koltiva_logo.svg" style="max-width:90%; max-height:90%; max-width:120px;">
+                    <img src="/assets/new/img/sawitchain-logo.png" style="max-width:90%; max-height:90%; max-width:120px;">
                 </td>
             </tr>
         </table>
@@ -23,8 +23,8 @@
         <div id="containerSurat">
             <p>
                 <?php echo lang('Kepada')?> :<br />
-                PT Koltiva<br />
-                RA Mampang Office, 6th Floor, Jl. Mampang Prapatan Raya No.66 A - 66 B, Tegal Parang, Mampang Prapatan , Jakarta Selatan, DKI Jakarta 12790
+                PT Sawitchain<br />
+                Jakarta
             </p>
 
             <p>
