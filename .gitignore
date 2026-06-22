@@ -26,3 +26,7 @@ sawitchain_full.sql.gz
 .DS_Store
 *.log
 Thumbs.db
+
+# ---- Sensitive configuration (uncomment if you want to ignore these files) ----
+application/config/database.php
+api/application/config/database.php
