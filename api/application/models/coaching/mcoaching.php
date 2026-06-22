@@ -241,8 +241,8 @@ class Mcoaching extends CI_Model {
                 , a.EventDate CoachingDate
                 , a.TimeStart
                 , a.TimeEnd
-                , ST_Latitude(a.LatLong) AS Latitude
-                , ST_Longitude(a.LatLong) AS Longitude
+                , ST_Y(a.LatLong) AS Latitude
+                , ST_X(a.LatLong) AS Longitude
                 , a.Sample_pH1 PhSample1
                 , a.Sample_pH2 PhSample2
                 , a.Sample_pH3 PhSample3

@@ -294,8 +294,9 @@ abstract class REST_Controller extends CI_Controller
 		// 6. verifikasi token aws
 		if (!$authorized) {
 			$header = $this->input->request_headers();
-			if ($header['Authorization'] || $header['Token']) {
-				$token = $header['Authorization'] ? $header['Authorization'] : $header['Token'];
+			$authHeader = isset($header['Authorization']) ? $header['Authorization'] : (isset($header['Token']) ? $header['Token'] : null);
+			if ($authHeader) {
+				$token = $authHeader;
 
 				// Cek format token
 				$parts = \explode('.', $token);

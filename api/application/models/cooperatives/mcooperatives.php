@@ -514,8 +514,8 @@ class mcooperatives extends CI_Model
             , e.ProvinceID
             , co.ZipCode AS \"Koltiva.view.Cooperatives.FormMainCooperatives-FormBasicData-ZipCode\"
             , co.Address AS \"Koltiva.view.Cooperatives.FormMainCooperatives-FormBasicData-Address\"
-            , IFNULL(ST_Latitude(co.LatLong), co.Latitude) AS \"Koltiva.view.Cooperatives.FormMainCooperatives-FormBasicData-Latitude\"
-            , IFNULL(ST_Longitude(co.LatLong), co.Longitude) AS \"Koltiva.view.Cooperatives.FormMainCooperatives-FormBasicData-Longitude\"
+            , IFNULL(ST_Y(co.LatLong), co.Latitude) AS \"Koltiva.view.Cooperatives.FormMainCooperatives-FormBasicData-Latitude\"
+            , IFNULL(ST_X(co.LatLong), co.Longitude) AS \"Koltiva.view.Cooperatives.FormMainCooperatives-FormBasicData-Longitude\"
             , co.Website AS \"Koltiva.view.Cooperatives.FormMainCooperatives-FormBasicData-Website\"
             , co.Fax AS \"Koltiva.view.Cooperatives.FormMainCooperatives-FormBasicData-Fax\"
             , co.Linked AS \"Koltiva.view.Cooperatives.FormMainCooperatives-FormBasicData-Linked\"

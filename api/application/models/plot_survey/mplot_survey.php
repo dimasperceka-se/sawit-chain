@@ -1003,8 +1003,8 @@ class Mplot_survey extends CI_Model {
                 IFNULL(a.GardenAreaPolygon, a.GardenAreaHa) GardenAreaPolygon,
                 a.`GardenLength`,
                 a.`GardenWidth`,
-                IFNULL(ST_Latitude(a.`LatLong`), a.Latitude) AS Latitude,
-                IFNULL(ST_Longitude(a.`LatLong`), a.Longitude) AS Longitude,
+                IFNULL(ST_Y(a.`LatLong`), a.Latitude) AS Latitude,
+                IFNULL(ST_X(a.`LatLong`), a.Longitude) AS Longitude,
                 a.North,
                 a.East,
                 a.South,
@@ -1417,8 +1417,8 @@ class Mplot_survey extends CI_Model {
                 a.UseFireWasteManagement,
                 a.UseFirePast,
                 a.UseFireNever,
-                IFNULL(ST_Latitude(a.FireVisableLatLong), a.FireVisableLatitude) FireVisableLatitude,
-                IFNULL(ST_Longitude(a.FireVisableLatLong), a.FireVisableLongitude) FireVisableLongitude,
+                IFNULL(ST_Y(a.FireVisableLatLong), a.FireVisableLatitude) FireVisableLatitude,
+                IFNULL(ST_X(a.FireVisableLatLong), a.FireVisableLongitude) FireVisableLongitude,
                 a.HCVApproach,
                 a.HCSApproach,
                 a.ImplementRSPOApprovedPlan,
@@ -3604,8 +3604,8 @@ class Mplot_survey extends CI_Model {
                     IFNULL(a.GardenAreaPolygon, a.GardenAreaHa) GardenAreaPolygon,
                     a.`AnnualProduction`,
                     %s
-                    IFNULL(ST_Latitude(a.`LatLong`), a.`Longitude`) AS Latitude,
-                    IFNULL(ST_Longitude(a.`LatLong`), a.`Latitude`) AS Longitude
+                    IFNULL(ST_Y(a.`LatLong`), a.`Longitude`) AS Latitude,
+                    IFNULL(ST_X(a.`LatLong`), a.`Latitude`) AS Longitude
                 FROM
                     $QueryTable a
                     INNER JOIN $JoinTable b ON $JoinField = $id
@@ -4648,8 +4648,8 @@ class Mplot_survey extends CI_Model {
                 IFNULL(a.GardenAreaPolygon, a.GardenAreaHa) GardenAreaPolygon,
                 a.`GardenLength`,
                 a.`GardenWidth`,
-                ST_Latitude(a.`LatLong`) AS Latitude,
-                ST_Longitude(a.`LatLong`) AS Longitude,
+                ST_Y(a.`LatLong`) AS Latitude,
+                ST_X(a.`LatLong`) AS Longitude,
                 a.`OwnershipDoc`,
                 a.OwnershipDocText,
                 a.LandOwnershipType,

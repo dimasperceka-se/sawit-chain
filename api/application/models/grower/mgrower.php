@@ -229,6 +229,19 @@ class Mgrower extends CI_Model {
     }
 
     private function generateSqlFilter($pSearch) {
+        $pSearch = array_merge([
+            'prov' => '', 'kab' => '', 'kec' => '', 'pAdvInternalProgram' => '',
+            'textSearch' => '', 'textSearchDesa' => '', 'categorySearch' => '', 'roleSearch' => '',
+            'AdvRowEnumerator' => '', 'AdvTextEnumerator' => '',
+            'AdvRowHandphone' => '', 'AdvTextHandphone' => '',
+            'AdvRowAge' => '', 'AdvOpAge' => '', 'AdvTextAge' => '',
+            'AdvRowMaritalStatus' => '', 'AdvMaritalStatus' => '',
+            'AdvRowDateCollection' => '', 'AdvDateCollectionBegin' => '', 'AdvDateCollectionEnd' => '',
+            'AdvRowDateCreated' => '', 'AdvDateCreatedBegin' => '', 'AdvDateCreatedEnd' => '',
+            'AdvRowDateSynced' => '', 'AdvDateSyncedBegin' => '', 'AdvDateSyncedEnd' => '',
+            'AdvRowLastUpdatedDate' => '', 'AdvLastUpdatedDateBegin' => '', 'AdvLastUpdatedDateEnd' => '',
+            'AdvEnumerator' => '', 'SupplychainID' => '',
+        ], $pSearch);
         $sqlFilter = "";
 
         //BENTUK QUERY FILTER =============================================== (BEGIN)
@@ -317,6 +330,16 @@ class Mgrower extends CI_Model {
      * @return [type]          [description]
      */
     private function generateSqlFilterMill($pSearch) {
+        $pSearch = array_merge([
+            'prov' => '', 'kab' => '', 'kec' => '',
+            'textSearch' => '', 'textSearchDesa' => '', 'categorySearch' => '', 'roleSearch' => '',
+            'AdvRowEnumerator' => '', 'AdvTextEnumerator' => '',
+            'AdvRowHandphone' => '', 'AdvTextHandphone' => '',
+            'AdvRowAge' => '', 'AdvOpAge' => '', 'AdvTextAge' => '',
+            'AdvRowMaritalStatus' => '', 'AdvMaritalStatus' => '',
+            'AdvRowDateCollection' => '', 'AdvDateCollectionBegin' => '', 'AdvDateCollectionEnd' => '',
+            'AdvEnumerator' => '', 'pPartnerSearch' => '', 'pPartnerFirstLoad' => '',
+        ], $pSearch);
         $sqlFilter = "";
 
         //BENTUK QUERY FILTER =============================================== (BEGIN)
@@ -382,14 +405,17 @@ class Mgrower extends CI_Model {
     public function generateSqlHakAkses() {
         $sqlHakAkses = array();
 
-        if ($_SESSION['is_admin'] == "1") {
+        $is_admin      = isset($_SESSION['is_admin'])      ? $_SESSION['is_admin']      : '0';
+        $role          = isset($_SESSION['role'])          ? $_SESSION['role']          : '';
+        $PartnerID     = isset($_SESSION['PartnerID'])     ? $_SESSION['PartnerID']     : '';
+        $daerah_access = isset($_SESSION['daerah_access']) ? $_SESSION['daerah_access'] : '0';
+
+        if ($is_admin == "1") {
             $sqlHakAkses['join'] = "";
             $sqlHakAkses['where'] = "";
-        }else if($_SESSION['role'] != 'SME'){
-            $PartnerID = $_SESSION["PartnerID"];
-
+        }else if($role != 'SME'){
             //cek ktv_access_staff
-            $sqlHakAkses['where'] = " AND f.DistrictID IN (" . $_SESSION['daerah_access'] . ")";
+            $sqlHakAkses['where'] = " AND f.DistrictID IN (" . $daerah_access . ")";
             //cek ktv_access_partner_member
             $sqlHakAkses['join'] = " 
                 INNER JOIN ktv_access_partner_member acc_pm ON a.MemberID = acc_pm.apmMemberID AND acc_pm.apmPartnerID IN ({$PartnerID})
@@ -410,7 +436,7 @@ class Mgrower extends CI_Model {
             }
         } else {
             //cek ktv_access_staff
-            $sqlHakAkses['where'] = " AND SUBSTR(a.VillageID,1,4) IN (" . $_SESSION['daerah_access'] . ")";
+            $sqlHakAkses['where'] = " AND SUBSTR(a.VillageID,1,4) IN (" . $daerah_access . ")";
             $sqlHakAkses['join'] = "";
         }
 
@@ -2344,8 +2370,8 @@ class Mgrower extends CI_Model {
                     c.`Village`,
                     b.GardenAreaHa,-- AS "Area of Plantation(Ha)",
                     b.GardenAreaPolygon,-- AS "Area of Garden Polygon (Ha)",
-                    --IFNULL(ST_Latitude(b.LatLong), b.Latitude) Latitude,-- AS "Latitude",
-                    --IFNULL(ST_Longitude(b.LatLong), b.Longitude) Longitude,-- AS "Latitude",
+                    --IFNULL(ST_Y(b.LatLong), b.Latitude) Latitude,-- AS "Latitude",
+                    --IFNULL(ST_X(b.LatLong), b.Longitude) Longitude,-- AS "Latitude",
                     CASE
                         WHEN b.LandOwnershipType=1 THEN "Owned"
                         WHEN b.LandOwnershipType=2 THEN "Profit Sharing"
@@ -2795,7 +2821,7 @@ class Mgrower extends CI_Model {
             $query = $this->db->query($sql, $p);
             $data = $query->result_array();
 
-            if($data[0]['lat'] != ""){
+            if (!empty($data) && isset($data[0]['lat']) && $data[0]['lat'] !== "") {
                 $arrReturn[$increData]['polygon_data'] = json_encode($data);
                 //hilangkan petik biar bisa langsung dipakai di js
                 $arrReturn[$increData]['polygon_data'] = str_replace('"','',$arrReturn[$increData]['polygon_data']);

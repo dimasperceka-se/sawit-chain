@@ -330,6 +330,41 @@ Ext.define('Koltiva.view.SME.GridMainTrader' ,{
 
                     }
                 },{
+                    icon: varjs.config.base_url + 'images/icons/new/export.png', cls:'Sfr_BtnGridPaleBlue',
+                    text: lang('Export Farmers'),
+                    hidden: m_act_export,
+                    handler: function() {
+                        Ext.MessageBox.show({
+                            msg: 'Please wait...',
+                            progressText: 'Exporting...',
+                            width: 300,
+                            wait: true,
+                            waitConfig: { interval: 200 },
+                            icon: 'ext-mb-download',
+                            animateTarget: 'mb7'
+                        });
+
+                        var filter       = getFilterLs();
+                        var keys         = Object.keys(filter);
+                        var param_string = '?search=1';
+                        $.each(keys, function(index, val) {
+                            param_string += '&'+val+'='+filter[val];
+                        });
+
+                        try { Ext.destroy(Ext.get('downloadIframe')); } catch(e) {}
+
+                        Ext.DomHelper.append(document.body, {
+                            tag: 'iframe',
+                            id:'downloadIframe',
+                            frameBorder: 0,
+                            width: 0,
+                            height: 0,
+                            css: 'display:none;visibility:hidden;height:0px;',
+                            src: m_api+'/sme/export_farmers_by_supplier/'+param_string
+                        });
+                        Ext.MessageBox.hide();
+                    }
+                },{
                     name: 'key', baseCls:'Sfr_TxtfieldSearchGrid',
                     id: 'Koltiva.view.SME.GridMainTrader-textSearch',
                     xtype: 'textfield',

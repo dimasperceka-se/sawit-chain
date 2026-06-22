@@ -24,8 +24,8 @@ class mmaps extends CI_Model
 				, g.SurveyNr
 				, g.GardenAreaHa AS AreaHa
 				, ps.AnnualProduction AS Production
-				, IFNULL(ST_Latitude(g.LatLong), g.Latitude) Latitude
-				, IFNULL(ST_Longitude(g.LatLong), g.Longitude) Longitude
+				, IFNULL(ST_Y(g.LatLong), g.Latitude) Latitude
+				, IFNULL(ST_X(g.LatLong), g.Longitude) Longitude
 				, IFNULL(g.FarmAge,0) AS FarmAge
                 , Partner
 			FROM (
@@ -45,7 +45,7 @@ class mmaps extends CI_Model
 				JOIN (SELECT g.MemberID, g.PlotNr, MAX(g.SurveyNr) AS SurveyNr FROM ktv_survey_plot g GROUP BY g.MemberID, g.PlotNr) z ON g.MemberID = z.MemberID AND g.PlotNr = z.PlotNr AND g.SurveyNr = z.SurveyNr
 				WHERE 1 = 1
 					AND g.StatusCode = 'active' 
-					AND (ABS(g.`Latitude`) > 0 AND ABS(g.`Longitude`) > 0 or ST_Latitude(g.LatLong) IS NOT NULL AND ST_Longitude(g.LatLong) IS NOT NULL)
+					AND (ABS(g.`Latitude`) > 0 AND ABS(g.`Longitude`) > 0 or ST_Y(g.LatLong) IS NOT NULL AND ST_X(g.LatLong) IS NOT NULL)
 			) g ON f.MemberID = g.MemberID
 			LEFT JOIN ktv_survey_plot_status ps ON ps.MemberID = g.MemberID AND ps.PlotNr = g.PlotNr
 			JOIN ktv_village v ON v.VillageID = g.VillageID

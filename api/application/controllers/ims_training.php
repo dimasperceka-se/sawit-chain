@@ -137,8 +137,8 @@ class Ims_training extends REST_Controller
         $IMSID = (int) $this->get('IMSID');
 
         $sorting = json_decode($this->get('sort'));
-        if(isset($sorting[0]->property)) $sortingField = $sorting[0]->property; else $sortingField = null;
-        if(isset($sorting[0]->direction)) $sortingDir = $sorting[0]->direction; else $sortingDir = null;
+        if(isset($sorting[0]->property)) $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : ''; else $sortingField = null;
+        if(isset($sorting[0]->direction)) $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : ''; else $sortingDir = null;
 
         $data = $this->mims_training->GetSummaryShowDataParNotAssign($IMSID,$this->get('start'),$this->get('limit'),$sortingField,$sortingDir,'grid');
         $this->response($data, 200);
@@ -231,8 +231,8 @@ class Ims_training extends REST_Controller
         $SearchCpgParam = $this->get('SearchCpgParam');
         
         $sorting = json_decode($this->get('sort'));
-        if(isset($sorting[0]->property)) $sortingField = $sorting[0]->property; else $sortingField = null;
-        if(isset($sorting[0]->direction)) $sortingDir = $sorting[0]->direction; else $sortingDir = null;
+        if(isset($sorting[0]->property)) $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : ''; else $sortingField = null;
+        if(isset($sorting[0]->direction)) $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : ''; else $sortingDir = null;
 
         $data = $this->mims_training->GetCpgTrainingAddParMainGrid($IMSID,$CpgBatchTrainingID,$ParticipantType,$SearchStringParam,$SearchCpgParam,$this->get('start'),$this->get('limit'),$sortingField,$sortingDir);
         $this->response($data, 200);

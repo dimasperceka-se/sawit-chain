@@ -11,13 +11,13 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = getenv('DB_HOST')     ?: '127.0.0.1';
+$db['default']['hostname'] = getenv('DB_HOST')     ?: '103.58.102.56';
 $db['default']['port']     = getenv('DB_PORT')     ?: 3306;
-$db['default']['username'] = getenv('DB_USER')     ?: 'palmoiltrace';
+$db['default']['username'] = getenv('DB_USER')     ?: 'fashahda_sawitchain';
 // NOTE: this app's DB driver hex-decodes the password (pack("H*", ...) in
 // api/system/database/DB_driver.php), so the stored value must be bin2hex'd.
-$db['default']['password'] = bin2hex(getenv('DB_PASSWORD') ?: 'palmoiltrace');
-$db['default']['database'] = getenv('DB_NAME')     ?: 'palmoiltrace_demo';
+$db['default']['password'] = bin2hex(getenv('DB_PASSWORD') ?: 'sawitchain1234!');
+$db['default']['database'] = getenv('DB_NAME')     ?: 'fashahda_sawitchain';
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = FALSE;

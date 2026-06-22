@@ -292,6 +292,15 @@ return true;
     {
         $CI = &get_instance();
 
+        // $CI->db may be an empty string while the DB object is still being
+        // initialised (Loader.php sets it to '' before calling DB()). Guard
+        // here so a connection failure doesn't produce a misleading fatal error
+        // on top of the real DB error.
+        if ( ! isset($CI->db) || ! is_object($CI->db))
+        {
+            return array();
+        }
+
         $CI->db->select('*');
         $CI->db->from('sys_translation');
         $CI->db->where('language', $this->idiom);

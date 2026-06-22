@@ -14729,8 +14729,8 @@ WHERE 1 = 1
 			, fca.TimeStart AS 'Start Time'
 			, fca.TimeEnd AS 'End time'
 			, SEC_TO_TIME(UNIX_TIMESTAMP(fca.TimeEnd) - UNIX_TIMESTAMP(fca.TimeStart)) AS 'Total Hour'
-			, IFNULL(fca.Latitude, ST_Latitude(fca.LatLong)) Latitude
-			, IFNULL(fca.Longitude, ST_Longitude(fca.LatLong)) Longitude
+			, IFNULL(fca.Latitude, ST_Y(fca.LatLong)) Latitude
+			, IFNULL(fca.Longitude, ST_X(fca.LatLong)) Longitude
 			, CASE 
 						WHEN fcn.CategoryID = '1' THEN 'Argonomy'
 						WHEN fcn.CategoryID = '2' THEN 'Non Argonomy'
@@ -14833,8 +14833,8 @@ WHERE 1 = 1
 			, fca.TimeStart AS 'Start Time'
 			, fca.TimeEnd AS 'End time'
 			, SEC_TO_TIME(UNIX_TIMESTAMP(fca.TimeEnd) - UNIX_TIMESTAMP(fca.TimeStart)) AS 'Total Hour'
-			, IFNULL(fca.Latitude, ST_Latitude(fca.LatLong)) Latitude
-			, IFNULL(fca.Longitude, ST_Longitude(fca.LatLong)) Longitude
+			, IFNULL(fca.Latitude, ST_Y(fca.LatLong)) Latitude
+			, IFNULL(fca.Longitude, ST_X(fca.LatLong)) Longitude
 			, CASE 
 						WHEN fcn.CategoryID = '1' THEN 'Argonomy'
 						WHEN fcn.CategoryID = '2' THEN 'Non Argonomy'
@@ -14984,8 +14984,8 @@ WHERE 1 = 1
 		ca.FarmerInPlace,
 		ca.Reason,
 		ca.Comment,
-		IFNULL(ST_Longitude(ca.Latlong), ca.Longitude) Longitude,
-		IFNULL(ST_Latitude(ca.Latlong), ca.Latitude) Latitude,
+		IFNULL(ST_X(ca.Latlong), ca.Longitude) Longitude,
+		IFNULL(ST_Y(ca.Latlong), ca.Latitude) Latitude,
 		ca.PhotoActPath,
 		ca.FarmerSigActPath,
 		p.PersonNm as CreatedBy

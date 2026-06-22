@@ -50,8 +50,8 @@ class Mmap extends CI_Model {
 				, g.SurveyNr
 				, g.GardenAreaHa AS AreaHa
 				, ps.AnnualProduction AS Production
-				, IFNULL(ST_Latitude(g.LatLong), g.Latitude) Latitude
-				, IFNULL(ST_Longitude(g.LatLong), g.Longitude) Longitude
+				, IFNULL(ST_Y(g.LatLong), g.Latitude) Latitude
+				, IFNULL(ST_X(g.LatLong), g.Longitude) Longitude
 				, IFNULL(g.FarmAge,0) AS FarmAge
 			FROM (
 				SELECT
@@ -70,7 +70,7 @@ class Mmap extends CI_Model {
 				JOIN (SELECT g.MemberID, g.PlotNr, MAX(g.SurveyNr) AS SurveyNr FROM ktv_survey_plot g GROUP BY g.MemberID, g.PlotNr) z ON g.MemberID = z.MemberID AND g.PlotNr = z.PlotNr AND g.SurveyNr = z.SurveyNr
 				WHERE 1 = 1
 					AND g.StatusCode = 'active' 
-					AND (ABS(g.`Latitude`) > 0 AND ABS(g.`Longitude`) > 0 or ST_Latitude(g.LatLong) IS NOT NULL AND ST_Longitude(g.LatLong) IS NOT NULL)
+					AND (ABS(g.`Latitude`) > 0 AND ABS(g.`Longitude`) > 0 or ST_Y(g.LatLong) IS NOT NULL AND ST_X(g.LatLong) IS NOT NULL)
 			) g ON f.MemberID = g.MemberID
 			LEFT JOIN ktv_survey_plot_status ps ON ps.MemberID = g.MemberID AND ps.PlotNr = g.PlotNr
 			JOIN ktv_village v ON v.VillageID = g.VillageID
@@ -99,8 +99,8 @@ class Mmap extends CI_Model {
 				, g.SurveyNr
 				, g.GardenAreaHa AS AreaHa
 				, ps.AnnualProduction AS Production
-				, IFNULL(g.Latitude, ST_Latitude(g.LatLong)) Latitude
-				, IFNULL(g.Longitude, ST_Longitude(g.LatLong)) Longitude
+				, IFNULL(g.Latitude, ST_Y(g.LatLong)) Latitude
+				, IFNULL(g.Longitude, ST_X(g.LatLong)) Longitude
 				, IFNULL(g.FarmAge,0) AS FarmAge
 			FROM (
 				SELECT
@@ -119,7 +119,7 @@ class Mmap extends CI_Model {
 				JOIN (SELECT g.MemberID, g.PlotNr, MAX(g.SurveyNr) AS SurveyNr FROM ktv_survey_plot g GROUP BY g.MemberID, g.PlotNr) z ON g.MemberID = z.MemberID AND g.PlotNr = z.PlotNr AND g.SurveyNr = z.SurveyNr
 				WHERE 1 = 1
 					AND g.StatusCode = 'active' 
-					AND (ABS(g.`Latitude`) > 0 AND ABS(g.`Longitude`) > 0 or ST_Latitude(g.LatLong) IS NOT NULL AND ST_Longitude(g.LatLong) IS NOT NULL)
+					AND (ABS(g.`Latitude`) > 0 AND ABS(g.`Longitude`) > 0 or ST_Y(g.LatLong) IS NOT NULL AND ST_X(g.LatLong) IS NOT NULL)
 			) g ON f.MemberID = g.MemberID
 			LEFT JOIN ktv_survey_plot_status ps ON ps.MemberID = g.MemberID AND ps.PlotNr = g.PlotNr
 			JOIN ktv_village v ON v.VillageID = g.VillageID
@@ -181,7 +181,7 @@ class Mmap extends CI_Model {
 				JOIN (SELECT g.MemberID, g.PlotNr, MAX(g.SurveyNr) AS SurveyNr FROM ktv_survey_plot g GROUP BY g.MemberID, g.PlotNr) z ON g.MemberID = z.MemberID AND g.PlotNr = z.PlotNr AND g.SurveyNr = z.SurveyNr
 				WHERE 1 = 1
 					AND g.StatusCode = 'active'
-					AND (ABS(g.`Latitude`) > 0 AND ABS(g.`Longitude`) > 0 or ST_Latitude(g.LatLong) IS NOT NULL AND ST_Longitude(g.LatLong) IS NOT NULL)
+					AND (ABS(g.`Latitude`) > 0 AND ABS(g.`Longitude`) > 0 or ST_Y(g.LatLong) IS NOT NULL AND ST_X(g.LatLong) IS NOT NULL)
 			) g ON f.MemberID = g.MemberID
 			LEFT JOIN ktv_survey_plot_status ps ON ps.MemberID = g.MemberID AND ps.PlotNr = g.PlotNr
 			JOIN ktv_village v ON v.VillageID = g.VillageID
@@ -395,7 +395,7 @@ class Mmap extends CI_Model {
 				JOIN (SELECT g.MemberID, g.PlotNr, MAX(g.SurveyNr) AS SurveyNr FROM ktv_survey_plot g GROUP BY g.MemberID, g.PlotNr) z ON g.MemberID = z.MemberID AND g.PlotNr = z.PlotNr AND g.SurveyNr = z.SurveyNr
 				WHERE 1 = 1
 					AND g.StatusCode = 'active'
-					AND (ABS(g.`Latitude`) > 0 AND ABS(g.`Longitude`) > 0 or ST_Latitude(g.LatLong) IS NOT NULL AND ST_Longitude(g.LatLong) IS NOT NULL)
+					AND (ABS(g.`Latitude`) > 0 AND ABS(g.`Longitude`) > 0 or ST_Y(g.LatLong) IS NOT NULL AND ST_X(g.LatLong) IS NOT NULL)
 			) g ON f.MemberID = g.MemberID
 			LEFT JOIN ktv_survey_plot_status ps ON ps.MemberID = g.MemberID AND ps.PlotNr = g.PlotNr
 			JOIN ktv_village v ON v.VillageID = g.VillageID
@@ -778,7 +778,7 @@ LEFT JOIN ktv_province p ON p.ProvinceID = d.ProvinceID
 LEFT JOIN ktv_members_extension me on me.MemberID = m.MemberID
 WHERE
     m.StatusCode = 'active'
-	AND (ABS(m.`Latitude`) > 0 AND ABS(m.`Longitude`) > 0 or ST_Latitude(m.LatLong) IS NOT NULL AND ST_Longitude(m.LatLong) IS NOT NULL)
+	AND (ABS(m.`Latitude`) > 0 AND ABS(m.`Longitude`) > 0 or ST_Y(m.LatLong) IS NOT NULL AND ST_X(m.LatLong) IS NOT NULL)
     -- where --
 GROUP BY m.MemberID
 		";
@@ -853,7 +853,7 @@ LEFT JOIN ktv_province p ON p.ProvinceID = d.ProvinceID
 LEFT JOIN ktv_members_extension me on me.MemberID = m.MemberID
 WHERE
     m.StatusCode = 'active' AND sp.ActiveStatus = 1
-	AND (ABS(sp.`Latitude`) > 0 AND ABS(sp.`Longitude`) > 0 or ST_Latitude(sp.LatLong) IS NOT NULL AND ST_Longitude(sp.LatLong) IS NOT NULL)
+	AND (ABS(sp.`Latitude`) > 0 AND ABS(sp.`Longitude`) > 0 or ST_Y(sp.LatLong) IS NOT NULL AND ST_X(sp.LatLong) IS NOT NULL)
     -- where --
 GROUP BY sp.MemberID, sp.PlotNr
 		";
@@ -931,7 +931,7 @@ GROUP BY sp.MemberID, sp.PlotNr
 			LEFT JOIN ktv_members_extension me on me.MemberID = m.MemberID
 			WHERE
 				m.StatusCode = 'active' AND sp.ActiveStatus = 1			
-				AND (ABS(sp.`Latitude`) > 0 AND ABS(sp.`Longitude`) > 0 or ST_Latitude(sp.LatLong) IS NOT NULL AND ST_Longitude(sp.LatLong) IS NOT NULL)
+				AND (ABS(sp.`Latitude`) > 0 AND ABS(sp.`Longitude`) > 0 or ST_Y(sp.LatLong) IS NOT NULL AND ST_X(sp.LatLong) IS NOT NULL)
 				-- where --
 			GROUP BY sp.MemberID, sp.PlotNr
 		";
@@ -1024,7 +1024,7 @@ LEFT JOIN ktv_province p ON p.ProvinceID = d.ProvinceID
 ".$sqlHakAksesMill."
 WHERE m.StatusCode = 'active'
     AND m.Latitude IS NOT NULL AND m.Longitude IS NOT NULL
-	AND (ABS(m.`Latitude`) > 0 AND ABS(m.`Longitude`) > 0 or ST_Latitude(m.LatLong) IS NOT NULL AND ST_Longitude(m.LatLong) IS NOT NULL)
+	AND (ABS(m.`Latitude`) > 0 AND ABS(m.`Longitude`) > 0 or ST_Y(m.LatLong) IS NOT NULL AND ST_X(m.LatLong) IS NOT NULL)
    -- where --
 GROUP BY m.MillID
 		";
@@ -1514,8 +1514,8 @@ SET
 			}
 		}
 
-		$where_garden .= " AND ABS(ST_Latitude(g.`LatLong`)) > 0";
-		$where_garden .= " AND ABS(ST_Longitude(g.`LatLong`)) > 0";
+		$where_garden .= " AND ABS(ST_Y(g.`LatLong`)) > 0";
+		$where_garden .= " AND ABS(ST_X(g.`LatLong`)) > 0";
 	
 						
 		// var_dump($where_garden);die();

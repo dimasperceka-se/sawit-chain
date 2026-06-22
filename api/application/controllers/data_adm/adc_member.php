@@ -21,8 +21,8 @@ class Adc_member extends REST_Controller {
     public function grid_set_by_member_get(){
         //sort
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         //get param
         $pSearch = array(
@@ -42,8 +42,8 @@ class Adc_member extends REST_Controller {
     public function grid_set_data_control_get(){
         //sort
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         //get param
         $MemberIDSelected = json_decode($this->get('MemberIDSelected'));
@@ -64,8 +64,8 @@ class Adc_member extends REST_Controller {
     public function grid_set_data_control_by_region_get(){
         //sort
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         //get param
         $pSearch = array(
@@ -97,8 +97,8 @@ class Adc_member extends REST_Controller {
     public function grid_member_not_assign_yet_get(){
         //sort
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->madc_member->getGridMemberNotAssignYet($this->get('start'), $this->get('limit'), $sortingField, $sortingDir);
         $this->response($data, 200);

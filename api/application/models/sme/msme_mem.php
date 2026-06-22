@@ -48,19 +48,20 @@ class Msme_mem extends CI_Model {
     public function generateSqlHakAkses(){
         $sqlHakAkses = array();
 
-        if($_SESSION['is_admin'] == "1"){
+        $is_admin      = isset($_SESSION['is_admin'])      ? $_SESSION['is_admin']      : '0';
+        $role          = isset($_SESSION['role'])          ? $_SESSION['role']          : '';
+        $PartnerID     = isset($_SESSION['PartnerID'])     ? $_SESSION['PartnerID']     : '';
+        $daerah_access = isset($_SESSION['daerah_access']) ? $_SESSION['daerah_access'] : '0';
+
+        if($is_admin == "1"){
             $sqlHakAkses['join'] = "";
             $sqlHakAkses['where'] = "";
-        } elseif ($_SESSION['role'] == "Private" || $_SESSION['role'] == "Program"){
-            //cek ktv_access_staff 
-            // $sqlHakAkses['where'] = "";
-            $sqlHakAkses['where'] = " AND kd.DistrictID IN (".$_SESSION['daerah_access'].")";
-            //cek ktv_access_partner_member
-            $sqlHakAkses['join'] = " INNER JOIN ktv_access_partner_member acc_pm ON a.MemberID = acc_pm.apmMemberID AND acc_pm.apmPartnerID = '{$_SESSION['PartnerID']}' ";
+        } elseif ($role == "Private" || $role == "Program"){
+            $sqlHakAkses['where'] = " AND kd.DistrictID IN (" . $daerah_access . ")";
+            $sqlHakAkses['join'] = " INNER JOIN ktv_access_partner_member acc_pm ON a.MemberID = acc_pm.apmMemberID AND acc_pm.apmPartnerID = '{$PartnerID}' ";
         } else {
-            //cek ktv_access_staff
-            $sqlHakAkses['join'] = ""; 
-            $sqlHakAkses['where'] = " AND kd.DistrictID IN (".$_SESSION['daerah_access'].")";
+            $sqlHakAkses['join'] = "";
+            $sqlHakAkses['where'] = " AND kd.DistrictID IN (" . $daerah_access . ")";
         }
 
         return $sqlHakAkses;
@@ -182,8 +183,8 @@ class Msme_mem extends CI_Model {
             , d.District
             , sd.SubDistrict
             , v.Village
-            , ST_Latitude(sp.`LatLong`) Latitude
-            , ST_Longitude(sp.`LatLong`) Longitude
+            , ST_Y(sp.`LatLong`) Latitude
+            , ST_X(sp.`LatLong`) Longitude
             , sp.FirstPlantingYear
             , sp.YearPlantingCurrent
             , sp.PlotNr
@@ -254,8 +255,8 @@ class Msme_mem extends CI_Model {
             , d.District
             , sd.SubDistrict
             , v.Village
-            , ST_Latitude(sf.`LatLong`) Latitude
-            , ST_Longitude(sf.`LatLong`) Longitude
+            , ST_Y(sf.`LatLong`) Latitude
+            , ST_X(sf.`LatLong`) Longitude
             , sp.FirstPlantingYear
             , sp.YearPlantingCurrent
             , CASE
@@ -306,9 +307,183 @@ class Msme_mem extends CI_Model {
         return $result;
     }
 
+    public function getFarmersBySupplierExcel($pSearch) {
+        $pSearch = array_merge([
+            'prov' => '', 'kab' => '', 'kec' => '', 'textSearch' => '', 'textSearchDesa' => '',
+            'roleSearch' => '', 'source' => '',
+            'AdvRowHandphone' => '', 'AdvTextHandphone' => '',
+            'AdvRowAge' => '', 'AdvOpAge' => '', 'AdvTextAge' => '',
+        ], $pSearch);
+
+        $sqlFilter = "";
+        if ($pSearch['prov'] != "")          $sqlFilter .= " AND kp_sme.ProvinceID = " . (int)$pSearch['prov'];
+        if ($pSearch['kab'] != "")           $sqlFilter .= " AND kd_sme.DistrictID = " . (int)$pSearch['kab'];
+        if ($pSearch['kec'] != "")           $sqlFilter .= " AND ksd_sme.SubDistrictID = " . (int)$pSearch['kec'];
+        if ($pSearch['textSearch'] != "")    $sqlFilter .= " AND (a.MemberName LIKE '%{$pSearch['textSearch']}%' OR a.MemberDisplayID LIKE '%{$pSearch['textSearch']}%' OR x.agCompanyName LIKE '%{$pSearch['textSearch']}%')";
+        if ($pSearch['textSearchDesa'] != "") $sqlFilter .= " AND kv_sme.Village LIKE '%{$pSearch['textSearchDesa']}%'";
+        if ($pSearch['AdvRowHandphone'] == "true") $sqlFilter .= " AND a.HandPhone LIKE '%{$pSearch['AdvTextHandphone']}%'";
+        if ($pSearch['AdvRowAge'] == "true" && $pSearch['AdvOpAge'] != "" && $pSearch['AdvTextAge'] != "")
+            $sqlFilter .= " AND (a.DateOfBirth IS NOT NULL AND a.DateOfBirth != '0000-00-00') AND TIMESTAMPDIFF(YEAR, a.DateOfBirth, CURDATE()) {$pSearch['AdvOpAge']} {$pSearch['AdvTextAge']}";
+
+        $sqlFilterRole = " AND sub_b.MRoleID IN (5,6,7,8,9,10,11,12,13,14)";
+        if ($pSearch['roleSearch'] != "" && !str_contains($pSearch['roleSearch'], 'all'))
+            $sqlFilterRole = " AND sub_b.MRoleID IN ({$pSearch['roleSearch']})";
+
+        $sqlHakAkses = $this->generateSqlHakAkses();
+
+        $sql = "SELECT
+                a.MemberDisplayID AS SMEID
+                , IFNULL(x.agCompanyName, a.MemberName) AS SMECompanyName
+                , a.MemberName AS SMEName
+                , a.Alias AS SMEAlias
+                , sf.MemberDisplayID AS FarmerID
+                , sf.MemberName AS FarmerName
+                , COUNT(DISTINCT CONCAT(sp.MemberID, sp.PlotNr, sp.SurveyNr)) AS GardenNr
+                , SUM(sp.GardenAreaHa) AS GardenAreaHa
+                , sf.DateOfBirth
+                , sf.Nin
+                , sf.HandPhone AS Handphone
+                , kp.Province
+                , kd.District
+                , ksd.SubDistrict
+                , kv.Village
+                , ST_Y(sf.LatLong) AS Latitude
+                , ST_X(sf.LatLong) AS Longitude
+            FROM ktv_members a
+                INNER JOIN (
+                    SELECT sub_a.MemberID
+                    FROM ktv_members sub_a
+                        LEFT JOIN ktv_member_role sub_b ON sub_a.MemberID = sub_b.MemberID
+                    WHERE sub_a.StatusCode = 'active'
+                        $sqlFilterRole
+                    GROUP BY sub_a.MemberID
+                ) AS tmp_member_filter ON a.MemberID = tmp_member_filter.MemberID
+                {$sqlHakAkses['join']}
+                LEFT JOIN ktv_members_extension x ON a.MemberID = x.MemberID
+                LEFT JOIN ktv_village kv_sme ON kv_sme.VillageID = a.VillageID
+                LEFT JOIN ktv_subdistrict ksd_sme ON ksd_sme.SubDistrictID = kv_sme.SubDistrictID
+                LEFT JOIN ktv_district kd_sme ON kd_sme.DistrictID = ksd_sme.DistrictID
+                LEFT JOIN ktv_province kp_sme ON kp_sme.ProvinceID = kd_sme.ProvinceID
+                LEFT JOIN ktv_tc_supplychain_org ktso ON ktso.ObjID = a.MemberID AND ktso.ObjType = 'agent'
+                LEFT JOIN ktv_tc_supplychain_farmer ktsf ON ktsf.SupplychainID = ktso.SupplychainID
+                INNER JOIN ktv_members sf ON sf.MemberID = ktsf.FarmerID AND sf.StatusCode = 'active'
+                LEFT JOIN ktv_village kv ON kv.VillageID = sf.VillageID
+                LEFT JOIN ktv_subdistrict ksd ON ksd.SubDistrictID = kv.SubDistrictID
+                LEFT JOIN ktv_district kd ON kd.DistrictID = ksd.DistrictID
+                LEFT JOIN ktv_province kp ON kp.ProvinceID = kd.ProvinceID
+                LEFT JOIN ktv_survey_plot sp ON sp.MemberID = sf.MemberID
+            WHERE a.StatusCode = 'active'
+                $sqlFilter
+                {$sqlHakAkses['where']}
+            GROUP BY a.MemberID, sf.MemberID
+            ORDER BY a.MemberName, sf.MemberName";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    public function getFarmersBySupplierGardenExcel($pSearch) {
+        $pSearch = array_merge([
+            'prov' => '', 'kab' => '', 'kec' => '', 'textSearch' => '', 'textSearchDesa' => '',
+            'roleSearch' => '', 'source' => '',
+            'AdvRowHandphone' => '', 'AdvTextHandphone' => '',
+            'AdvRowAge' => '', 'AdvOpAge' => '', 'AdvTextAge' => '',
+        ], $pSearch);
+
+        $sqlFilter = "";
+        if ($pSearch['prov'] != "")          $sqlFilter .= " AND kp_sme.ProvinceID = " . (int)$pSearch['prov'];
+        if ($pSearch['kab'] != "")           $sqlFilter .= " AND kd_sme.DistrictID = " . (int)$pSearch['kab'];
+        if ($pSearch['kec'] != "")           $sqlFilter .= " AND ksd_sme.SubDistrictID = " . (int)$pSearch['kec'];
+        if ($pSearch['textSearch'] != "")    $sqlFilter .= " AND (a.MemberName LIKE '%{$pSearch['textSearch']}%' OR a.MemberDisplayID LIKE '%{$pSearch['textSearch']}%' OR x.agCompanyName LIKE '%{$pSearch['textSearch']}%')";
+        if ($pSearch['textSearchDesa'] != "") $sqlFilter .= " AND kv_sme.Village LIKE '%{$pSearch['textSearchDesa']}%'";
+        if ($pSearch['AdvRowHandphone'] == "true") $sqlFilter .= " AND a.HandPhone LIKE '%{$pSearch['AdvTextHandphone']}%'";
+        if ($pSearch['AdvRowAge'] == "true" && $pSearch['AdvOpAge'] != "" && $pSearch['AdvTextAge'] != "")
+            $sqlFilter .= " AND (a.DateOfBirth IS NOT NULL AND a.DateOfBirth != '0000-00-00') AND TIMESTAMPDIFF(YEAR, a.DateOfBirth, CURDATE()) {$pSearch['AdvOpAge']} {$pSearch['AdvTextAge']}";
+
+        $sqlFilterRole = " AND sub_b.MRoleID IN (5,6,7,8,9,10,11,12,13,14)";
+        if ($pSearch['roleSearch'] != "" && !str_contains($pSearch['roleSearch'], 'all'))
+            $sqlFilterRole = " AND sub_b.MRoleID IN ({$pSearch['roleSearch']})";
+
+        $sqlHakAkses = $this->generateSqlHakAkses();
+
+        $sql = "SELECT
+                a.MemberDisplayID AS SMEID
+                , IFNULL(x.agCompanyName, a.MemberName) AS SMECompanyName
+                , a.MemberName AS SMEName
+                , a.Alias AS SMEAlias
+                , sf.MemberDisplayID AS FarmerID
+                , sf.MemberName AS FarmerName
+                , sp.PlotNr
+                , sp.GardenAreaHa
+                , sp.FirstPlantingYear
+                , sp.YearPlantingCurrent
+                , CASE
+                    WHEN sp.SoilType = 1 THEN 'Mineral'
+                    WHEN sp.SoilType = 2 THEN 'Peat'
+                    WHEN sp.SoilType = 3 THEN 'Sandy'
+                    ELSE '-'
+                  END AS SoilType
+                , CASE
+                    WHEN sp.OwnershipDoc = 1 THEN 'No Document'
+                    WHEN sp.OwnershipDoc = 2 THEN 'SKT (Surat Keterangan Tanah)'
+                    WHEN sp.OwnershipDoc = 3 THEN 'SHM (Sertifikat Hak Milik)/Certificate'
+                    WHEN sp.OwnershipDoc = 4 THEN 'HGU (Hak Guna Usaha)'
+                    WHEN sp.OwnershipDoc = 5 THEN 'SKGR (Surat Keterangan Ganti Rugi)'
+                    ELSE sp.OwnershipDocText
+                  END AS OwnershipDocument
+                , sp.AnnualProduction
+                , sp.PlantationProductivity
+                , kp.Province
+                , kd.District
+                , ksd.SubDistrict
+                , kv.Village
+                , ST_Y(sp.LatLong) AS Latitude
+                , ST_X(sp.LatLong) AS Longitude
+            FROM ktv_members a
+                INNER JOIN (
+                    SELECT sub_a.MemberID
+                    FROM ktv_members sub_a
+                        LEFT JOIN ktv_member_role sub_b ON sub_a.MemberID = sub_b.MemberID
+                    WHERE sub_a.StatusCode = 'active'
+                        $sqlFilterRole
+                    GROUP BY sub_a.MemberID
+                ) AS tmp_member_filter ON a.MemberID = tmp_member_filter.MemberID
+                {$sqlHakAkses['join']}
+                LEFT JOIN ktv_members_extension x ON a.MemberID = x.MemberID
+                LEFT JOIN ktv_village kv_sme ON kv_sme.VillageID = a.VillageID
+                LEFT JOIN ktv_subdistrict ksd_sme ON ksd_sme.SubDistrictID = kv_sme.SubDistrictID
+                LEFT JOIN ktv_district kd_sme ON kd_sme.DistrictID = ksd_sme.DistrictID
+                LEFT JOIN ktv_province kp_sme ON kp_sme.ProvinceID = kd_sme.ProvinceID
+                LEFT JOIN ktv_tc_supplychain_org ktso ON ktso.ObjID = a.MemberID AND ktso.ObjType = 'agent'
+                LEFT JOIN ktv_tc_supplychain_farmer ktsf ON ktsf.SupplychainID = ktso.SupplychainID
+                INNER JOIN ktv_members sf ON sf.MemberID = ktsf.FarmerID AND sf.StatusCode = 'active'
+                INNER JOIN ktv_survey_plot sp ON sp.MemberID = sf.MemberID
+                LEFT JOIN ktv_village kv ON kv.VillageID = sp.VillageID
+                LEFT JOIN ktv_subdistrict ksd ON ksd.SubDistrictID = kv.SubDistrictID
+                LEFT JOIN ktv_district kd ON kd.DistrictID = ksd.DistrictID
+                LEFT JOIN ktv_province kp ON kp.ProvinceID = kd.ProvinceID
+            WHERE a.StatusCode = 'active'
+                $sqlFilter
+                {$sqlHakAkses['where']}
+            GROUP BY CONCAT(sp.MemberID, sp.PlotNr, sp.SurveyNr)
+            ORDER BY a.MemberName, sf.MemberName, sp.PlotNr";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
     public function getGridMainTrader($pSearch,$start,$limit,$sortingField,$sortingDir){
+        $pSearch = array_merge([
+            'prov' => '', 'kab' => '', 'kec' => '', 'textSearch' => '', 'textSearchDesa' => '',
+            'roleSearch' => '', 'categorySearch' => '', 'source' => '',
+            'AdvRowHandphone' => '', 'AdvTextHandphone' => '',
+            'AdvRowAge' => '', 'AdvOpAge' => '', 'AdvTextAge' => '',
+            'AdvRowEnumerator' => '', 'AdvTextEnumerator' => '',
+            'AdvRowDateCollection' => '', 'AdvDateCollectionBegin' => '', 'AdvDateCollectionEnd' => '',
+        ], $pSearch);
         $sqlFilter = "";
         $sqlFilterMill = "";
+        $sqlFilterRole = "";
 
         //BENTUK QUERY FILTER =============================================== (BEGIN)
         if($pSearch['prov'] != ""){
@@ -368,11 +543,13 @@ class Msme_mem extends CI_Model {
             $p = array();
         }
 
-        if($_SESSION['is_admin'] == "1"){
+        $is_admin  = isset($_SESSION['is_admin']) ? $_SESSION['is_admin'] : '0';
+        $role      = isset($_SESSION['role'])     ? $_SESSION['role']     : '';
+        $PartnerID = isset($_SESSION['PartnerID'])? $_SESSION['PartnerID']: '';
+        if($is_admin == "1"){
             $sqlFilterMill = "";
-        } elseif ($_SESSION['role'] == "Private" || $_SESSION['role'] == "Program"){
-            //cek ktv_access_staff
-            $sqlFilterMill = " AND ktso.PartnerID = '{$_SESSION['PartnerID']}'";
+        } elseif ($role == "Private" || $role == "Program"){
+            $sqlFilterMill = " AND ktso.PartnerID = '{$PartnerID}'";
         }
 
         $sql="SELECT
@@ -570,8 +747,8 @@ class Msme_mem extends CI_Model {
 				, a.Website AS \"Koltiva.view.SME.FormMainTrader-Website\"
 				, a.Fax AS \"Koltiva.view.SME.FormMainTrader-Fax\"
 				, a.Phone AS \"Koltiva.view.SME.FormMainTrader-Phone\"
-                , IFNULL(a.Latitude,ST_Latitude(a.LatLong)) AS \"Koltiva.view.SME.FormMainTrader-Latitude\"
-                , IFNULL(a.Longitude, ST_Longitude(a.LatLong)) AS \"Koltiva.view.SME.FormMainTrader-Longitude\"
+                , IFNULL(a.Latitude,ST_Y(a.LatLong)) AS \"Koltiva.view.SME.FormMainTrader-Latitude\"
+                , IFNULL(a.Longitude, ST_X(a.LatLong)) AS \"Koltiva.view.SME.FormMainTrader-Longitude\"
                 , a.inGroup AS \"Koltiva.view.SME.FormMainTrader-inGroup\"
                 , a.groupName AS \"Koltiva.view.SME.FormMainTrader-groupName\"
                 , a.inCoop AS \"Koltiva.view.SME.FormMainTrader-inCoop\"
@@ -735,8 +912,8 @@ class Msme_mem extends CI_Model {
                 a.GardenAreaPolygon,
                 a.`GardenLength`,
                 a.`GardenWidth`,
-                ST_Latitude(a.`LatLong`) AS Latitude,
-                ST_Longitude(a.`LatLong`) AS Longitude,
+                ST_Y(a.`LatLong`) AS Latitude,
+                ST_X(a.`LatLong`) AS Longitude,
                 a.North,
                 a.East,
                 a.South,
@@ -2491,8 +2668,8 @@ class Msme_mem extends CI_Model {
             , MemberID
             , PhotoBusinessLocation
             , Warehousetype
-            , ST_Latitude(`LatLong`) AS Latitude
-            , ST_Longitude(`LatLong`) AS Longitude
+            , ST_Y(`LatLong`) AS Latitude
+            , ST_X(`LatLong`) AS Longitude
             , StatusCode
             , DateCreated
             , CreatedBy
@@ -3008,8 +3185,8 @@ class Msme_mem extends CI_Model {
                 a.MemberID AS \"Koltiva.view.SME.WinFormWarehouses-MemberID\"
                 , a.WarehousesNr AS \"Koltiva.view.SME.WinFormWarehouses-WarehousesNr\"
 				, a.Warehousetype AS \"Koltiva.view.SME.WinFormWarehouses-Warehousetype\"
-                , ST_Latitude(a.LatLong) AS \"Koltiva.view.SME.WinFormWarehouses-Latitude\"
-                , ST_Longitude(a.LatLong) AS \"Koltiva.view.SME.WinFormWarehouses-Longitude\"
+                , ST_Y(a.LatLong) AS \"Koltiva.view.SME.WinFormWarehouses-Latitude\"
+                , ST_X(a.LatLong) AS \"Koltiva.view.SME.WinFormWarehouses-Longitude\"
                 , a.PhotoBusinessLocation 
             FROM
                 ktv_trader_warehouses a 
@@ -3118,8 +3295,8 @@ class Msme_mem extends CI_Model {
                 , c.agLegalStatusCompany
                 , c.agCompanyName
                 , c.agBusinessLocation
-                , ST_Latitude(a.LatLong) Longitude
-                , ST_Longitude(a.LatLong) Longitude
+                , ST_Y(a.LatLong) Longitude
+                , ST_X(a.LatLong) Longitude
                 , c.agYearEstablished
                 , a.`MemberUID`
             FROM

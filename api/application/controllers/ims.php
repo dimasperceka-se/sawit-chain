@@ -494,8 +494,8 @@ class Ims extends REST_Controller
     public function farmers_get()
     {
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->readFarmers($this->get('IMSID'), $this->get('key'), $this->get('SurveyNr'), $this->get('notcomplete'), $this->get('start'), $this->get('limit'), $sortingField, $sortingDir);
         if ($data) {
@@ -509,8 +509,8 @@ class Ims extends REST_Controller
     public function ims_detail_farmers_get()
     {
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->readFarmersImsDetail($this->get('IMSID'), $this->get('key'), $this->get('start'), $this->get('limit'), $sortingField, $sortingDir);
         if ($data) {
@@ -524,8 +524,8 @@ class Ims extends REST_Controller
     public function ims_detail_candidate_get()
     {
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->readCandidateImsDetail($this->get('IMSID'), $this->get('key'), $this->get('start'), $this->get('limit'), $sortingField, $sortingDir,'js_grid');
         if ($data) {
@@ -691,8 +691,8 @@ class Ims extends REST_Controller
     public function staffs_get()
     {
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->readStaffs($this->get('IMSID'), $this->get('key'), $this->get('start'), $this->get('limit'), $sortingField, $sortingDir);
         if ($data) {
@@ -820,8 +820,8 @@ class Ims extends REST_Controller
     public function afls_get()
     {
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->readAFLs($this->get('IMSID'), $this->get('key'),$this->get('StatusAudit'),$this->get('StatusVerified'), $this->get('start'), $this->get('limit'), $sortingField, $sortingDir);
         if ($data) {
@@ -834,8 +834,8 @@ class Ims extends REST_Controller
 
     public function ics_reinspect_get(){
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->readIcsReinspect($this->get('IMSID'), $this->get('key'),$this->get('start'), $this->get('limit'), $sortingField, $sortingDir);
         if ($data) {
@@ -848,8 +848,8 @@ class Ims extends REST_Controller
     public function afl_final_get()
     {
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
         $StatusIcsReinspect = $this->get('StatusIcsReinspect');
 
         if ($this->get('ICSStatus') == "2") {
@@ -1287,8 +1287,8 @@ class Ims extends REST_Controller
         $UserId = $this->get('UserId');
 
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->GridMappingFAFarmer($IMSID, $UserId, $this->get('start'), $this->get('limit'), $sortingField, $sortingDir, 'limit');
         $this->response($data, 200);
@@ -1296,8 +1296,8 @@ class Ims extends REST_Controller
 
     public function grid_ims_coaching_get() {
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
         $IMSID = (int) $this->get('IMSID');
 
         $data = $this->mims->readCoaching($IMSID, $this->get('textSearch'), $this->get('start'), $this->get('limit'), $sortingField, $sortingDir);
@@ -1319,8 +1319,8 @@ class Ims extends REST_Controller
     public function cfls_get()
     {
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->readCFLs($this->get('IMSID'), $this->get('key'), $this->get('start'), $this->get('limit'), $sortingField, $sortingDir);
         if ($data) {
@@ -1969,8 +1969,8 @@ class Ims extends REST_Controller
     public function main_list_master_get()
     {
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->getMainListMasterIms($this->get('searchDesc'), $this->get('start'), $this->get('limit'), $sortingField, $sortingDir);
         $this->response($data, 200);
@@ -2005,8 +2005,8 @@ class Ims extends REST_Controller
     public function grid_annual_certificate_get()
     {
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->getGridAnnualCertificate($this->get('IMSMasterID'), $this->get('SearchEventName'), $this->get('start'), $this->get('limit'), $sortingField, $sortingDir);
         $this->response($data, 200);
@@ -2015,8 +2015,8 @@ class Ims extends REST_Controller
     public function ims_event_grid_staff_get()
     {
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->getImsEventGridStaff($this->get('IMSMasterID'), $this->get('SearchStaffName'), $this->get('start'), $this->get('limit'), $sortingField, $sortingDir);
         $this->response($data, 200);
@@ -2025,8 +2025,8 @@ class Ims extends REST_Controller
     public function ims_event_grid_staff_input_get()
     {
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $IMSMasterID = (int) $this->get('IMSMasterID');
         $IMSID       = (int) $this->get('IMSID');
@@ -2047,8 +2047,8 @@ class Ims extends REST_Controller
         $IMSMasterID = (int) $this->get('IMSMasterID');
 
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->getImsEventGridFiles($IMSMasterID, $this->get('start'), $this->get('limit'), $sortingField, $sortingDir);
         $this->response($data, 200);
@@ -8907,8 +8907,8 @@ class Ims extends REST_Controller
         );
 
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
         $data = $this->mims->getGridsCoachingActivity($IMSID, $this->get('start'), $this->get('limit'), $sortingField, $sortingDir, $pSearch);
         $this->response($data, 200);
     }
@@ -8923,8 +8923,8 @@ class Ims extends REST_Controller
         $ActivityID        = $this->get('ActivityID');
 
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
         $data = $this->mims->getGridActivityNC($ActivityID, $this->get('start'), $this->get('limit'), $sortingField, $sortingDir);
         $this->response($data, 200);
     }
@@ -8935,8 +8935,8 @@ class Ims extends REST_Controller
         $StringSearch = $this->get('StringSearch');
 
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->getAcqProGridFarmerIdentification($IMSID, $StringSearch, $this->get('start'), $this->get('limit'), $sortingField, $sortingDir);
         $this->response($data, 200);
@@ -8948,8 +8948,8 @@ class Ims extends REST_Controller
         $StringSearch = $this->get('StringSearch');
 
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->getAcqProGridSocialization($IMSID, $StringSearch, $this->get('start'), $this->get('limit'), $sortingField, $sortingDir, 'js_grid');
         $this->response($data, 200);
@@ -8964,8 +8964,8 @@ class Ims extends REST_Controller
         $Selection      = (int) $this->get('Selection');
 
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->getAcqProGridSelection($IMSID, $StringSearch, $Participate, $Recommendation, $Selection, $this->get('start'), $this->get('limit'), $sortingField, $sortingDir, 'js_grid');
         $this->response($data, 200);
@@ -8977,8 +8977,8 @@ class Ims extends REST_Controller
         $StringSearch = $this->get('StringSearch');
 
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->getAcqProGridSelectionApproved($IMSID, $StringSearch, $this->get('start'), $this->get('limit'), $sortingField, $sortingDir, 'js_grid');
         $this->response($data, 200);
@@ -8990,8 +8990,8 @@ class Ims extends REST_Controller
         $StringSearch = $this->get('StringSearch');
 
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->getAcqProGridTraining($IMSID, $StringSearch, $this->get('start'), $this->get('limit'), $sortingField, $sortingDir, 'js_grid');
         $this->response($data, 200);
@@ -9004,8 +9004,8 @@ class Ims extends REST_Controller
         $DateApprovalSearch = $this->get('DateApprovalSearch');
 
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->getAcqProGridTrainingApproved($IMSID, $StringSearch, $DateApprovalSearch, $this->get('start'), $this->get('limit'), $sortingField, $sortingDir, 'js_grid');
         $this->response($data, 200);
@@ -9016,8 +9016,8 @@ class Ims extends REST_Controller
         $StringSearch       = $this->get('StringSearch');
 
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->getAcqProGridCandidatePreICS($IMSID, $StringSearch, $this->get('start'), $this->get('limit'), $sortingField, $sortingDir, 'js_grid');
         $this->response($data, 200);
@@ -10517,8 +10517,8 @@ class Ims extends REST_Controller
         $UserId = $this->get('UserId');
 
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mims->GridMappingFA($IMSID, $UserId, $this->get('start'), $this->get('limit'), $sortingField, $sortingDir, 'limit');
         $this->response($data, 200);
@@ -11264,8 +11264,8 @@ class Ims extends REST_Controller
         $SearchCpgParam = $this->get('SearchCpgParam');
 
         $sorting = json_decode($this->get('sort'));
-        if(isset($sorting[0]->property)) $sortingField = $sorting[0]->property; else $sortingField = null;
-        if(isset($sorting[0]->direction)) $sortingDir = $sorting[0]->direction; else $sortingDir = null;
+        if(isset($sorting[0]->property)) $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : ''; else $sortingField = null;
+        if(isset($sorting[0]->direction)) $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : ''; else $sortingDir = null;
 
         $data = $this->mims->GetCflTakeoutFarmerList($IMSID,$SearchStringParam,$SearchCpgParam,$this->get('start'),$this->get('limit'),$sortingField,$sortingDir);
         $this->response($data, 200);
@@ -11349,8 +11349,8 @@ class Ims extends REST_Controller
         $SearchCpgParam = $this->get('SearchCpgParam');
 
         $sorting = json_decode($this->get('sort'));
-        if(isset($sorting[0]->property)) $sortingField = $sorting[0]->property; else $sortingField = null;
-        if(isset($sorting[0]->direction)) $sortingDir = $sorting[0]->direction; else $sortingDir = null;
+        if(isset($sorting[0]->property)) $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : ''; else $sortingField = null;
+        if(isset($sorting[0]->direction)) $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : ''; else $sortingDir = null;
 
         $data = $this->mims->GetIcsReinspectionAddFarmerListGrid($IMSID,$SearchStringParam,$SearchCpgParam,$this->get('start'),$this->get('limit'),$sortingField,$sortingDir);
         $this->response($data, 200);
@@ -11569,8 +11569,8 @@ class Ims extends REST_Controller
 
     public function external_audit_input_main_grid_get() {
         $sorting      = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $IMSID = (int) $this->get('IMSID');
         $TextSearch = filter_var($this->get('TextSearch'),FILTER_SANITIZE_STRING);
@@ -11607,11 +11607,11 @@ class Ims extends REST_Controller
     public function grid_form_farmer_candidate_get() {
         $sorting = json_decode($this->get('sort'));
         if (isset($sorting[0]->property))
-            $sortingField = $sorting[0]->property;
+            $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
         else
             $sortingField = null;
         if (isset($sorting[0]->direction))
-            $sortingDir = $sorting[0]->direction;
+            $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
         else
             $sortingDir = null;
         $start = (int) $this->get('start');
@@ -11648,9 +11648,9 @@ class Ims extends REST_Controller
         
         //sort
         $sorting      = json_decode($this->post('sort'));
-        if (isset($sorting[0]->property)) $sortingField = $sorting[0]->property;
+        if (isset($sorting[0]->property)) $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
         else $sortingField = null;
-        if (isset($sorting[0]->direction)) $sortingDir = $sorting[0]->direction;
+        if (isset($sorting[0]->direction)) $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
         else $sortingDir = null;
         
         $IMSID = (int) $this->post('IMSID');
@@ -11660,8 +11660,8 @@ class Ims extends REST_Controller
         );
 
         $sorting      = json_decode($this->post('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir   = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $dataList           = $this->mims->getExportCoachingActivitySql($IMSID, $pSearch, $sortingField, $sortingDir);
         $dataListSession    = $this->mims->getExportCoachingActivitySessionSql($IMSID, $pSearch, $sortingField, $sortingDir);

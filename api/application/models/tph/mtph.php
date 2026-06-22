@@ -201,8 +201,8 @@ class Mtph extends CI_Model {
                     subd.`SubDistrictID`,
                     vil.`VillageID`,
                     a.`CollectpointAddress` AS \"Koltiva.view.Tph.FormMain-CollectpointAddress\",
-                    IFNULL(a.`Longitude`, ST_Latitude(a.`LatLong`)) AS \"Koltiva.view.Tph.FormMain-Longitude\",
-                    IFNULL(a.`Latitude`, ST_Longitude(a.`LatLong`)) AS \"Koltiva.view.Tph.FormMain-Latitude\"
+                    IFNULL(a.`Longitude`, ST_Y(a.`LatLong`)) AS \"Koltiva.view.Tph.FormMain-Longitude\",
+                    IFNULL(a.`Latitude`, ST_X(a.`LatLong`)) AS \"Koltiva.view.Tph.FormMain-Latitude\"
                 FROM
                     `ktv_collecting_point` a
                     LEFT JOIN ktv_village vil ON vil.`VillageID` = a.`VillageID`
@@ -234,8 +234,8 @@ class Mtph extends CI_Model {
                     subd.`SubDistrictID`,
                     vil.`VillageID`,
                     a.`CollectpointAddress` AS \"Koltiva.view.SME.WinFormCollectingPoint-Form-CollectpointAddress\",
-                    IFNULL(a.`Longitude`, ST_Latitude(a.`LatLong`)) AS \"Koltiva.view.SME.WinFormCollectingPoint-Form-Longitude\",
-                    IFNULL(a.`Latitude`, ST_Longitude(a.`LatLong`)) AS \"Koltiva.view.SME.WinFormCollectingPoint-Form-Latitude\"
+                    IFNULL(a.`Longitude`, ST_Y(a.`LatLong`)) AS \"Koltiva.view.SME.WinFormCollectingPoint-Form-Longitude\",
+                    IFNULL(a.`Latitude`, ST_X(a.`LatLong`)) AS \"Koltiva.view.SME.WinFormCollectingPoint-Form-Latitude\"
                 FROM
                     `ktv_collecting_point` a
                     LEFT JOIN ktv_village vil ON vil.`VillageID` = a.`VillageID`
