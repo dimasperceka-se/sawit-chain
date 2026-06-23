@@ -38,8 +38,8 @@ class Ext_staff extends REST_Controller
         //sort
         $sorting      = json_decode($this->get('sort'));
         if(isset($sorting)){
-        	$sortingField = $sorting[0]->property;
-        	$sortingDir   = $sorting[0]->direction;
+        	$sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        	$sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
         }else{
         	$sortingField = null;
         	$sortingDir   = null;
@@ -298,8 +298,8 @@ class Ext_staff extends REST_Controller
 
         //sort
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
         
         $data = $this->mext_staff->GetFarmerListGrid($StaffAssignmentID, $StaffID, $textSearch, (int)$this->get('start'), (int)$this->get('limit'), 'limit', $sortingField, $sortingDir);
         $this->response($data, 200);
@@ -331,8 +331,8 @@ class Ext_staff extends REST_Controller
 
         //sort
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $result = $this->mext_staff->getMemberAdd($StaffAssignmentID, $StaffID, $textSearch, $ProvinceID, $DistrictID, $SubdistrictID, $VillageID, $this->get('start'), $this->get('limit'), $sortingField, $sortingDir);
         $this->response($result, 200);

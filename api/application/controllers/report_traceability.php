@@ -17,8 +17,8 @@ class Report_traceability extends REST_Controller {
     public function store_grid_mill_transaction_get(){
 
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $pSearch = array(
             "Role" => $this->get('Role'),
@@ -34,8 +34,8 @@ class Report_traceability extends REST_Controller {
     public function store_grid_do_transaction_get(){
 
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $pSearch = array(
             "Role" => $this->get('Role'),
@@ -353,8 +353,8 @@ class Report_traceability extends REST_Controller {
     public function store_grid_agent_transaction_get(){
 
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $pSearch = array(
             "Role" => $this->get('Role'),
@@ -380,8 +380,8 @@ class Report_traceability extends REST_Controller {
 
     public function farmer_grid_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $pSearch = array(
             "Role" => $this->get('Role'),
@@ -433,8 +433,8 @@ class Report_traceability extends REST_Controller {
     public function transaction_grid_get(){
 
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $pSearch = array(
             "Role" => $this->get('Role'),
@@ -569,8 +569,8 @@ class Report_traceability extends REST_Controller {
     
     public function transaction_available_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $pSearch = array(
             "Role" => $this->get('Role'),
@@ -595,8 +595,8 @@ class Report_traceability extends REST_Controller {
     
     public function transaction_batch_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $pSearch = array(
             "Role" => $this->get('Role'),
@@ -618,8 +618,8 @@ class Report_traceability extends REST_Controller {
     
     public function batch_grid_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $pSearch = array(
             "Role" => $this->get('Role'),

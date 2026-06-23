@@ -1311,9 +1311,9 @@ WHERE
                             , sub_pt.`PlotNr`
                             , sub_pt.`SurveyNr`
                             #, sub_pt.`Latitude`
-                            , ST_LATITUDE(sub_pt.`LatLong`) AS Latitude
+                            , ST_Y(sub_pt.`LatLong`) AS Latitude
                             #, sub_pt.`Longitude`
-                            , ST_LONGITUDE(sub_pt.`LatLong`) AS Longitude
+                            , ST_X(sub_pt.`LatLong`) AS Longitude
                             , sub_pt.`LatLong`
                         FROM
                             ktv_survey_plot sub_pt
@@ -1339,8 +1339,8 @@ WHERE
                             AND sub_pt.`Longitude` IS NOT NULL
                             AND sub_pt.`Longitude` != ''
                             AND sub_pt.`Longitude` != '0'*/
-                            AND ABS(ST_LATITUDE(sub_pt.`LatLong`)) > 0
-                            AND ABS(ST_LONGITUDE(sub_pt.`LatLong`)) > 0
+                            AND ABS(ST_Y(sub_pt.`LatLong`)) > 0
+                            AND ABS(ST_X(sub_pt.`LatLong`)) > 0
                         GROUP BY sub_pt.`MemberID`, sub_pt.`PlotNr` 
                     ) AS pt ON 1=1
                         AND tup.`MemberID` = pt.MemberID

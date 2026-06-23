@@ -48,8 +48,8 @@ class Basic_staff extends REST_Controller {
 
     public function main_list_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mbasic_staff->getMainListBasicStaff($this->get('ObjType'),$this->get('PersonNm'),$this->get('start'),$this->get('limit'),$sortingField,$sortingDir);
         if($data) $this->response($data, 200); else $this->response(array('error' => 'Couldn\'t find any datas!'), 404);
@@ -187,8 +187,8 @@ class Basic_staff extends REST_Controller {
 
     public function staff_position_main_list_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mbasic_staff->getMainListStaffPosition($this->get('StaffID'),$this->get('start'),$this->get('limit'),$sortingField,$sortingDir);
         $this->response($data, 200);
@@ -445,8 +445,8 @@ class Basic_staff extends REST_Controller {
 
     public function registers_main_grid_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $pSearch = array(
             "Role" => $this->get('Role'),

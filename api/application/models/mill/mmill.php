@@ -1879,19 +1879,20 @@ class Mmill extends CI_Model {
     private function generateSqlHakAkses(){
         $sqlHakAkses = array();
 
-        if($_SESSION['is_admin'] == "1"){
+        $is_admin      = isset($_SESSION['is_admin'])      ? $_SESSION['is_admin']      : '0';
+        $role          = isset($_SESSION['role'])          ? $_SESSION['role']          : '';
+        $PartnerID     = isset($_SESSION['PartnerID'])     ? $_SESSION['PartnerID']     : '';
+        $daerah_access = isset($_SESSION['daerah_access']) ? $_SESSION['daerah_access'] : '0';
+
+        if($is_admin == "1"){
             $sqlHakAkses['join'] = "";
             $sqlHakAkses['where'] = "";
-        } elseif ($_SESSION['role'] == "Private" || $_SESSION['role'] == "Program"){
-            //cek ktv_access_staff
-            $sqlHakAkses['where'] = " AND f.DistrictID IN (".$_SESSION['daerah_access'].")";
-
-            //cek ktv_access_partner_mill
-            $sqlHakAkses['join'] = " INNER JOIN ktv_access_partner_mill acc_pmi ON a.MillID = acc_pmi.apmiMillID AND acc_pmi.apmiPartnerID = '{$_SESSION['PartnerID']}' ";
+        } elseif ($role == "Private" || $role == "Program"){
+            $sqlHakAkses['where'] = " AND f.DistrictID IN (" . $daerah_access . ")";
+            $sqlHakAkses['join'] = " INNER JOIN ktv_access_partner_mill acc_pmi ON a.MillID = acc_pmi.apmiMillID AND acc_pmi.apmiPartnerID = '{$PartnerID}' ";
         } else {
-            //cek ktv_access_staff
             $sqlHakAkses['join'] = "";
-            $sqlHakAkses['where'] = " AND f.DistrictID IN (".$_SESSION['daerah_access'].")";
+            $sqlHakAkses['where'] = " AND f.DistrictID IN (" . $daerah_access . ")";
         }
 
         return $sqlHakAkses;
@@ -2550,6 +2551,15 @@ class Mmill extends CI_Model {
     }
 
     public function getGridMainMill($pSearch,$start,$limit,$sortingField,$sortingDir){
+        $pSearch = array_merge([
+            'prov' => '', 'kab' => '', 'kec' => '', 'textSearch' => '',
+            'rowStatusPerusahaan' => '', 'cmbStatusPerusahaan' => '',
+            'rowTahunTerbentuk' => '', 'cmbOpTahunTerbentuk' => '', 'textTahunTerbentuk' => '',
+            'rowPhone' => '', 'textPhone' => '',
+            'rowHavePhoto' => '', 'cmbHavePhoto' => '',
+            'rowTotalPermanentEmployee' => '', 'cmbOpTotalPermanentEmployee' => '', 'textTotalPermanentEmployee' => '',
+            'pAdvInternalProgram' => '',
+        ], $pSearch);
         $sqlFilter = "";
         $sqlBu     = "";
 
@@ -2606,7 +2616,8 @@ class Mmill extends CI_Model {
         if($sortingField == "") $sortingField = 'Name';
         if($sortingDir == "") $sortingDir = 'ASC';
 
-        ($_SESSION['business_unit'] != "") ? $sqlBu = " AND millbu.BusinessUnitID IN ({$_SESSION['business_unit']}) " : $sqlBu = "";
+        $business_unit = isset($_SESSION['business_unit']) ? $_SESSION['business_unit'] : '';
+        ($business_unit != "") ? $sqlBu = " AND millbu.BusinessUnitID IN ({$business_unit}) " : $sqlBu = "";
 
         $sql="SELECT
                 SQL_CALC_FOUND_ROWS
@@ -2786,8 +2797,8 @@ class Mmill extends CI_Model {
                 a.`PermanentEmployeeFemale` AS \"Koltiva.view.Mill.FormMainMill-FormBasicData-PermanentEmployeeFemale\",
                 a.`TemporaryEmployeeMale` AS \"Koltiva.view.Mill.FormMainMill-FormBasicData-TemporaryEmployeeMale\",
                 a.`TemporaryEmployeeFemale` AS \"Koltiva.view.Mill.FormMainMill-FormBasicData-TemporaryEmployeeFemale\",
-                IFNULL(a.Latitude, ST_Latitude(a.`LatLong`)) AS \"Koltiva.view.Mill.FormMainMill-FormBasicData-Latitude\",
-                IFNULL(a.Longitude, ST_Longitude(a.`LatLong`)) AS \"Koltiva.view.Mill.FormMainMill-FormBasicData-Longitude\",
+                IFNULL(a.Latitude, ST_Y(a.`LatLong`)) AS \"Koltiva.view.Mill.FormMainMill-FormBasicData-Latitude\",
+                IFNULL(a.Longitude, ST_X(a.`LatLong`)) AS \"Koltiva.view.Mill.FormMainMill-FormBasicData-Longitude\",
                 a.`Elevation` AS \"Koltiva.view.Mill.FormMainMill-FormBasicData-Elevation\",
                 a.`Photo` AS PhotoSrc,
                 a.LocationPhoto,

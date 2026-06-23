@@ -25,25 +25,69 @@ a[href="https://www.google.com/intl/en-US_US/help/terms_maps.html"] {
 		<table width="100%" border="0" cellpadding="2">
             <tr>
                 <?php
-                    for($i=0;$i<count($logos);$i++){
-                        if($logos[$i]['Photo']!=''){
-                            ?>
-                                <td height="70px" width="20%" align="center" style="vertical-align:middle;">
-                                    <img src="<?=$logos[$i]['Photo']?>" style="max-width:100%; max-height:100%; max-width:150px;">
-                                </td>
-                            <?php
-                        }
-                    }
+                    $agent = !empty($agent) && is_array($agent) ? $agent : [];
+                    $agent += [
+                        'Photo' => '',
+                        'MemberDisplayID' => '',
+                        'MemberName' => '',
+                        'DateOfBirth' => '',
+                        'Gender' => '',
+                        'Province' => '',
+                        'District' => '',
+                        'SubDistrict' => '',
+                        'Village' => '',
+                        'agLegalStatusCompany' => '',
+                        'agYearEstablished' => '',
+                        'Latitude' => '',
+                        'Longitude' => '',
+                        'RoleLabel' => '',
+                        'agBusinessLocation' => '',
+                        'VillageID' => '',
+                        'MemberID' => ''
+                    ];
+                    $staff = !empty($staff) && is_array($staff) ? $staff : [];
+                    $staff += ['NrOfStaff' => 0, 'StaffLaki' => 0, 'StaffPerempuan' => 0];
+                    $logos = !empty($logos) && is_array($logos) ? $logos : [];
+                    $training = !empty($training) && is_array($training) ? $training : [];
+                    $traceability_details = !empty($traceability_details) && is_array($traceability_details) ? $traceability_details : [];
+                    $gardens = !empty($gardens) && is_array($gardens) ? $gardens : [];
+                    $NrOfVehicle = isset($NrOfVehicle) ? $NrOfVehicle : 0;
+                    $qrcode_pic = isset($qrcode_pic) ? $qrcode_pic : '';
+                    $agentGender = strtolower($agent['Gender']);
+                    $genderLabel = $agentGender === 'm' ? lang('Male') : ($agentGender === 'f' ? lang('Female') : '');
                 ?>
             </tr>
         </table>
         <br /><br />
         <?php
-            if($this->awsfileupload->doesObjectExist($agent['Photo']) == true) {
+            $ffbRow = [];
+            if (!empty($ffb) && isset($ffb[0]) && is_array($ffb[0])) {
+                $ffbRow = $ffb[0];
+            }
+            $ffbRow += [
+                'Q1_batch' => 0,
+                'Q2_batch' => 0,
+                'Q3_batch' => 0,
+                'Q4_batch' => 0,
+                'Q1_ton' => 0,
+                'Q2_ton' => 0,
+                'Q3_ton' => 0,
+                'Q4_ton' => 0,
+                'Q1_farmer' => 0,
+                'Q2_farmer' => 0,
+                'Q3_farmer' => 0,
+                'Q4_farmer' => 0,
+                'Q1_transaction' => 0,
+                'Q2_transaction' => 0,
+                'Q3_transaction' => 0,
+                'Q4_transaction' => 0,
+            ];
+
+            if (!empty($agent['Photo']) && $this->awsfileupload->doesObjectExist($agent['Photo']) === true) {
                 $Photo  = $this->config->item('CTCDN')."/".$agent['Photo'];
-            }else{
-                $Photo  = base_url().'image_process/resizeOtfLandscape?imagenya='.urlencode($agent['Photo']).'&width=300&height=300&opsi=fotoTrader&VID='.$agent['VillageID'].'&gen='.$agent['Gender'];
-            }               
+            } else {
+                $Photo  = base_url().'image_process/resizeOtfLandscape?imagenya='.urlencode($agent['Photo']).'&width=300&height=300&opsi=fotoTrader&VID=' . urlencode($agent['VillageID']) . '&gen=' . urlencode($agentGender);
+            }
         ?>
         <!--- MULAI TABEL UTAMA (BEGIN) -->
         <div id="mainContainer">
@@ -84,17 +128,17 @@ a[href="https://www.google.com/intl/en-US_US/help/terms_maps.html"] {
                     </tr>
                     <tr style="background-color: white;">
                         <td>BATCH</td>
-                        <td><?php echo @$ffb[0]['Q1_batch'];?></td>
-                        <td><?php echo @$ffb[0]['Q2_batch'];?></td>
-                        <td><?php echo @$ffb[0]['Q3_batch'];?></td>
-                        <td><?php echo @$ffb[0]['Q4_batch'];?></td>
+                        <td><?php echo $ffbRow['Q1_batch'];?></td>
+                        <td><?php echo $ffbRow['Q2_batch'];?></td>
+                        <td><?php echo $ffbRow['Q3_batch'];?></td>
+                        <td><?php echo $ffbRow['Q4_batch'];?></td>
                     </tr>
                     <tr style="background-color: white;">
                     	<td>TON</td>
-                    	<td><?php echo @$ffb[0]['Q1_ton'];?></td>
-                    	<td><?php echo @$ffb[0]['Q2_ton'];?></td>
-                    	<td><?php echo @$ffb[0]['Q3_ton'];?></td>
-                    	<td><?php echo @$ffb[0]['Q4_ton'];?></td>
+                     	<td><?php echo $ffbRow['Q1_ton'];?></td>
+                     	<td><?php echo $ffbRow['Q2_ton'];?></td>
+                     	<td><?php echo $ffbRow['Q3_ton'];?></td>
+                     	<td><?php echo $ffbRow['Q4_ton'];?></td>
                     </tr>
     				</table>
 
@@ -109,25 +153,25 @@ a[href="https://www.google.com/intl/en-US_US/help/terms_maps.html"] {
                     </tr>
                     <tr style="background-color: white;">
                     	<td><?php echo strtoupper(lang('Farmer'))?></td>
-                    	<td><?php echo @$ffb[0]['Q1_farmer'];?></td>
-                    	<td><?php echo @$ffb[0]['Q2_farmer'];?></td>
-                    	<td><?php echo @$ffb[0]['Q3_farmer'];?></td>
-                    	<td><?php echo @$ffb[0]['Q4_farmer'];?></td>
+                     	<td><?php echo $ffbRow['Q1_farmer'];?></td>
+                     	<td><?php echo $ffbRow['Q2_farmer'];?></td>
+                     	<td><?php echo $ffbRow['Q3_farmer'];?></td>
+                     	<td><?php echo $ffbRow['Q4_farmer'];?></td>
                     </tr>
                     <tr style="background-color: white;">
                     	<td><?php echo strtoupper(lang('Transaction'))?></td>
-                    	<td><?php echo @$ffb[0]['Q1_transaction'];?></td>
-                    	<td><?php echo @$ffb[0]['Q2_transaction'];?></td>
-                    	<td><?php echo @$ffb[0]['Q3_transaction'];?></td>
-                    	<td><?php echo @$ffb[0]['Q4_transaction'];?></td>
+                     	<td><?php echo $ffbRow['Q1_transaction'];?></td>
+                     	<td><?php echo $ffbRow['Q2_transaction'];?></td>
+                     	<td><?php echo $ffbRow['Q3_transaction'];?></td>
+                     	<td><?php echo $ffbRow['Q4_transaction'];?></td>
                     </tr>
     				</table>
                     <br />
                     <?php 
-                        $tsBatch = $ffb[0]['Q1_batch']+$ffb[0]['Q2_batch']+$ffb[0]['Q3_batch']+$ffb[0]['Q4_batch'];
-                        $tsNetto = $ffb[0]['Q1_ton']+$ffb[0]['Q2_ton']+$ffb[0]['Q3_ton']+$ffb[0]['Q4_ton'];
-                        $tsFarmer = $ffb[0]['Q1_farmer']+$ffb[0]['Q2_farmer']+$ffb[0]['Q3_farmer']+$ffb[0]['Q4_farmer'];
-                        $tsTrans = $ffb[0]['Q1_transaction']+$ffb[0]['Q2_transaction']+$ffb[0]['Q3_transaction']+$ffb[0]['Q4_transaction'];
+                        $tsBatch = $ffbRow['Q1_batch']+$ffbRow['Q2_batch']+$ffbRow['Q3_batch']+$ffbRow['Q4_batch'];
+                        $tsNetto = $ffbRow['Q1_ton']+$ffbRow['Q2_ton']+$ffbRow['Q3_ton']+$ffbRow['Q4_ton'];
+                        $tsFarmer = $ffbRow['Q1_farmer']+$ffbRow['Q2_farmer']+$ffbRow['Q3_farmer']+$ffbRow['Q4_farmer'];
+                        $tsTrans = $ffbRow['Q1_transaction']+$ffbRow['Q2_transaction']+$ffbRow['Q3_transaction']+$ffbRow['Q4_transaction'];
                     ?>
 
                     <div class="divSide" id="titleSideColum" style="margin-bottom: 10px;padding-top: 5px;">
@@ -248,12 +292,20 @@ a[href="https://www.google.com/intl/en-US_US/help/terms_maps.html"] {
                                     </td>
                                     <td width="31%">
                                         <?php
-                                            $now        = new Datetime('now');
-                                            $birthdate  = new Datetime($agent['DateOfBirth']);
-                                            $age        = $now->diff($birthdate);
+                                            $now = new Datetime('now');
+                                            $age = null;
+                                            if (!empty($agent['DateOfBirth'])) {
+                                                try {
+                                                    $birthdate = new Datetime($agent['DateOfBirth']);
+                                                    $age = $now->diff($birthdate);
+                                                } catch (Exception $e) {
+                                                    $age = null;
+                                                }
+                                            }
                                         ?>
+                                        
                                         <div class="tdLabelMain"><?php echo strtoupper(lang('age')) ?></div>
-                                        <div class="tdValueMain"><?php echo $age->y ?>&nbsp;</div>
+                                        <div class="tdValueMain"><?php echo $age instanceof DateInterval ? $age->y : '' ?>&nbsp;</div>
                                     </td>
                                     <td width="22%">
                                         <div class="tdLabelMain"><?php echo strtoupper(lang('Gender')) ?></div>
@@ -303,22 +355,21 @@ a[href="https://www.google.com/intl/en-US_US/help/terms_maps.html"] {
                             </td>
                         </tr>
                         <tr>
-                            <td style="border-top: 1px dotted #3789E0;" colspan="2" valign="top">
-
-                            	<?php
-                            	//agLegalStatusCompany
-                            	switch ($agent['agLegalStatusCompany']) {
-                            		case '1': $agLegalStatusCompany = lang('Sole Proprietorship'); break;
-                            		case '2': $agLegalStatusCompany = lang('Partnership'); break;
-                            		case '3': $agLegalStatusCompany = lang('Limited Partnership'); break;
-                            		case '4': $agLegalStatusCompany = lang('Limited Liability Company'); break;
-                            		case '5': $agLegalStatusCompany = lang('Corporation'); break;
-                            		case '6': $agLegalStatusCompany = lang('Cooperative'); break;
-                            		case '7': $agLegalStatusCompany = lang('Foundation'); break;
-                            		case '8': $agLegalStatusCompany = lang('Association'); break;
-                            		case '9': $agLegalStatusCompany = lang('State Owned'); break;
-                            	}
-                            	?>
+                            <td style="border-top: 1px dotted #3789E0;" colspan="2" valign="top"><?php
+//agLegalStatusCompany
+    $agLegalStatusCompany = '';
+    switch (isset($agent['agLegalStatusCompany']) ? $agent['agLegalStatusCompany'] : '') {
+        case '1': $agLegalStatusCompany = lang('Sole Proprietorship'); break;
+        case '2': $agLegalStatusCompany = lang('Partnership'); break;
+        case '3': $agLegalStatusCompany = lang('Limited Partnership'); break;
+        case '4': $agLegalStatusCompany = lang('Limited Liability Company'); break;
+        case '5': $agLegalStatusCompany = lang('Corporation'); break;
+        case '6': $agLegalStatusCompany = lang('Cooperative'); break;
+        case '7': $agLegalStatusCompany = lang('Foundation'); break;
+        case '8': $agLegalStatusCompany = lang('Association'); break;
+        case '9': $agLegalStatusCompany = lang('State Owned'); break;
+    }
+?>
                             	<table width="100%" class="tabelValueMain">
                                 <tr>
                                     <td width="33%">
@@ -421,17 +472,23 @@ a[href="https://www.google.com/intl/en-US_US/help/terms_maps.html"] {
                                     <th style="width: 14%;"><?php echo strtoupper(lang('Selesai'))?></th>
                                 </tr>
                                 <?php
-                                if($training[0]['Topic'] != ""){
+                                $trainingHasTopic = !empty($training) && !empty($training[0]['Topic']);
+                                if ($trainingHasTopic) {
                                     for ($i=0; $i < count($training); $i++) {
+                                        $topic = isset($training[$i]['Topic']) ? $training[$i]['Topic'] : '';
+                                        $nrOfStaff = isset($training[$i]['NrOfStaff']) ? $training[$i]['NrOfStaff'] : '';
+                                        $start = !empty($training[$i]['Start']) ? date('d M Y', strtotime($training[$i]['Start'])) : '';
+                                        $end = !empty($training[$i]['End']) ? date('d M Y', strtotime($training[$i]['End'])) : '';
+
                                         echo '<tr>
                                             <td align="center">'.($i+1).'.</td>
-                                            <td align="left">'.$training[$i]['Topic'].'.</td>
-                                            <td align="center">'.$training[$i]['NrOfStaff'].'</td>
-                                            <td align="center">'.date('d M Y', strtotime($training[$i]['Start'])).'.</td>
-                                            <td align="center">'.date('d M Y', strtotime($training[$i]['End'])).'.</td>
+                                            <td align="left">'.htmlspecialchars($topic, ENT_QUOTES, 'UTF-8').'.</td>
+                                            <td align="center">'.htmlspecialchars($nrOfStaff, ENT_QUOTES, 'UTF-8').'</td>
+                                            <td align="center">'.$start.'.</td>
+                                            <td align="center">'.$end.'.</td>
                                         </tr>';
                                     }
-                                }else{
+                                } else {
                                     echo '<tr><td colspan="5" align="center">'.lang('No Data').'</td></tr>';
                                 }
                                 ?>
@@ -456,8 +513,8 @@ a[href="https://www.google.com/intl/en-US_US/help/terms_maps.html"] {
                     <td class="kolomKanan" width="70%" align="right">
                         <table width="100%">
                         <tr>
-                            <td style="letter-spacing: 0.1em;font-size: 11px" width="60%">Copyright &copy <?php echo date('Y')?> by PT Koltiva</td>
-                            <td style="letter-spacing: 0.1em;font-size: 11px" width="40%" align="right">www.koltiva.com</td>
+                            <td style="letter-spacing: 0.1em;font-size: 11px" width="60%">Copyright &copy <?php echo date('Y')?> by PT Sawitchain</td>
+                            <td style="letter-spacing: 0.1em;font-size: 11px" width="40%" align="right">www.sawitchain.com</td>
                         </tr>
                         </table>
                     </td>
@@ -523,8 +580,8 @@ a[href="https://www.google.com/intl/en-US_US/help/terms_maps.html"] {
                                 <td class="kolomKanan" width="70%" align="right">
                                     <table width="100%">
                                     <tr>
-                                        <td style="letter-spacing: 0.1em;font-size: 11px" width="60%">Copyright &copy '.date('Y').' by PT Koltiva</td>
-                                        <td style="letter-spacing: 0.1em;font-size: 11px" width="40%" align="right">www.koltiva.com</td>
+                                        <td style="letter-spacing: 0.1em;font-size: 11px" width="60%">Copyright &copy '.date('Y').' by PT Sawitchain</td>
+                                        <td style="letter-spacing: 0.1em;font-size: 11px" width="40%" align="right">www.sawitchain.com</td>
                                     </tr>
                                     </table>
                                 </td>
@@ -599,8 +656,8 @@ a[href="https://www.google.com/intl/en-US_US/help/terms_maps.html"] {
                 <td class="kolomKanan" width="70%" align="right">
                     <table width="100%">
                     <tr>
-                        <td style="letter-spacing: 0.1em;font-size: 11px" width="60%">Copyright &copy <?php echo date('Y')?> by PT Koltiva</td>
-                        <td style="letter-spacing: 0.1em;font-size: 11px" width="40%" align="right">www.koltiva.com</td>
+                        <td style="letter-spacing: 0.1em;font-size: 11px" width="60%">Copyright &copy <?php echo date('Y')?> by PT Sawitchain</td>
+                        <td style="letter-spacing: 0.1em;font-size: 11px" width="40%" align="right">www.sawitchain.com</td>
                     </tr>
                     </table>
                 </td>
@@ -803,8 +860,8 @@ a[href="https://www.google.com/intl/en-US_US/help/terms_maps.html"] {
                 <td class="kolomKanan" width="70%" align="right">
                     <table width="100%">
                     <tr>
-                        <td style="letter-spacing: 0.1em;font-size: 11px" width="60%">Copyright &copy <?php echo date('Y')?> by PT Koltiva</td>
-                        <td style="letter-spacing: 0.1em;font-size: 11px" width="40%" align="right">www.koltiva.com</td>
+                        <td style="letter-spacing: 0.1em;font-size: 11px" width="60%">Copyright &copy <?php echo date('Y')?> by PT Sawitchain</td>
+                        <td style="letter-spacing: 0.1em;font-size: 11px" width="40%" align="right">www.sawitchain.com</td>
                     </tr>
                     </table>
                 </td>

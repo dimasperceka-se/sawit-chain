@@ -22,8 +22,8 @@ class Report_transaction_mill extends REST_Controller {
 	
 	public function fetch_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = @$sorting[0]->property;
-        $sortingDir = @$sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 		
 		$InputForm = $this->get();  
         $data = $this->_model->get_data( $InputForm, $this->get('start'),$this->get('limit'),$sortingField,$sortingDir);
@@ -38,8 +38,8 @@ class Report_transaction_mill extends REST_Controller {
 
     public function export_excel_get(){ 
         $sorting = json_decode($this->get('sort'));
-        $sortingField = @$sorting[0]->property;
-        $sortingDir = @$sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 		
 		$InputForm = $this->get();  
         $data = $this->_model->get_data( $InputForm, $this->get('start'),$this->get('limit'),$sortingField,$sortingDir);

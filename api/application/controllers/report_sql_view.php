@@ -28,8 +28,8 @@ class Report_sql_view extends REST_Controller
 
     public function main_list_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->msql_view->getMainListSqlView($this->get('SqlvName_Search'),$this->get('start'),$this->get('limit'),$sortingField,$sortingDir);
         $this->response($data, 200);
@@ -700,8 +700,8 @@ class Report_sql_view extends REST_Controller
 
     public function share_user_list_filter_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->msql_view->getShareUserFilterList($this->get('filter_name'),$this->get('start'),$this->get('limit'),$sortingField,$sortingDir);
         $this->response($data, 200);

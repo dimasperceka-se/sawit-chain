@@ -14,8 +14,8 @@ class Training_receipt extends REST_Controller {
 
     public function main_list_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mreceipt->getMainList($this->get('sTrainingId'),$this->get('sObjType'),$this->get('prov'),$this->get('dist'),$this->get('sub_dist'),$this->get('start'),$this->get('limit'),$sortingField,$sortingDir);
         $this->response($data, 200);
@@ -23,8 +23,8 @@ class Training_receipt extends REST_Controller {
 
     public function act_goods_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mreceipt->getActGoodsList($this->get('ReceiptID'),$this->get('start'),$this->get('limit'),$sortingField,$sortingDir);
         $this->response($data, 200);

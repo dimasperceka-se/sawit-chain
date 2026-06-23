@@ -33,9 +33,9 @@ class Mfarm_survey_loc_geo extends CI_Model {
                    , plot.`PlotNr` GardenNr
                    , plot.`SurveyNr`
 
-                   , ST_Latitude(plot.LatLong) AS Latitude
-                    , ST_Longitude(plot.LatLong) AS Longitude
-                    , CONCAT(ST_Longitude(plot.`LatLong`),',',ST_Latitude(plot.`LatLong`)) AS CoordinateLabel
+                   , ST_Y(plot.LatLong) AS Latitude
+                    , ST_X(plot.LatLong) AS Longitude
+                    , CONCAT(ST_X(plot.`LatLong`),',',ST_Y(plot.`LatLong`)) AS CoordinateLabel
                 FROM ktv_members f
                 LEFT JOIN ktv_member_role role ON role.MemberID = f.MemberID
                 LEFT JOIN ktv_ref_member_role ref ON ref.MRoleID = role.MRoleID
@@ -43,7 +43,7 @@ class Mfarm_survey_loc_geo extends CI_Model {
                 WHERE
                     ref.MRoleType = 'Farmer' AND f.StatusCode='active' AND plot.StatusCode = 'active' 
                     AND f.`MemberDisplayID` = ? 
-                    AND ((ABS(plot.`Latitude`) > 0 AND ABS(plot.`Longitude`) > 0) OR (ABS(ST_Latitude(plot.LatLong)) > 0 AND ABS(ST_Longitude(plot.LatLong)) > 0 ))
+                    AND ((ABS(plot.`Latitude`) > 0 AND ABS(plot.`Longitude`) > 0) OR (ABS(ST_Y(plot.LatLong)) > 0 AND ABS(ST_X(plot.LatLong)) > 0 ))
                 ORDER BY plot.`PlotNr`, plot.`SurveyNr`";
 
 

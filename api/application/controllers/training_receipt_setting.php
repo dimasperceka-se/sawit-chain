@@ -29,8 +29,8 @@ class Training_receipt_setting extends REST_Controller {
 
     public function main_list_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mreceipt_setting->getMainList($this->get('sTrainingId'),$this->get('sObjType'),$this->get('prov'),$this->get('dist'),$this->get('sub_dist'),$this->get('start'),$this->get('limit'),$sortingField,$sortingDir);
         $this->response($data, 200);
@@ -52,8 +52,8 @@ class Training_receipt_setting extends REST_Controller {
 
     public function seltrain_cpg_grid_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mreceipt_setting->getSeltrainCpg($this->get('seltrainProvince'),$this->get('seltrainDistrict'),$this->get('seltrainTraining'),$this->get('seltrainTrainingDateRange'),$this->get('start'),$this->get('limit'),$sortingField,$sortingDir);
         $this->response($data, 200);
@@ -61,8 +61,8 @@ class Training_receipt_setting extends REST_Controller {
 
     public function seltrain_cadre_grid_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mreceipt_setting->getSeltrainCadre($this->get('seltrainProvince'),$this->get('seltrainDistrict'),$this->get('seltrainTraining'),$this->get('seltrainTrainingDateRange'),$this->get('start'),$this->get('limit'),$sortingField,$sortingDir);
         $this->response($data, 200);
@@ -70,8 +70,8 @@ class Training_receipt_setting extends REST_Controller {
 
     public function seltrain_master_grid_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mreceipt_setting->getSeltrainMaster($this->get('seltrainProvince'),$this->get('seltrainDistrict'),$this->get('seltrainTraining'),$this->get('seltrainTrainingDateRange'),$this->get('start'),$this->get('limit'),$sortingField,$sortingDir);
         $this->response($data, 200);
@@ -84,8 +84,8 @@ class Training_receipt_setting extends REST_Controller {
 
     public function goods_list_filter_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $data = $this->mreceipt_setting->getGoodsList($this->get('call_from'),$this->get('filter_name'),$this->get('start'),$this->get('limit'),$sortingField,$sortingDir);
         $this->response($data, 200);

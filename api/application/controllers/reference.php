@@ -29,8 +29,8 @@ class Reference extends REST_Controller
     public function positions_get()
     {
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         /*$key = '';
         if($this->get('key') !== NULL){
@@ -370,8 +370,8 @@ class Reference extends REST_Controller
     public function vehicles_get()
     {
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         $position_list = $this->mvehicle->vehicle_list($this->get('start'), $this->get('limit'),$sortingField,$sortingDir);
         $this->response($position_list, 200);

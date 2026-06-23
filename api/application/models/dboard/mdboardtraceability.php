@@ -5512,9 +5512,9 @@ class Mdboardtraceability extends CI_Model
         }
 
         @$org = $this->db->query("SELECT * FROM view_tc_supplychain_staff vss LEFT JOIN ktv_tc_supplychain_org kso ON kso.SupplychainID=vss.SupplychainID WHERE vss.UserID=?", array($_SESSION['userid']))->row_array(0);
-        $SupplychainID = $org['SupplychainID'];
-        $AccessBy = $org['AccessBy'];
-        $PartnerID = $org['PartnerID'];
+        $SupplychainID = isset($org['SupplychainID']) ? $org['SupplychainID'] : null;
+        $AccessBy = isset($org['AccessBy']) ? $org['AccessBy'] : '';
+        $PartnerID = isset($org['PartnerID']) ? $org['PartnerID'] : null;
         
         if($AccessBy=='district'){
 
@@ -5975,9 +5975,9 @@ class Mdboardtraceability extends CI_Model
         //echo "<pre>".print_r($get, 1);       
         //echo "<pre>".print_r($_SESSION, 1);  
         @$org = $this->db->query("SELECT * FROM view_tc_supplychain_org vtso WHERE vtso.PartnerID=? AND vtso.ObjType = 'mill'", array($_SESSION['PartnerID']))->row_array(0);
-        $SupplychainID = $org['SupplychainID'];
-        $AccessBy = $org['AccessBy'];
-        $PartnerID = $org['PartnerID'];
+        $SupplychainID = isset($org['SupplychainID']) ? $org['SupplychainID'] : null;
+        $AccessBy = isset($org['AccessBy']) ? $org['AccessBy'] : '';
+        $PartnerID = isset($org['PartnerID']) ? $org['PartnerID'] : null;
         if(intval($get['district']) > 0){
             $dis1 = ""; $dis2 = "";
         }else{

@@ -30,8 +30,8 @@ class Polygon_over extends REST_Controller
 
     public function grid_main_get() {
         $sorting      = json_decode($this->get('sort'));
-        if (isset($sorting[0]->property)) $sortingField = $sorting[0]->property; else $sortingField = null;
-        if (isset($sorting[0]->direction)) $sortingDir = $sorting[0]->direction; else $sortingDir = null;
+        if (isset($sorting[0]->property)) $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : ''; else $sortingField = null;
+        if (isset($sorting[0]->direction)) $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : ''; else $sortingDir = null;
         $start        = (int) $this->get('start');
         $limit        = (int) $this->get('limit');
 
@@ -41,8 +41,8 @@ class Polygon_over extends REST_Controller
 
     public function add_polygon_grid_get() {
         $sorting      = json_decode($this->get('sort'));
-        if (isset($sorting[0]->property)) $sortingField = $sorting[0]->property; else $sortingField = null;
-        if (isset($sorting[0]->direction)) $sortingDir = $sorting[0]->direction; else $sortingDir = null;
+        if (isset($sorting[0]->property)) $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : ''; else $sortingField = null;
+        if (isset($sorting[0]->direction)) $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : ''; else $sortingDir = null;
         $start        = (int) $this->get('start');
         $limit        = (int) $this->get('limit');
 
@@ -59,8 +59,8 @@ class Polygon_over extends REST_Controller
 
     public function polygon_compare_grid_get() {
         $sorting      = json_decode($this->get('sort'));
-        if (isset($sorting[0]->property)) $sortingField = $sorting[0]->property; else $sortingField = null;
-        if (isset($sorting[0]->direction)) $sortingDir = $sorting[0]->direction; else $sortingDir = null;
+        if (isset($sorting[0]->property)) $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : ''; else $sortingField = null;
+        if (isset($sorting[0]->direction)) $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : ''; else $sortingDir = null;
         $start        = (int) $this->get('start');
         $limit        = (int) $this->get('limit');
 

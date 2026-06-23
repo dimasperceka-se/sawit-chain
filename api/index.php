@@ -18,7 +18,7 @@ include_once './vendor/autoload.php';
  * NOTE: If you change these, also change the error_reporting() code below
  *
  */
-	define('ENVIRONMENT', 'testing');
+	define('ENVIRONMENT', 'development');
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
@@ -34,13 +34,16 @@ if (defined('ENVIRONMENT'))
 	{
 		case 'development':
 			error_reporting(E_ALL);
+			ini_set('display_errors', 1);
 		break;
 
 		case 'testing': 
 			error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+			ini_set('display_errors', 0);
 		break;
 		case 'production':
 			error_reporting(0);
+			ini_set('display_errors', 0);
 		break;
 
 		default:

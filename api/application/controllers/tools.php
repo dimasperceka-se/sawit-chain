@@ -211,11 +211,11 @@ class Tools extends REST_Controller {
         //sort
         $sorting = json_decode($this->get('sort'));
         if (isset($sorting[0]->property))
-            $sortingField = $sorting[0]->property;
+            $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
         else
             $sortingField = null;
         if (isset($sorting[0]->direction))
-            $sortingDir = $sorting[0]->direction;
+            $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
         else
             $sortingDir = null;
 
@@ -1267,8 +1267,8 @@ class Tools extends REST_Controller {
     public function widget_select_member_get() {
         //sort
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         //get param
         $pSearch = array(

@@ -127,8 +127,8 @@ class Mtraceability_maps extends CI_Model {
 						g.FarmerID,
 						g.Latitude AS latitude, 
 						g.Longitude AS longitude
-						/*ST_Latitude(g.LatLong) AS latitude, 
-						ST_Longitude(g.LatLong) AS longitude*/
+						/*ST_Y(g.LatLong) AS latitude, 
+						ST_X(g.LatLong) AS longitude*/
 					FROM
 						`ktv_cocoa_farmer_garden_status` g
 					WHERE
@@ -475,8 +475,8 @@ class Mtraceability_maps extends CI_Model {
 							g.FarmerID,
 							g.Latitude AS latitude, 
 							g.Longitude AS longitude
-							/*ST_Latitude(g.LatLong) AS latitude, 
-							ST_Longitude(g.LatLong) AS longitude*/
+							/*ST_Y(g.LatLong) AS latitude, 
+							ST_X(g.LatLong) AS longitude*/
 						FROM
 							`ktv_cocoa_farmer_garden_status` g
 						WHERE
@@ -579,8 +579,8 @@ class Mtraceability_maps extends CI_Model {
 					'Farmer Not Selling' AS Tipe,
 					'' AS LatitudeParent,
 					'' AS LongitudeParent
-					/*ST_Latitude(g.LatLong) AS latitude, 
-					ST_Longitude(g.LatLong) AS longitude*/
+					/*ST_Y(g.LatLong) AS latitude, 
+					ST_X(g.LatLong) AS longitude*/
 				FROM
 					`ktv_cocoa_farmer_garden_status` g
 					LEFT JOIN ktv_cocoa_farmer f ON f.FarmerID=g.FarmerID

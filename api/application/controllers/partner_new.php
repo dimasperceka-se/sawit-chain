@@ -426,9 +426,9 @@ class Partner_new extends REST_Controller {
 
     public function grid_group_access_area_post(){
         $sorting      = json_decode($this->post('sort'));
-        if (isset($sorting[0]->property)) $sortingField = $sorting[0]->property;
+        if (isset($sorting[0]->property)) $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
         else $sortingField = null;
-        if (isset($sorting[0]->direction)) $sortingDir = $sorting[0]->direction;
+        if (isset($sorting[0]->direction)) $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
         else $sortingDir = null;
         $start        = (int) $this->post('start');
         $limit        = (int) $this->post('limit');

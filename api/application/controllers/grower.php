@@ -93,7 +93,7 @@ class Grower extends REST_Controller {
 
     public function grid_main_get() {
         //set bahasa
-        if ($_SESSION['language'] == "Indonesia") {
+        if (isset($_SESSION['language']) && $_SESSION['language'] == "Indonesia") {
             $this->load->language('general', 'indonesia');
         } else {
             $this->load->language('general', 'english');
@@ -101,8 +101,8 @@ class Grower extends REST_Controller {
 
         //sort
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         //get param
         $pSearch = array(
@@ -152,7 +152,7 @@ class Grower extends REST_Controller {
     public function grid_mill_main_get() {
         ini_set('max_execution_time', '0');
         //set bahasa
-        if ($_SESSION['language'] == "Indonesia") {
+        if (isset($_SESSION['language']) && $_SESSION['language'] == "Indonesia") {
             $this->load->language('general', 'indonesia');
         } else {
             $this->load->language('general', 'english');
@@ -160,8 +160,8 @@ class Grower extends REST_Controller {
 
         //sort
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         //get param
         $this->load->model('dboard/mpro_supplychain_kpi');
@@ -631,7 +631,7 @@ class Grower extends REST_Controller {
 
     public function grid_main_sme_get(){
         //set bahasa
-        if ($_SESSION['language'] == "Indonesia") {
+        if (isset($_SESSION['language']) && $_SESSION['language'] == "Indonesia") {
             $this->load->language('general', 'indonesia');
         } else {
             $this->load->language('general', 'english');
@@ -639,8 +639,8 @@ class Grower extends REST_Controller {
 
         //sort
         $sorting = json_decode($this->get('sort'));
-        $sortingField = $sorting[0]->property;
-        $sortingDir = $sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         //get param
         $pSearch = array(
@@ -711,7 +711,7 @@ class Grower extends REST_Controller {
 
     public function grid_family_labour_get() {
         //set bahasa
-        if ($_SESSION['language'] == "Indonesia") {
+        if (isset($_SESSION['language']) && $_SESSION['language'] == "Indonesia") {
             $this->load->language('general', 'indonesia');
         } else {
             $this->load->language('general', 'english');
@@ -765,7 +765,7 @@ class Grower extends REST_Controller {
 
     public function grid_plot_status_get() {
         //set bahasa
-        if ($_SESSION['language'] == "Indonesia") {
+        if (isset($_SESSION['language']) && $_SESSION['language'] == "Indonesia") {
             $this->load->language('general', 'indonesia');
         } else {
             $this->load->language('general', 'english');
@@ -801,7 +801,7 @@ class Grower extends REST_Controller {
         $this->load->model('document_survey/mdocument_survey');
         $this->load->helper('date');
 
-        if ($_SESSION['language'] == "Indonesia") {
+        if (isset($_SESSION['language']) && $_SESSION['language'] == "Indonesia") {
             $this->load->language('general', 'indonesia');
         } else {
             $this->load->language('general', 'english');
@@ -854,7 +854,7 @@ class Grower extends REST_Controller {
         $this->load->model('document_survey/mdocument_survey');
         $this->load->helper('date');
 
-        if ($_SESSION['language'] == "Indonesia") {
+        if (isset($_SESSION['language']) && $_SESSION['language'] == "Indonesia") {
             $this->load->language('general', 'indonesia');
         } else {
             $this->load->language('general', 'english');
@@ -900,7 +900,7 @@ class Grower extends REST_Controller {
 
     public function grid_other_land_get() {
         //set bahasa
-        if ($_SESSION['language'] == "Indonesia") {
+        if (isset($_SESSION['language']) && $_SESSION['language'] == "Indonesia") {
             $this->load->language('general', 'indonesia');
         } else {
             $this->load->language('general', 'english');
@@ -946,7 +946,7 @@ class Grower extends REST_Controller {
 
     public function grid_labour_get(){
         //set bahasa
-        if ($_SESSION['language'] == "Indonesia") {
+        if (isset($_SESSION['language']) && $_SESSION['language'] == "Indonesia") {
             $this->load->language('general', 'indonesia');
         } else {
             $this->load->language('general', 'english');
@@ -1000,20 +1000,34 @@ class Grower extends REST_Controller {
 
     public function cetak_agent_profiles_get(){
         //set bahasa
-        if ($_SESSION['language'] == "Indonesia") {
+        if (isset($_SESSION['language']) && $_SESSION['language'] == "Indonesia") {
             $this->load->language('general', 'indonesia');
         } else {
             $this->load->language('general', 'english');
         }
 
         //get param
-        $MemberID = $this->get('MemberID');
+        $MemberID = trim((string) $this->get('MemberID'));
+        if ($MemberID === '') {
+            // support URL path style: /grower/cetak_agent_profiles/MemberID/136711
+            if ($this->uri->segment(3) === 'MemberID') {
+                $MemberID = trim((string) $this->uri->segment(4));
+            } elseif (is_numeric($this->uri->segment(3))) {
+                $MemberID = trim((string) $this->uri->segment(3));
+            }
+        }
+
+        if ($MemberID === '') {
+            show_error('MemberID is required for cetak_agent_profiles', 400);
+            return;
+        }
+
         $MemberIDs = explode('::', $MemberID);
 
         $dataHeader['titleNya'] = "SME Profile";
         $this->load->view('profiles/cetak_agent_profiles_header', $dataHeader);
 
-        if (strpos($MemberID, '::')) {
+        if (strpos($MemberID, '::') !== false) {
             $countData = count($MemberIDs);
             $increData = 1;
             foreach ($MemberIDs as $key => $MemberID) {
@@ -1033,6 +1047,11 @@ class Grower extends REST_Controller {
 
         //get data agent
         $dataMember = $this->mgrower->getMemberDataDetail($MemberID);
+        if (empty($dataMember['data'])) {
+            show_error('Agent data not found for MemberID ' . $MemberID, 404);
+            return;
+        }
+
         $data['agent'] = $dataMember['data'];
         $data['gardens'] = $this->mgrower->getGardenData($MemberID);
         $data['gardens_polygon'] = $this->mgrower->getGardenPolygonData($data['gardens']);
@@ -1054,10 +1073,13 @@ class Grower extends REST_Controller {
 
         //logo
         $this->load->model('project_process/mproject_process');
-        $DistrictID = substr($data['agent']['VillageID'], 0,4);
+        $DistrictID = substr($data['agent']['VillageID'] ?? '', 0, 4);
         // $data['logos'] = $this->mproject_process->getPrintLogoHeader($DistrictID);
         $data['logos'] = $this->mproject_process->getPrintLogoHeaderFarmerNew($MemberID);
-        $data['qrcode_pic']     = $this->QrcodeGenerator($data['agent']['MemberDisplayID']);
+        $data['qrcode_pic'] = '';
+        if (!empty($data['agent']['MemberDisplayID'])) {
+            $data['qrcode_pic'] = $this->QrcodeGenerator($data['agent']['MemberDisplayID']);
+        }
 
         $data['ffb'] = $this->mgrower->getFFBSales($MemberID);
         $data['traceability_details'] = $this->mgrower->getTraceabilityDetails($MemberID);
@@ -1067,24 +1089,28 @@ class Grower extends REST_Controller {
     }
 
     public function QrcodeGenerator($FarmerID) {
-        $file_code = 'files/tmp/' . $FarmerID . '.png';
-        $qrCode = new QrCode($FarmerID);
-        $qrCode->setSize(175);
-        $qrCode->setEncoding('UTF-8');
-        $qrCode->setErrorCorrectionLevel(new ErrorCorrectionLevel(ErrorCorrectionLevel::HIGH));
-        $qrCode->setLogoPath('images/koltiva_logo_qrcode.jpg');
-        $qrCode->setLogoSize(48);
-        $qrCode->setRoundBlockSize(true);
-        $qrCode->setValidateResult(false);
-        $qrCode->setWriterOptions(['exclude_xml_declaration' => true]);
-        $qrCode->writeFile($file_code);
-
-        $path = '';
-        if (file_exists('files/tmp/' . $FarmerID . '.png')) {
-            $path = 'files/tmp/' . $FarmerID . '.png';
+        $tmpDir = 'files/tmp';
+        if (!is_dir($tmpDir)) {
+            @mkdir($tmpDir, 0777, true);
         }
 
-        return $path;
+        $file_code = $tmpDir . '/' . preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $FarmerID) . '.png';
+        try {
+            $qrCode = new QrCode($FarmerID);
+            $qrCode->setSize(175);
+            $qrCode->setEncoding('UTF-8');
+            $qrCode->setErrorCorrectionLevel(new ErrorCorrectionLevel(ErrorCorrectionLevel::HIGH));
+            $qrCode->setLogoPath('images/sawitchain-favicon.png');
+            $qrCode->setLogoSize(48);
+            $qrCode->setRoundBlockSize(true);
+            $qrCode->setValidateResult(false);
+            $qrCode->setWriterOptions(['exclude_xml_declaration' => true]);
+            $qrCode->writeFile($file_code);
+        } catch (Exception $e) {
+            return '';
+        }
+
+        return file_exists($file_code) ? $file_code : '';
     }
 
     /*================================================== Export Excel ==========================================================================*/
@@ -1092,7 +1118,7 @@ class Grower extends REST_Controller {
         ini_set('memory_limit', -1);
         ini_set('max_execution_time', 0);
         //set bahasa
-        if ($_SESSION['language'] == "Indonesia") {
+        if (isset($_SESSION['language']) && $_SESSION['language'] == "Indonesia") {
             $this->load->language('general', 'indonesia');
         } else {
             $this->load->language('general', 'english');
@@ -1324,7 +1350,7 @@ class Grower extends REST_Controller {
         ini_set('memory_limit', -1);
         ini_set('max_execution_time', 0);
         //set bahasa
-        if ($_SESSION['language'] == "Indonesia") {
+        if (isset($_SESSION['language']) && $_SESSION['language'] == "Indonesia") {
             $this->load->language('general', 'indonesia');
         } else {
             $this->load->language('general', 'english');
@@ -1560,7 +1586,7 @@ class Grower extends REST_Controller {
         ini_set('memory_limit', -1);
         ini_set('max_execution_time', 0);
         //set bahasa
-        if ($_SESSION['language'] == "Indonesia") {
+        if (isset($_SESSION['language']) && $_SESSION['language'] == "Indonesia") {
             $this->load->language('general', 'indonesia');
         } else {
             $this->load->language('general', 'english');
@@ -1969,7 +1995,7 @@ class Grower extends REST_Controller {
 
     public function grid_family_labour_postline_get() {
         //set bahasa
-        if ($_SESSION['language'] == "Indonesia") {
+        if (isset($_SESSION['language']) && $_SESSION['language'] == "Indonesia") {
             $this->load->language('general', 'indonesia');
         } else {
             $this->load->language('general', 'english');
@@ -1993,7 +2019,7 @@ class Grower extends REST_Controller {
 
     public function grid_labour_postline_get(){
         //set bahasa
-        if ($_SESSION['language'] == "Indonesia") {
+        if (isset($_SESSION['language']) && $_SESSION['language'] == "Indonesia") {
             $this->load->language('general', 'indonesia');
         } else {
             $this->load->language('general', 'english');

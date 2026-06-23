@@ -11,8 +11,8 @@ class Report_transaction extends REST_Controller {
 	
 	public function fetch_get(){
         $sorting = json_decode($this->get('sort'));
-        $sortingField = @$sorting[0]->property;
-        $sortingDir = @$sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 		
 		$InputForm = $this->get(NULL);  
         $data = $this->_model->get_data( $InputForm, $this->get('start'),$this->get('limit'),$sortingField,$sortingDir);

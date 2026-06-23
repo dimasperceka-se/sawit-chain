@@ -444,6 +444,168 @@ class Sme extends REST_Controller {
         }
     }
 
+    public function export_farmers_by_supplier_get() {
+        if (isset($_SESSION['language']) && $_SESSION['language'] == "Indonesia") {
+            $this->load->language('general', 'indonesia');
+        } else {
+            $this->load->language('general', 'english');
+        }
+
+        $pSearch = array(
+            'prov'              => $this->get('prov'),
+            'kab'               => $this->get('kab'),
+            'kec'               => $this->get('kec'),
+            'textSearch'        => $this->get('textSearch'),
+            'textSearchDesa'    => $this->get('textSearchDesa'),
+            'roleSearch'        => $this->get('roleSearch'),
+            'AdvRowHandphone'   => $this->get('AdvRowHandphone'),
+            'AdvTextHandphone'  => $this->get('AdvTextHandphone'),
+            'AdvRowAge'         => $this->get('AdvRowAge'),
+            'AdvOpAge'          => $this->get('AdvOpAge'),
+            'AdvTextAge'        => $this->get('AdvTextAge'),
+        );
+
+        $dataList       = $this->msme_mem->getFarmersBySupplierExcel($pSearch);
+        $dataListGarden = $this->msme_mem->getFarmersBySupplierGardenExcel($pSearch);
+
+        $mem_ini = ini_get('memory_limit');
+        ini_set('memory_limit', '1048576M');
+
+        // Sheet 1: Farmer summary headers
+        $dataHeader = array('No.');
+        $dataHeader[] = lang('Supplier ID');
+        $dataHeader[] = lang('Company Name');
+        $dataHeader[] = lang('Supplier Name');
+        $dataHeader[] = lang('Alias');
+        $dataHeader[] = lang('Farmer ID');
+        $dataHeader[] = lang('Farmer Name');
+        $dataHeader[] = lang('Garden Total');
+        $dataHeader[] = lang('Total Area (Ha)');
+        $dataHeader[] = lang('Birth Date');
+        $dataHeader[] = lang('NIK');
+        $dataHeader[] = lang('Handphone');
+        $dataHeader[] = lang('Province');
+        $dataHeader[] = lang('District');
+        $dataHeader[] = lang('Sub District');
+        $dataHeader[] = lang('Village');
+        $dataHeader[] = lang('Latitude');
+        $dataHeader[] = lang('Longitude');
+
+        // Sheet 2: Garden detail headers
+        $dataHeaderGarden = array('No.');
+        $dataHeaderGarden[] = lang('Supplier ID');
+        $dataHeaderGarden[] = lang('Company Name');
+        $dataHeaderGarden[] = lang('Supplier Name');
+        $dataHeaderGarden[] = lang('Alias');
+        $dataHeaderGarden[] = lang('Farmer ID');
+        $dataHeaderGarden[] = lang('Farmer Name');
+        $dataHeaderGarden[] = lang('Garden Nr');
+        $dataHeaderGarden[] = lang('Garden Area (Ha)');
+        $dataHeaderGarden[] = lang('First Planting Year');
+        $dataHeaderGarden[] = lang('Year Planting Current');
+        $dataHeaderGarden[] = lang('Soil Type');
+        $dataHeaderGarden[] = lang('Ownership Document');
+        $dataHeaderGarden[] = lang('Annual Production');
+        $dataHeaderGarden[] = lang('Plantation Productivity');
+        $dataHeaderGarden[] = lang('Province');
+        $dataHeaderGarden[] = lang('District');
+        $dataHeaderGarden[] = lang('Sub District');
+        $dataHeaderGarden[] = lang('Village');
+        $dataHeaderGarden[] = lang('Latitude');
+        $dataHeaderGarden[] = lang('Longitude');
+
+        $dataListExcel = array();
+        foreach ($dataList as $key => $value) {
+            $dataListExcel[$key][] = $key + 1;
+            $dataListExcel[$key][] = $value['SMEID'];
+            $dataListExcel[$key][] = $value['SMECompanyName'];
+            $dataListExcel[$key][] = $value['SMEName'];
+            $dataListExcel[$key][] = $value['SMEAlias'];
+            $dataListExcel[$key][] = $value['FarmerID'];
+            $dataListExcel[$key][] = $value['FarmerName'];
+            $dataListExcel[$key][] = $value['GardenNr'];
+            $dataListExcel[$key][] = $value['GardenAreaHa'];
+            $dataListExcel[$key][] = $value['DateOfBirth'];
+            $dataListExcel[$key][] = $value['Nin'];
+            $dataListExcel[$key][] = $value['Handphone'];
+            $dataListExcel[$key][] = $value['Province'];
+            $dataListExcel[$key][] = $value['District'];
+            $dataListExcel[$key][] = $value['SubDistrict'];
+            $dataListExcel[$key][] = $value['Village'];
+            $dataListExcel[$key][] = $value['Latitude'];
+            $dataListExcel[$key][] = $value['Longitude'];
+        }
+
+        $dataListExcelGarden = array();
+        foreach ($dataListGarden as $key => $value) {
+            $dataListExcelGarden[$key][] = $key + 1;
+            $dataListExcelGarden[$key][] = $value['SMEID'];
+            $dataListExcelGarden[$key][] = $value['SMECompanyName'];
+            $dataListExcelGarden[$key][] = $value['SMEName'];
+            $dataListExcelGarden[$key][] = $value['SMEAlias'];
+            $dataListExcelGarden[$key][] = $value['FarmerID'];
+            $dataListExcelGarden[$key][] = $value['FarmerName'];
+            $dataListExcelGarden[$key][] = $value['PlotNr'];
+            $dataListExcelGarden[$key][] = $value['GardenAreaHa'];
+            $dataListExcelGarden[$key][] = $value['FirstPlantingYear'];
+            $dataListExcelGarden[$key][] = $value['YearPlantingCurrent'];
+            $dataListExcelGarden[$key][] = $value['SoilType'];
+            $dataListExcelGarden[$key][] = $value['OwnershipDocument'];
+            $dataListExcelGarden[$key][] = $value['AnnualProduction'];
+            $dataListExcelGarden[$key][] = $value['PlantationProductivity'];
+            $dataListExcelGarden[$key][] = $value['Province'];
+            $dataListExcelGarden[$key][] = $value['District'];
+            $dataListExcelGarden[$key][] = $value['SubDistrict'];
+            $dataListExcelGarden[$key][] = $value['Village'];
+            $dataListExcelGarden[$key][] = $value['Latitude'];
+            $dataListExcelGarden[$key][] = $value['Longitude'];
+        }
+
+        $writer = WriterFactory::create(Type::XLSX);
+        $writer->setTempFolder('files/tmp/');
+        $namaFile = date('YmdHis') . '_export_farmers_by_supplier.xlsx';
+        $filePath = 'files/tmp/' . $namaFile;
+
+        $defaultStyle = (new StyleBuilder())
+            ->setFontName('Arial')
+            ->setFontSize(10)
+            ->setShouldWrapText(false)
+            ->build();
+        $writer->setDefaultRowStyle($defaultStyle)->openToFile($filePath);
+
+        $borderDefa = (new BorderBuilder())
+            ->setBorderBottom(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+            ->setBorderTop(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+            ->setBorderRight(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+            ->setBorderLeft(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+            ->build();
+
+        $styleHeader = (new StyleBuilder())
+            ->setFontBold()
+            ->setBorder($borderDefa)
+            ->setBackgroundColor(Color::LIGHT_BLUE)
+            ->build();
+
+        $styleData = (new StyleBuilder())
+            ->setBorder($borderDefa)
+            ->build();
+
+        // Sheet 1: Farmer summary
+        $writer->getCurrentSheet()->setName(lang('Farmer'));
+        $writer->addRowWithStyle($dataHeader, $styleHeader);
+        $writer->addRowsWithStyle($dataListExcel, $styleData);
+
+        // Sheet 2: Garden detail
+        $writer->addNewSheetAndMakeItCurrent()->setName(lang('Garden'));
+        $writer->addRowWithStyle($dataHeaderGarden, $styleHeader);
+        $writer->addRowsWithStyle($dataListExcelGarden, $styleData);
+
+        $writer->close();
+        ini_set('memory_limit', $mem_ini);
+        $this->load->helper('download');
+        force_download($filePath, null);
+    }
+
     public function grid_main_get(){
         //set bahasa
         if($_SESSION['language'] == "Indonesia"){
@@ -454,8 +616,8 @@ class Sme extends REST_Controller {
         
         //sort
         $sorting = json_decode($this->get('sort'));
-        $sortingField = @$sorting[0]->property;
-        $sortingDir = @$sorting[0]->direction;
+        $sortingField = isset($sorting[0]->property) ? $sorting[0]->property : '';
+        $sortingDir = isset($sorting[0]->direction) ? $sorting[0]->direction : '';
 
         //get param
         $pSearch = array(
