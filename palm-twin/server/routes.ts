@@ -1,11 +1,43 @@
 import type { Express } from "express";
 import { type Server } from "http";
+import https from "https";
 import { pool } from "./db";
 
 export async function registerRoutes(
   _httpServer: Server,
   app: Express
 ): Promise<void> {
+  // ---- KLHK Kawasan Hutan tile proxy ----
+  // geoportal.menlhk.go.id serves an untrusted TLS certificate that browsers
+  // reject, so we fetch its ArcGIS tiles server-side (cert verification off)
+  // and re-serve them from our own valid-HTTPS origin. Everything after /klhk
+  // (incl. query string) is forwarded as-is.
+  const klhkAgent = new https.Agent({ rejectUnauthorized: false });
+  app.get(/^\/klhk\//, (req, res) => {
+    const upstreamPath = req.originalUrl.replace(/^\/klhk/, "");
+    const proxyReq = https.request(
+      {
+        hostname: "geoportal.menlhk.go.id",
+        port: 443,
+        path: upstreamPath,
+        method: "GET",
+        agent: klhkAgent,
+        headers: { "User-Agent": "palm-twin", Accept: "image/png,image/*,*/*" },
+      },
+      (up) => {
+        res.status(up.statusCode || 502);
+        const ct = up.headers["content-type"];
+        if (ct) res.setHeader("Content-Type", ct as string);
+        res.setHeader("Cache-Control", "public, max-age=86400");
+        up.pipe(res);
+      }
+    );
+    proxyReq.on("error", (e) =>
+      res.status(502).json({ error: `KLHK proxy failed: ${e.message}` })
+    );
+    proxyReq.end();
+  });
+
   // Login — validates against server-side env (AUTH_EMAIL / AUTH_PASSWORD).
   // Credentials never live in the client bundle or the repo.
   app.post("/api/login", (req, res) => {
