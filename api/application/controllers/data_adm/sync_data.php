@@ -54,7 +54,6 @@ class Sync_data extends REST_Controller {
             $result["error"] = "UserName not found";
             $this->response($result, 400);
         }
-
         
         $arrParams = array($ProgramUid, $DateTimeFilter, $UserName, $ExtUid);
         

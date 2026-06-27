@@ -55,6 +55,14 @@ $route['monitoring/sync-data']                  = 'mobile_monitoring/sync_monito
 $route['monitoring/upload-data']                = 'mobile_monitoring/sync_upload';
 
 /**
+ * Route untuk sync event mobile (synchronous, tanpa kafka/async)
+ */
+$route['sync-event/login']                      = 'data_adm/sync_event/login';
+$route['sync-event/sync']                       = 'data_adm/sync_event/sync';
+$route['sync-event/send-to-mobile']             = 'data_adm/sync_event/send_to_mobile';
+$route['sync-event/build-view']                 = 'data_adm/sync_event/build_view';
+
+/**
  * Route untuk mobile traceability
  */
 $route['auth-traceability/login']               = 'mobile_auth/login';
