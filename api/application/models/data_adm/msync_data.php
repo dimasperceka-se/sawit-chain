@@ -106,10 +106,12 @@ class Msync_data extends CI_Model {
             mw_program as a
         where
             a.Status = 1
-            --filter--";
+            --filter--
+        ";
         $sqlprograms = str_replace('--filter--',$filter,$sqlprograms);
         $queryprograms = $this->db->query($sqlprograms);
-        if($queryprograms->num_rows() > 0){
+        
+        if($queryprograms->num_rows() > 0) {
             $resprograms = $queryprograms->result_array();
             $result["DateTimeFilter"] = $DateTimeFilter;
             $result["DttmFilter"] = $resgetdatetime[0]["DttmFilter"];
@@ -117,7 +119,7 @@ class Msync_data extends CI_Model {
             $result["lastTimestamp"] = $resgetdatetime[0]["lastTimestamp"];
             $result["lastDttm"] = $resgetdatetime[0]["lastDttm"];
             $records = [];
-            foreach($resprograms as $rows => $cols){
+            foreach($resprograms as $rows => $cols) {
 
                 //add program keys
                 $result['rows'][$cols["uid"]] = [];
@@ -246,8 +248,8 @@ class Msync_data extends CI_Model {
         $count = 0;
         $farmers = [];
 
-        //check for assigned farmers
-        $sql = "SELECT DISTINCT
+        //check for assigned farmers (jalur akses partner) - dipakai sbg fallback
+        $sqlPartnerAccess = "SELECT DISTINCT
             a.apmMemberID id
         FROM
             ktv_access_partner_member a
@@ -278,15 +280,18 @@ class Msync_data extends CI_Model {
                 LEFT JOIN sys_user e ON e.UserId = d.UserID
                 WHERE e.UserName = ?
             )";
-        
-        //override, di ubah default nya berdasarkan farmer assignment
-        $sql = "SELECT DISTINCT ksas.MemberID id FROM ktv_staffs_assignment_member ksas  
-        INNER JOIN ktv_staffs_assignment ksa ON ksa.StaffAssignmentID = ksas.StaffAssignmentID 
-        INNER JOIN ktv_staffs ks ON ks.StaffID = ksa.StaffID 
-        INNER JOIN ktv_persons p ON p.PersonID = ks.PersonID 
-        INNER JOIN sys_user u ON u.UserId = p.UserID 
+
+        //override, default berdasarkan farmer assignment
+        $sql = "SELECT DISTINCT ksas.MemberID id FROM ktv_staffs_assignment_member ksas
+        INNER JOIN ktv_staffs_assignment ksa ON ksa.StaffAssignmentID = ksas.StaffAssignmentID
+        INNER JOIN ktv_staffs ks ON ks.StaffID = ksa.StaffID
+        INNER JOIN ktv_persons p ON p.PersonID = ks.PersonID
+        INNER JOIN sys_user u ON u.UserId = p.UserID
         WHERE ksa.StatusCode = 'active' AND u.UserName = ?";
-        
+
+        //tandai default farmer (assignment) supaya bisa fallback ke partner access
+        $sqlAssignmentDefault = $sql;
+
         if($ProgramUid == 'HBoMDtZ4PlN'){ // sme
             $sql = "
             SELECT DISTINCT
@@ -483,6 +488,12 @@ class Msync_data extends CI_Model {
         $exec = $this->db->query($sql,[$username,$username,$username]);
 
         $count = $exec->num_rows();
+
+        //fallback: jika default farmer (assignment) kosong, pakai jalur akses partner
+        if($count == 0 && $sql == $sqlAssignmentDefault) {
+            $exec = $this->db->query($sqlPartnerAccess,[$username,$username,$username]);
+            $count = $exec->num_rows();
+        }
 
         if($count > 0) {
             $results = $exec->result_array();
