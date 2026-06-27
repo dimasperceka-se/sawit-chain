@@ -915,7 +915,7 @@ Ext.define('Koltiva.view.Mill.FormMainMill' ,{
                                         layout:'form',
                                         style:'padding-right:25px;',
                                         items: [{
-                                                fieldLabel: lang('Participate in Program KSATRIA SAWIT'),
+                                                fieldLabel: lang('Participate in Program'),
                                                 labelAlign:'top',
                                                 xtype: 'radiogroup',
                                                 msgTarget: 'side',

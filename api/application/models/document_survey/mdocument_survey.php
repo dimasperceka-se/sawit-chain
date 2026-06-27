@@ -30,55 +30,55 @@ class Mdocument_survey extends CI_Model {
         $arrReturn = array();
 
         //Project Background
-        $arrReturn[0]['DocNameID'] = 'ProjBg';
-        $arrReturn[0]['DocName'] = lang('Project Background');
-        $arrReturn[0]['Status'] = '-';
-        $arrReturn[0]['StatusId'] = '2';
-        $arrReturn[0]['FileAvail'] = 'No';
+        // $arrReturn[0]['DocNameID'] = 'ProjBg';
+        // $arrReturn[0]['DocName'] = lang('Project Background');
+        // $arrReturn[0]['Status'] = '-';
+        // $arrReturn[0]['StatusId'] = '2';
+        // $arrReturn[0]['FileAvail'] = 'No';
 
         //Consent Notes
-        $arrReturn[1]['DocNameID'] = 'ConNotes';
-        $arrReturn[1]['DocName'] = lang('Consent Notes');
-        $arrReturn[1]['StatusId'] = $data['ConsentStatus'];
+        $arrReturn[0]['DocNameID'] = 'ConNotes';
+        $arrReturn[0]['DocName'] = lang('Consent Notes');
+        $arrReturn[0]['StatusId'] = $data['ConsentStatus'];
         if($data['ConsentStatus'] == "1"){
+            $arrReturn[0]['Status'] = lang('Yes');
+        }else{
+            $arrReturn[0]['Status'] = lang('No');
+        }
+        if($data['ConsentFile'] != ""){
+            $arrReturn[0]['FileAvail'] = 'Yes';
+        }else{
+            $arrReturn[0]['FileAvail'] = 'No';
+        }
+
+        //RSPO Document
+        $arrReturn[1]['DocNameID'] = 'RSPODoc';
+        $arrReturn[1]['DocName'] = lang('RSPO Document');
+        $arrReturn[1]['StatusId'] = $data['WillingnesCommit'];
+        if($data['WillingnesCommit'] == "1"){
             $arrReturn[1]['Status'] = lang('Yes');
         }else{
             $arrReturn[1]['Status'] = lang('No');
         }
-        if($data['ConsentFile'] != ""){
+        if($data['WillingnesCommitSignature'] != ""){
             $arrReturn[1]['FileAvail'] = 'Yes';
         }else{
             $arrReturn[1]['FileAvail'] = 'No';
         }
 
-        //RSPO Document
-        $arrReturn[2]['DocNameID'] = 'RSPODoc';
-        $arrReturn[2]['DocName'] = lang('RSPO Document');
-        $arrReturn[2]['StatusId'] = $data['WillingnesCommit'];
-        if($data['WillingnesCommit'] == "1"){
+        //Withdrawal
+        $arrReturn[2]['DocNameID'] = 'Withdrawal';
+        $arrReturn[2]['DocName'] = lang('Withdrawal of Consent Notes');
+        $arrReturn[2]['StatusId'] = $data['WithdrawalConsentStatus'];
+        if($data['WithdrawalConsentStatus'] == "1"){
             $arrReturn[2]['Status'] = lang('Yes');
         }else{
             $arrReturn[2]['Status'] = lang('No');
         }
-        if($data['WillingnesCommitSignature'] != ""){
+        if($data['WithdrawalConsentFile'] != ""){
             $arrReturn[2]['FileAvail'] = 'Yes';
         }else{
             $arrReturn[2]['FileAvail'] = 'No';
-        }
-
-        //Withdrawal
-        $arrReturn[3]['DocNameID'] = 'Withdrawal';
-        $arrReturn[3]['DocName'] = lang('Withdrawal of Consent Notes');
-        $arrReturn[3]['StatusId'] = $data['WithdrawalConsentStatus'];
-        if($data['WithdrawalConsentStatus'] == "1"){
-            $arrReturn[3]['Status'] = lang('Yes');
-        }else{
-            $arrReturn[3]['Status'] = lang('No');
-        }
-        if($data['WithdrawalConsentFile'] != ""){
-            $arrReturn[3]['FileAvail'] = 'Yes';
-        }else{
-            $arrReturn[3]['FileAvail'] = 'No';
         }
 
         return $arrReturn;

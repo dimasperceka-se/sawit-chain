@@ -39,24 +39,7 @@ class Document_survey extends REST_Controller {
         $PartnerID = $this->mdocument_survey->CheckFarmerPartnerID($MemberID);
 
         $this->load->view('document_survey/cetak_proj_bg_template_header');
-        switch ($PartnerID) {
-            case '7':
-                //sinar mas
-                $this->load->view('document_survey/cetak_proj_bg_template_sinarmas', $data);
-            break;
-            case '11':
-                //snv
-                $this->load->view('document_survey/cetak_proj_bg_template_snv', $data);
-            break;
-            case '14':
-                //Wild Asia
-                $this->load->view('document_survey/cetak_proj_bg_template_wildasia', $data);
-            break;
-            default:
-                //unilever
-                $this->load->view('document_survey/cetak_proj_bg_template', $data);
-            break;
-        }
+        $this->load->view('document_survey/cetak_proj_bg_template', $data);
         $this->load->view('document_survey/cetak_proj_bg_template_footer');
     }
 
@@ -86,23 +69,7 @@ class Document_survey extends REST_Controller {
         }
 
         $this->load->view('document_survey/cetak_withdrawal_consent_notes_template_header');
-        switch ($PartnerID) {
-            case '7':
-                //Sinar Mas
-                $this->load->view('document_survey/cetak_withdrawal_consent_notes_template_sinarmas', $data);
-            break;
-            case '11':
-                //SNV
-                $this->load->view('document_survey/cetak_withdrawal_consent_notes_template_snv', $data);
-            break;
-            case '14':
-                //Wild Asia
-                $this->load->view('document_survey/cetak_withdrawal_consent_notes_template_wildasia', $data);
-            break;
-            default:
-                $this->load->view('document_survey/cetak_withdrawal_consent_notes_template', $data);
-            break;
-        }
+        $this->load->view('document_survey/cetak_withdrawal_consent_notes_template', $data);
         $this->load->view('document_survey/cetak_withdrawal_consent_notes_template_footer');
     }
 
