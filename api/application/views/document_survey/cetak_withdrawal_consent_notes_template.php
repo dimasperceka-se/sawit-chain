@@ -23,7 +23,7 @@
         <div id="containerSurat">
             <p>
                 <?php echo lang('Kepada')?> :<br />
-                PT Sawitchain<br />
+                PT SawitChain<br />
                 Jakarta
             </p>
 

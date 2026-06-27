@@ -15,8 +15,8 @@ if($this->config->item('url_gar') == $baseurlcheck) {
     <!-- Basic -->
     <meta charset="UTF-8">
 
-    <meta name="keywords" content="Palmoiltrace" />
-    <meta name="description" content="Palmoiltrace">
+    <meta name="keywords" content="SawitChain" />
+    <meta name="description" content="SawitChain">
     <meta name="author" content="okler.net">
 
     <!-- Mobile Metas -->
@@ -59,7 +59,7 @@ if($this->config->item('url_gar') == $baseurlcheck) {
         <div class="center-sign" style="padding-top:0px!important">
             <a href="#" class="logo pull-left" onclick="return false;">
                 <img src="https://app.palmoiltrace.com/assets/images/logo.png" height="48" style="margin-top: 6%;"
-                    alt="Palmoiltrace" />
+                    alt="SawitChain" />
             </a>
 
             <div class="panel panel-sign" style="margin-bottom:150px; width:750px;">
@@ -73,40 +73,40 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                     <p style="text-align: center;">Effective Date: 1 January 2021</p>
                     <p><strong>&nbsp;</strong></p>
                     <p>
-                        PT Sawitchain (The <strong>“Sawitchain”</strong> or <strong>“We”</strong>, <strong>“Us”</strong>, <strong>“Our”</strong>) has a high commitment to the protection of your data. Your data security (both personal data and other data that you entrust to us) is our main responsibility and priority.
+                        PT SawitChain (The <strong>“SawitChain”</strong> or <strong>“We”</strong>, <strong>“Us”</strong>, <strong>“Our”</strong>) has a high commitment to the protection of your data. Your data security (both personal data and other data that you entrust to us) is our main responsibility and priority.
                     </p>
                     <p>
-                    This Privacy Policy (The <strong>“Privacy”</strong>) governs how We collect and use your data when you operate PalmoilTrace Application from PT Sawitchain (The <strong> " PalmoilTrace Application" </strong>or <strong>" PalmoilTrace "</strong>).
+                    This Privacy Policy (The <strong>“Privacy”</strong>) governs how We collect and use your data when you operate SawitChain Application from PT SawitChain (The <strong> " SawitChain Application" </strong>or <strong>" SawitChain "</strong>).
                     </p>
                     <p>
-                        By logging in and accessing our PalmoilTrace Application, you have agreed and bound by the things contained in this policy. Therefore, we hope you read this Policy to ensure that you understand how we handle your data.
+                        By logging in and accessing our SawitChain Application, you have agreed and bound by the things contained in this policy. Therefore, we hope you read this Policy to ensure that you understand how we handle your data.
                     </p>
                     <p>
                         <strong>How We Collect Your Data</strong>
                     </p>
                     <p>
-                       Sawitchain is an integrated agricultural technology company that provides software solutions and services specifically made for end-to-end business processes. One of our products is PalmoilTrace. PalmoilTrace provides complete information about farmer data, agricultural and plantation data, Social, Environmental and Economic data obtained from data on Supply Chain farmers, data history and traceability regarding products that have been sold. When you use the PalmoilTrace Application, you directly or indirectly provide your data to Us that We will protect and use in the methods that is set in this Policy. We can collect your data in the form of:
+                       SawitChain is an integrated agricultural technology company that provides software solutions and services specifically made for end-to-end business processes. One of our products is SawitChain. SawitChain provides complete information about farmer data, agricultural and plantation data, Social, Environmental and Economic data obtained from data on Supply Chain farmers, data history and traceability regarding products that have been sold. When you use the SawitChain Application, you directly or indirectly provide your data to Us that We will protect and use in the methods that is set in this Policy. We can collect your data in the form of:
                     </p>
                     <ul>
                         <li>
-                           <i>Email</i> address and <i>username</i> to give your access to PalmoilTrace;
+                           <i>Email</i> address and <i>username</i> to give your access to SawitChain;
                         </li>
                         <li>
-                           Data that you enter when using the PalmoilTrace Application, such as:    
+                           Data that you enter when using the SawitChain Application, such as:    
                         </li>
                             <ul>
                                  <li>
                               Identity Information, Birth Date, and Telephone Number (“Personal Data”);
                                 </li>
                                 <li>
-                                    Photo (The choices that you enter into PalmoilTrace Application);
+                                    Photo (The choices that you enter into SawitChain Application);
                                 </li>
                                 <li>
                                     Estimation and Certified Location (GPS and network-based);
                                 </li>
                             </ul>
                         <li>
-                            Information about your device when accessing PalmoilTrace Application, such as:
+                            Information about your device when accessing SawitChain Application, such as:
                         </li>
                             <ul>
                                 <li>
@@ -123,10 +123,10 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                                 </li>
                             </ul>
                         <li>
-                        Impressions, messages, criticisms, and suggestions from You, talks through chat and other interactions in the PalmoilTrace Application; and / or
+                        Impressions, messages, criticisms, and suggestions from You, talks through chat and other interactions in the SawitChain Application; and / or
                         </li>
                         <li>
-                        All things that you do and data that you enter into the PalmoilTrace Application.
+                        All things that you do and data that you enter into the SawitChain Application.
                         </li>
                     </ul>
                     <br>
@@ -135,7 +135,7 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                     </p>
                     <ul>
                         <li>
-                            Accessing and Using PalmoilTrace
+                            Accessing and Using SawitChain
                         </li>
                         <li>
                             Send your impressions, messages, criticisms and suggestions;
@@ -144,19 +144,19 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                             Contact our support team; or
                         </li>
                         <li>
-                            Enter information in any form into PalmoilTrace Application
+                            Enter information in any form into SawitChain Application
                         </li>
                         <li>
-                            Signed the consent letter to give the data to Sawitchain;
+                            Signed the consent letter to give the data to SawitChain;
                         </li>
                     </ul>
                     <br>
                     <p>
-                       The data that You enter is Your own data that You think is right, and You are fully responsible for all data that You enter into our PalmoilTrace Application.
+                       The data that You enter is Your own data that You think is right, and You are fully responsible for all data that You enter into our SawitChain Application.
                     </p>
                     
                     <p>
-                    We will store Your data as long as You use Our PalmoilTrace Application and We will delete Your data after You no longer use Our PalmoilTrace Application or when you ask Us to delete it. As long as You use Our PalmoilTrace Application, Sawitchain can update the PalmoilTrace Application system that You use any time, and You need to know that the renewal activity of the PalmoilTrace Application can use Your internet costs.
+                    We will store Your data as long as You use Our SawitChain Application and We will delete Your data after You no longer use Our SawitChain Application or when you ask Us to delete it. As long as You use Our SawitChain Application, SawitChain can update the SawitChain Application system that You use any time, and You need to know that the renewal activity of the SawitChain Application can use Your internet costs.
                     </p>
                     
                     <p>
@@ -178,7 +178,7 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                     <br>
                     
                     <p><strong>Example of Using Your Data : </strong></p>
-                    <p>We can use any data that you enter into the PalmoilTrace Application, including but not limited to: </p>
+                    <p>We can use any data that you enter into the SawitChain Application, including but not limited to: </p>
                     <ul>
                         <li>
                             Processing Your Data, such as:
@@ -198,26 +198,26 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                             </li>
                         </ul>
                         <li>
-                            Inform the development of the PalmoilTrace Application, sales offer, and maintenance;
+                            Inform the development of the SawitChain Application, sales offer, and maintenance;
                         </li>
                         <li>
                             Informs how to correct any disturbances that you might face;
                         </li>
                         <li>
-                            Know the information about your visit to the PalmoilTrace Application, such as the time of visit and what you did during the visit.
+                            Know the information about your visit to the SawitChain Application, such as the time of visit and what you did during the visit.
                         </li>
                     </ul>
                     <br>
                     <p>We may also collect and use your data that cannot be identified personally, to:</p>
                     <ul>
                         <li>
-                        Optimizing and developing PalmoilTrace Application, Marketing, and others;
+                        Optimizing and developing SawitChain Application, Marketing, and others;
                         </li>
                         <li>
-                        See the effectiveness of the PalmoilTrace Application
+                        See the effectiveness of the SawitChain Application
                         </li>
                         <li>
-                        Find and resolve problems in the PalmoilTrace Application;
+                        Find and resolve problems in the SawitChain Application;
                         </li>
                         <li>
                         Detect, prevent and address technical issues the PalmOilTrace Application;
@@ -243,25 +243,25 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                     <li>
                             Data Encryption
                     </li>
-                        <p>In Our PalmoilTrace Application, all Your data is stored using the encryption method. We encrypt any data that can be known as the customer's property, including Your name & e-mail address.
+                        <p>In Our SawitChain Application, all Your data is stored using the encryption method. We encrypt any data that can be known as the customer's property, including Your name & e-mail address.
                         Like other systems, Your information security is very dependent on You. Choose a strong password (Our system can guide You to do this), and never tell or distribute it to others.
                         </p>
                     <li>
                         Securing your data when in transit and at rest
-                            <p>All communications between Sawitchain and You are encrypted using advanced encryption technologies such as HTTPS and Transport Layer Security (TLS), and We require this encryption technology is used for all communications. This technique is applied so even if someone tries to 'eavesdrop' on your communication, they will still not be able to decryption to steal Your data.
+                            <p>All communications between SawitChain and You are encrypted using advanced encryption technologies such as HTTPS and Transport Layer Security (TLS), and We require this encryption technology is used for all communications. This technique is applied so even if someone tries to 'eavesdrop' on your communication, they will still not be able to decryption to steal Your data.
                             </p>
                     </li>
                     
                     <li>
                             User Management
-                            <p>We establish very strict internal procedures to prevent employees or other Users from gaining access to Your account outside the limited data needed to provide the assistance You need or resolve problems. Sawitchain keeps records of all access that has been given, and We audit this record regularly to ensure Your security.
+                            <p>We establish very strict internal procedures to prevent employees or other Users from gaining access to Your account outside the limited data needed to provide the assistance You need or resolve problems. SawitChain keeps records of all access that has been given, and We audit this record regularly to ensure Your security.
                             </p>
                     </li>
                     </ul>
                  
                     <p><strong>Childs Privacy</strong></p>
-                    <p>PalmoilTrace application from Sawitchain does not allow to be used by Children under the age of 15.</p>
-                    <p>We do not always know that users of our PalmoilTrace Application are under 15 years old. If you are a parent and you know that the user of the PalmoilTrace application is your child, please contact us as soon as possible. If We know that the data that We have collected is data from children under the age and without verification from Parents, We will take steps to delete the data from Our system.</p>
+                    <p>SawitChain application from SawitChain does not allow to be used by Children under the age of 15.</p>
+                    <p>We do not always know that users of our SawitChain Application are under 15 years old. If you are a parent and you know that the user of the SawitChain application is your child, please contact us as soon as possible. If We know that the data that We have collected is data from children under the age and without verification from Parents, We will take steps to delete the data from Our system.</p>
                     <p><strong>Your Rights</strong></p>
                     <ul>
                         <li>
@@ -291,10 +291,10 @@ if($this->config->item('url_gar') == $baseurlcheck) {
                     <p>If there are questions about this Privacy or the way We collect or handling your data, please contact us at:</p>
                     <ul>
                         <li>
-                        E-mail: helpdesk@Sawitchain.com
+                        E-mail: helpdesk@sawitchain.com
                         </li>
                         <li>
-                        Our Website at http://www.Sawitchain.com/
+                        Our Website at http://www.sawitchain.com/
                         </li>
                         <li>
                         Telephone: +6221 – 3970 2013 / +6221 – 3973 2013
@@ -316,7 +316,7 @@ if($this->config->item('url_gar') == $baseurlcheck) {
 
     <footer>
         <div style="text-align: center; background-color: #95130b; font-size: 14px; color: #fafafa; padding:1em">
-            <p style="text-align: center;"><?php echo date('Y'); ?> Sawitchain AG and All It's Affiliates</p>
+            <p style="text-align: center;"><?php echo date('Y'); ?> SawitChain AG and All It's Affiliates</p>
         </div>
     </footer>
 

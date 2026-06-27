@@ -95,7 +95,7 @@ if($this->config->item('url_gar') == $baseurlcheck) {
     <div class="navbar navbar-fixed-bottom">
         <div class="container">
             <p class="navbar-text text-center" style="color:#fff;float: none;font-size:0.9em;">
-                <b>&nbsp; &copy; <?php echo date("Y"); ?> PT. Sawitchain, All rights reserved</b>
+                <b>&nbsp; &copy; <?php echo date("Y"); ?> PT. SawitChain, All rights reserved</b>
             </p>
         </div>
     </div>
