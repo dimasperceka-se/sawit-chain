@@ -55,16 +55,16 @@ WHERE
                 # no limit
             } else {
                 //get lagi aja dari query ktv_access_staff
-                // $sql="SELECT
-                //         GROUP_CONCAT(a.`DistrictID` SEPARATOR ',') AS daerah_akses
-                //     FROM
-                //         ktv_access_staff a
-                //     WHERE
-                //         a.`UserId` = ?";
-                // $query = $this->db->query($sql,array($_SESSION['userid']));
-                // $data = $query->row_array();
-                // $user['district_access'] = $data['daerah_akses'];
-                $user['district_access'] = $data['accessStaff'];
+                $sql="SELECT
+                        GROUP_CONCAT(a.`DistrictID` SEPARATOR ',') AS daerah_akses
+                    FROM
+                        ktv_access_staff a
+                    WHERE
+                        a.`UserId` = ?";
+                $query = $this->db->query($sql,array($_SESSION['userid']));
+                $data = $query->row_array();
+                $user['district_access'] = $data['daerah_akses'];
+                // $user['district_access'] = $data['accessStaff'];
 
                 // see login.php on front end
                 //$user['district_access'] = $_SESSION['daerah_access'];

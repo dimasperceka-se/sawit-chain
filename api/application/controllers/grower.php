@@ -826,27 +826,9 @@ class Grower extends REST_Controller {
 
 
         $this->load->view('cetak_consent_notes_template_header');
-        switch ($PartnerID) {
-            case '7':
-                //Sinar Mas
-                $this->load->view('cetak_consent_notes_template', $data);
-            break;
-            case '11':
-                //SNV
-                $this->load->view('cetak_consent_notes_template_snv', $data);
-            break;
-            case '14':
-                //Wild Asia
-                $this->load->view('cetak_consent_notes_template_wildasia', $data);
-            break;
-            case '235':
-                //Sinar Mas
-                $this->load->view('cetak_consent_notes_template_hdl', $data);
-            break;
-            default:
-                $this->load->view('cetak_consent_notes_template', $data);
-            break;
-        }
+        
+        $this->load->view('cetak_consent_notes_template', $data);
+                
         $this->load->view('cetak_consent_notes_template_footer');
     }
 

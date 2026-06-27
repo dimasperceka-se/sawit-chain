@@ -3679,7 +3679,6 @@ Ext.define('Koltiva.view.Grower.FormMainGrower' ,{
                             xtype: 'panel',
                             title: lang('Farmer\'s Certification'),
                             id: 'Koltiva.view.Grower.FormMainGrower-FormBasicData-tabFarmerCertification',
-                            disabled:true,
                             items:[{
                                 layout: 'column',
                                 border: false,
