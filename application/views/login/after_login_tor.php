@@ -139,7 +139,7 @@
 
                             <p>These terms are binding and begin to apply to You (Customers or Invited Users) when You start accessing the SawitChain Application from SawitChain AG and its affiliate PT SawitChain (The "SawitChain" or "Us”, “We”, “Our”).</p>
 
-                            <p>By registering to use the SawitChain SawitChain Application, You declare that You have read and understood these Terms & Conditions, and consider to have the authority to act on behalf of anyone registered to use Our SawitChain Application.</p>
+                            <p>By registering to use the SawitChain Application, You declare that You have read and understood these Terms & Conditions, and consider to have the authority to act on behalf of anyone registered to use Our SawitChain Application.</p>
 
                             <p>SawitChain has the right to change these Terms & Conditions anytime, and it will take effect when the new or revised Terms & Conditions are attached to the SawitChain Application. SawitChain will attempt to announce changes to You via email or notification through the SawitChain Application. Because it is quite possible that these Terms & Conditions will change from time after time, it is Your duty to ensure that You have read, understood and agreed to the latest Terms & Conditions available on the SawitChain Application.</p>
 

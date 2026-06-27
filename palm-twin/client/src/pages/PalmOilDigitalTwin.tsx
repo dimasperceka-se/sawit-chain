@@ -254,7 +254,13 @@ const GEE_FALLBACK: GeeDataset[] = [
 
 // KLHK "Kawasan Hutan" — ArcGIS MapServer (dynamic raster). Rendered as a
 // per-tile `export` overlay so no esri-leaflet dependency is needed.
+// geoportal.menlhk.go.id has an untrusted TLS cert that browsers block, so KLHK
+// tiles are proxied through our own server (see /klhk in server/routes.ts).
+// BASE_URL keeps it same-origin whether served at "/" or under "/twin/".
 const KLHK_MAPSERVER =
+  `${import.meta.env.BASE_URL}klhk/server/rest/services/SIGAP_Interaktif/Kawasan_Hutan/MapServer`;
+// Real upstream, for the attribution link only.
+const KLHK_SOURCE_URL =
   "https://geoportal.menlhk.go.id/server/rest/services/SIGAP_Interaktif/Kawasan_Hutan/MapServer";
 
 const basemapConfig = (
@@ -2364,7 +2370,7 @@ export default function PalmOilDigitalTwin() {
                         MapServer). Overlay semi-transparan di atas basemap.
                       </p>
                       <a
-                        href={KLHK_MAPSERVER}
+                        href={KLHK_SOURCE_URL}
                         target="_blank"
                         rel="noreferrer"
                         className="text-[9px] text-emerald-700 hover:underline break-all"

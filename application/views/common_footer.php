@@ -46,6 +46,8 @@
                         <div class="nano-content">
                             <div class="content">
                                 <h2><?php echo lang('Announcement') ?></h2>
+                                <ul id="announcement">
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -53,6 +55,8 @@
                         <div class="nano-content">
                             <div class="content">
                                 <h2><?php echo lang('Documents') ?></h2>
+                                <ul id="document">
+                                </ul>
                             </div>
                         </div>
                     </div>
