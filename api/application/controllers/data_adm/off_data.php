@@ -34,7 +34,7 @@ class Off_data extends REST_Controller {
     public function download_metadata_get(){
         //get latest filename metadata
         $metaFile = $this->moff_data->getLatestMetadataFilename();
-        $metaFilePath = 'files/offline_metadata/'.$metaFile;
+        $metaFilePath = 'resources/offline_metadata/'.$metaFile;
 
         header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
         header("Cache-Control: public"); // needed for internet explorer

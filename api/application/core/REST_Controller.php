@@ -195,7 +195,12 @@ abstract class REST_Controller extends CI_Controller
 			($class === 'page' && $method === 'front_req_forgot_password') ||
 			($class === 'page' && $method === 'front_forgot_pass_confirm') ||
 			($class === 'common' && $method === 'revoke') ||
-			($class === 'scheduler' && $method === 'check_pull_engine_status')
+			($class === 'scheduler' && $method === 'check_pull_engine_status') ||
+			($class === 'off_data' && $method === 'download_metadata') ||
+			($class === 'sync_data' && $method === 'send_to_mobile') ||
+			($class === 'sync_data' && $method === 'sqlview_to_mobile') ||
+			($class === 'sync_event' && $method === 'login') ||
+			($class === 'sync_event' && $method === 'sync')
 		) {
 
 			if(
@@ -204,7 +209,12 @@ abstract class REST_Controller extends CI_Controller
 				($class === 'page' && $method === 'front_req_forgot_password') ||
 				($class === 'page' && $method === 'front_forgot_pass_confirm') ||
 				($class === 'common' && $method === 'revoke') ||
-				($class === 'scheduler' && $method === 'check_pull_engine_status')
+				($class === 'scheduler' && $method === 'check_pull_engine_status') ||
+				($class === 'off_data' && $method === 'download_metadata') ||
+				($class === 'sync_data' && $method === 'send_to_mobile') ||
+				($class === 'sync_data' && $method === 'sqlview_to_mobile') ||
+				($class === 'sync_event' && $method === 'login') ||
+				($class === 'sync_event' && $method === 'sync')
 			){ //langsung bypass
 				$authorized = true;
 			} else {
