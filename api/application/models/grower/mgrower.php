@@ -13,6 +13,16 @@ class Mgrower extends CI_Model {
         parent::__construct();
     }
 
+    /**
+     * Normalize a numeric form value: strip thousands separators (commas) and
+     * return NULL for blanks. Empty strings would otherwise be rejected by
+     * integer columns under MySQL strict mode (error 1366).
+     */
+    private function _numOrNull($value) {
+        $value = str_replace(",", "", (string) $value);
+        return ($value === '') ? null : $value;
+    }
+
     function updateWillingnessCommit($MemberID,$path){
         $sql = "
             UPDATE
@@ -3196,7 +3206,10 @@ class Mgrower extends CI_Model {
             $varPost['Koltiva_view_Grower_FormMainGrower-InactiveReason'] = null;
         //rapikan variable post (end)
 
-        $varPost['Koltiva_view_Grower_FormMainGrower-frChildrenCount'] = str_replace(",", "", $varPost['Koltiva_view_Grower_FormMainGrower-frChildrenCount']);
+        $varPost['Koltiva_view_Grower_FormMainGrower-frChildrenCount'] = $this->_numOrNull($varPost['Koltiva_view_Grower_FormMainGrower-frChildrenCount']);
+        // numericfield groups thousands with commas (e.g. "1,000"); strip them and
+        // turn blanks into NULL so the integer column accepts the value.
+        $varPost['Koltiva_view_Grower_FormMainGrower-HowManyPlot'] = $this->_numOrNull($varPost['Koltiva_view_Grower_FormMainGrower-HowManyPlot']);
 
         //generate MemberID dan MemberDisplayID
         $id = $this->genMemberID($varPost['Koltiva_view_Grower_FormMainGrower-Village'], 'F');
@@ -3511,11 +3524,26 @@ class Mgrower extends CI_Model {
         //insert external program ======================================================================== (end)
 
         //insert hak akses data control (Begin)
-        
+
+            //pastikan partner pembuat punya akses ke membernya sendiri,
+            //kalau tidak member baru tidak muncul di grid partner tsb.
+            //ON DUPLICATE KEY UPDATE: aman thd unique index (apmPartnerID, apmMemberID).
+            $sql = "INSERT INTO `ktv_access_partner_member` SET
+                    `apmPartnerID` = ?,
+                    `apmMemberID` = ?,
+                    `DateCreated` = NOW(),
+                    `CreatedBy` = ?
+                    ON DUPLICATE KEY UPDATE `apmID` = `apmID`";
+            $this->db->query($sql, array(
+                $_SESSION['PartnerID'],
+                $id['MemberID'],
+                $_SESSION['userid']
+            ));
+
             $sql = "SELECT
                 PartnerIDRef
             FROM
-                ktv_partner_access_setting 
+                ktv_partner_access_setting
             WHERE
                 PartnerIDCanView = ? AND PartnerIDRef <> 1
             GROUP BY
@@ -3666,7 +3694,10 @@ class Mgrower extends CI_Model {
             $varPost['Koltiva_view_GrowerSME_FormMainGrower-InactiveReason'] = null;
         //rapikan variable post (end)
 
-        $varPost['Koltiva_view_GrowerSME_FormMainGrower-frChildrenCount'] = str_replace(",", "", $varPost['Koltiva_view_GrowerSME_FormMainGrower-frChildrenCount']);
+        $varPost['Koltiva_view_GrowerSME_FormMainGrower-frChildrenCount'] = $this->_numOrNull($varPost['Koltiva_view_GrowerSME_FormMainGrower-frChildrenCount']);
+        // numericfield groups thousands with commas (e.g. "1,000"); strip them and
+        // turn blanks into NULL so the integer column accepts the value.
+        $varPost['Koltiva_view_GrowerSME_FormMainGrower-HowManyPlot'] = $this->_numOrNull($varPost['Koltiva_view_GrowerSME_FormMainGrower-HowManyPlot']);
 
         //generate MemberID dan MemberDisplayID
         $id = $this->genMemberID($varPost['Koltiva_view_GrowerSME_FormMainGrower-Village'], 'F');
@@ -4100,7 +4131,10 @@ class Mgrower extends CI_Model {
             $varPost['Koltiva_view_Grower_FormMainGrower-InactiveReason'] = null;
         //rapikan variable post (end)
 
-        $varPost['Koltiva_view_Grower_FormMainGrower-frChildrenCount'] = str_replace(",", "", $varPost['Koltiva_view_Grower_FormMainGrower-frChildrenCount']);
+        $varPost['Koltiva_view_Grower_FormMainGrower-frChildrenCount'] = $this->_numOrNull($varPost['Koltiva_view_Grower_FormMainGrower-frChildrenCount']);
+        // numericfield groups thousands with commas (e.g. "1,000"); strip them and
+        // turn blanks into NULL so the integer column accepts the value.
+        $varPost['Koltiva_view_Grower_FormMainGrower-HowManyPlot'] = $this->_numOrNull($varPost['Koltiva_view_Grower_FormMainGrower-HowManyPlot']);
 
         //generate MemberID dan MemberDisplayID
         $id = $this->genMemberID($varPost['Koltiva_view_Grower_FormMainGrower-Village'], 'F');

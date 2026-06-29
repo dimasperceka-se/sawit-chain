@@ -379,7 +379,13 @@ class Mpetani extends CI_Model {
                     LEFT JOIN ktv_district kd ON kd.DistrictID = ksd.DistrictID
                     WHERE CreatedBy=?";
         $sql_update = "UPDATE ktv_farmer_temp SET FarmerID=?,DateCreated=now() WHERE FarmerID=?";
-        $sql_copy = "INSERT INTO ktv_farmer SELECT * FROM ktv_farmer_temp WHERE CreatedBy=? and FarmerID=?";
+        // ktv_farmer has columns that ktv_farmer_temp does not (schema drift), so a
+        // bare INSERT ... SELECT * fails with "Column count doesn't match value count".
+        // Build an explicit column list from ktv_farmer_temp (its columns are a subset
+        // of ktv_farmer); the extra ktv_farmer columns keep their defaults.
+        $tempCols = $this->db->list_fields('ktv_farmer_temp');
+        $colList  = '`' . implode('`,`', $tempCols) . '`';
+        $sql_copy = "INSERT INTO ktv_farmer ($colList) SELECT $colList FROM ktv_farmer_temp WHERE CreatedBy=? and FarmerID=?";
         $sql_update_bithdate = "UPDATE ktv_farmer SET Birthdate=null WHERE FarmerID=? and Birthdate='0000-00-00'";
 
         $sql_harvest = "
