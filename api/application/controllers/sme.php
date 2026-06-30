@@ -24,7 +24,11 @@ class Sme extends REST_Controller {
     }
 
     public function export_trader_farmers_get(){
-        $MemberID = $_GET["MemberID"];
+        $MemberID = isset($_GET["MemberID"]) ? trim($_GET["MemberID"]) : '';
+        if ($MemberID === '' || ! ctype_digit((string) $MemberID)) {
+            $this->response(array('success' => false, 'error' => 'MemberID tidak valid'), 400);
+            return;
+        }
 
         $dataList       = $this->msme_mem->getTraderFarmer($MemberID);
         $dataListGarden = $this->msme_mem->getTraderFarmerGarden($MemberID);
@@ -96,8 +100,6 @@ class Sme extends REST_Controller {
                 $dataListExcel[$key][] = $value['Village'];
                 $dataListExcel[$key][] = $value['Latitude'];
                 $dataListExcel[$key][] = $value['Longitude'];
-
-                $increData++;
             }
             //generate datalist excel ========================================== (end)
             //echo '<pre>'; print_r($dataListExcel); echo '</pre>'; exit;
@@ -130,63 +132,79 @@ class Sme extends REST_Controller {
                 $dataListExcelGarden[$key2][] = $value2['Village'];
                 $dataListExcelGarden[$key2][] = $value2['Latitude'];
                 $dataListExcelGarden[$key2][] = $value2['Longitude'];
-
-                $increData2++;
             }
             //generate datalist excel ========================================== (end)
             //echo '<pre>'; print_r($dataListExcel); echo '</pre>'; exit;
         }
 
-        $writer = WriterFactory::create(Type::XLSX); // for XLSX files
-        //$writer = WriterFactory::create(Type::CSV); // for CSV files
-        //$writer = WriterFactory::create(Type::ODS); // for ODS files
+        // Folder tmp pakai path ABSOLUT (FCPATH) supaya tidak bergantung pada
+        // current working directory -- penyebab umum gagal tulis & 500 di server.
+        $tmpDir = FCPATH . 'files/tmp/';
+        if (! is_dir($tmpDir)) {
+            @mkdir($tmpDir, 0775, true);
+        }
 
-        $writer->setTempFolder('files/tmp/');
-        $namaFile = date('YmdHis') . '_export_excel_trader_farmers.xlsx';
-        $filePath = 'files/tmp/' . $namaFile;
-        $defaultStyle = (new StyleBuilder())
-                ->setFontName('Arial')
-                ->setFontSize(10)
-                ->setShouldWrapText(false)
-                ->build();
-        $writer->setDefaultRowStyle($defaultStyle)
-                ->openToFile($filePath);
+        try {
+            $writer = WriterFactory::create(Type::XLSX); // for XLSX files
 
-        $borderDefa = (new BorderBuilder())
-                ->setBorderBottom(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
-                ->setBorderTop(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
-                ->setBorderRight(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
-                ->setBorderLeft(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
-                ->build();
+            $writer->setTempFolder($tmpDir);
+            $namaFile = date('YmdHis') . '_export_excel_trader_farmers.xlsx';
+            $filePath = $tmpDir . $namaFile;
+            $defaultStyle = (new StyleBuilder())
+                    ->setFontName('Arial')
+                    ->setFontSize(10)
+                    ->setShouldWrapText(false)
+                    ->build();
+            $writer->setDefaultRowStyle($defaultStyle)
+                    ->openToFile($filePath);
 
-        //style
-        $styleHeader = (new StyleBuilder())
-                ->setFontBold()
-                ->setBorder($borderDefa)
-                ->setBackgroundColor(Color::LIGHT_BLUE)
-                ->build();
+            $borderDefa = (new BorderBuilder())
+                    ->setBorderBottom(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+                    ->setBorderTop(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+                    ->setBorderRight(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+                    ->setBorderLeft(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+                    ->build();
 
-        //Farmer Sheet Begin
-        $writer->addRowWithStyle($dataHeader, $styleHeader); // add a row at a time
-        //style data
-        $styleData = (new StyleBuilder())
-                ->setBorder($borderDefa)
-                ->build();
+            //style
+            $styleHeader = (new StyleBuilder())
+                    ->setFontBold()
+                    ->setBorder($borderDefa)
+                    ->setBackgroundColor(Color::LIGHT_BLUE)
+                    ->build();
 
-        //data
-        $writer->addRowsWithStyle($dataListExcel, $styleData);
-        $writer->getCurrentSheet()->setName(lang('Farmer'));
-        //Farmer Sheet End
+            //Farmer Sheet Begin
+            $writer->addRowWithStyle($dataHeader, $styleHeader); // add a row at a time
+            //style data
+            $styleData = (new StyleBuilder())
+                    ->setBorder($borderDefa)
+                    ->build();
 
-        // Garden Sheet Begin
-        $writer->addNewSheetAndMakeItCurrent()->setName(lang('Garden'));
-        // header Sheet kedua
-        $writer->addRowWithStyle($dataHeaderGarden, $styleHeader);
-        // data Sheet kedua
-        $writer->addRowsWithStyle($dataListExcelGarden,$styleData);
-        // Garden Sheet End
+            //data
+            $writer->addRowsWithStyle($dataListExcel, $styleData);
+            $writer->getCurrentSheet()->setName(lang('Farmer'));
+            //Farmer Sheet End
 
-        $writer->close();
+            // Garden Sheet Begin
+            $writer->addNewSheetAndMakeItCurrent()->setName(lang('Garden'));
+            // header Sheet kedua
+            $writer->addRowWithStyle($dataHeaderGarden, $styleHeader);
+            // data Sheet kedua
+            $writer->addRowsWithStyle($dataListExcelGarden, $styleData);
+            // Garden Sheet End
+
+            $writer->close();
+        } catch (\Throwable $e) {
+            // tanpa ini, exception apa pun -> fatal yang tertelan error_reporting(0)
+            // di production -> user lihat blank/500 tanpa pesan.
+            ini_set('memory_limit', $mem_ini);
+            log_message('error', 'export_trader_farmers MemberID=' . $MemberID . ' : ' . $e->getMessage());
+            $this->response(array(
+                'success' => false,
+                'error'   => 'Gagal membuat file export: ' . $e->getMessage(),
+            ), 500);
+            return;
+        }
+
         ini_set('memory_limit', $mem_ini);
         $this->load->helper('download');
         force_download($filePath, null);

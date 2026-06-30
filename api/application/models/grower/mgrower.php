@@ -6797,20 +6797,26 @@ class Mgrower extends CI_Model {
             $query = $this->db->query($sql, [$PartnerID]);
             return $query->result_array();
         }else{
-            $PartnerID = "";
-            $sql = "SELECT
-                        PartnerID
-                    FROM
-                        ktv_mill
-                    WHERE
-                        MillID = ?
-                    AND
-                        StatusCode = 'active'";
-            $query = $this->db->query($sql, [$_SESSION["MillID"]]);
-            if($query->num_rows()>0){
-                $PartnerID = $query->row()->PartnerID;
+            //combo dealer utk user web: pakai PartnerID milik user supaya muncul di
+            //SEMUA user partner (bukan hanya user yg punya Mill). Akses sudah lewat
+            //ktv_access_partner_member, jadi hierarki (induk lihat anak) tetap terjaga.
+            //Fallback ke Mill bila PartnerID sesi kosong.
+            $PartnerID = isset($_SESSION["PartnerID"]) ? $_SESSION["PartnerID"] : "";
+            if (empty($PartnerID) && !empty($_SESSION["MillID"])) {
+                $sql = "SELECT
+                            PartnerID
+                        FROM
+                            ktv_mill
+                        WHERE
+                            MillID = ?
+                        AND
+                            StatusCode = 'active'";
+                $query = $this->db->query($sql, [$_SESSION["MillID"]]);
+                if($query->num_rows()>0){
+                    $PartnerID = $query->row()->PartnerID;
+                }
             }
-    
+
             $sql = " SELECT
                     b.MemberID id,
                     b.MemberUID uid,
