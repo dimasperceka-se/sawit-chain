@@ -23,6 +23,32 @@ class Mgrower extends CI_Model {
         return ($value === '') ? null : $value;
     }
 
+    /**
+     * Grant member access to a partner AND all of its ancestors (PartnerParentID
+     * chain), so an umbrella/parent partner keeps seeing members created by its
+     * child partners. Idempotent against the unique key (apmPartnerID, apmMemberID).
+     */
+    private function _grantPartnerChainAccess($memberId, $partnerId) {
+        $seen = array();
+        while (!empty($partnerId) && !isset($seen[$partnerId])) {
+            $seen[$partnerId] = true;
+            $this->db->query(
+                "INSERT INTO `ktv_access_partner_member` SET
+                    `apmPartnerID` = ?,
+                    `apmMemberID` = ?,
+                    `DateCreated` = NOW(),
+                    `CreatedBy` = ?
+                 ON DUPLICATE KEY UPDATE `apmID` = `apmID`",
+                array($partnerId, $memberId, $_SESSION['userid'])
+            );
+            $row = $this->db->query(
+                "SELECT PartnerParentID FROM ktv_program_partner WHERE PartnerID = ? LIMIT 1",
+                array($partnerId)
+            )->row_array();
+            $partnerId = ($row && !empty($row['PartnerParentID'])) ? $row['PartnerParentID'] : null;
+        }
+    }
+
     function updateWillingnessCommit($MemberID,$path){
         $sql = "
             UPDATE
@@ -3525,20 +3551,9 @@ class Mgrower extends CI_Model {
 
         //insert hak akses data control (Begin)
 
-            //pastikan partner pembuat punya akses ke membernya sendiri,
-            //kalau tidak member baru tidak muncul di grid partner tsb.
-            //ON DUPLICATE KEY UPDATE: aman thd unique index (apmPartnerID, apmMemberID).
-            $sql = "INSERT INTO `ktv_access_partner_member` SET
-                    `apmPartnerID` = ?,
-                    `apmMemberID` = ?,
-                    `DateCreated` = NOW(),
-                    `CreatedBy` = ?
-                    ON DUPLICATE KEY UPDATE `apmID` = `apmID`";
-            $this->db->query($sql, array(
-                $_SESSION['PartnerID'],
-                $id['MemberID'],
-                $_SESSION['userid']
-            ));
+            //beri akses ke partner pembuat DAN seluruh induknya (PartnerParentID),
+            //kalau tidak member baru tidak muncul di grid partner-nya / induknya.
+            $this->_grantPartnerChainAccess($id['MemberID'], $_SESSION['PartnerID']);
 
             $sql = "SELECT
                 PartnerIDRef
@@ -3573,7 +3588,8 @@ class Mgrower extends CI_Model {
                         `apmPartnerID` = ?,
                         `apmMemberID` = ?,
                         `DateCreated` = NOW(),
-                        `CreatedBy` = ?";
+                        `CreatedBy` = ?
+                        ON DUPLICATE KEY UPDATE `apmID` = `apmID`";
                 $p = array(
                     '1',
                     $id['MemberID'],
