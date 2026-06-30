@@ -25,6 +25,12 @@ Ext.define('Koltiva.view.Mill.GridProduct' ,{
             }, {
                 "id": "2",
                 "label": lang("PK")
+            }, {
+                "id": "3",
+                "label": lang("CPKO")
+            }, {
+                "id": "4",
+                "label": lang("CPKE")
             }]
         });
 

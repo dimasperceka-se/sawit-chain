@@ -301,7 +301,32 @@ class Msync_event extends CI_Model
             }
         }
 
+        // 1) tabel grower (base) dulu — insert/update — supaya MemberID tersedia
+        //    sebagai FK untuk seluruh tabel child di bawahnya.
+        $memberId = null;
+        if (isset($mapping['ktv_members'])) {
+            $r = $this->saveGrowerBaseTable($eventUid, $mapping['ktv_members'], $values, $userId, $now);
+            $this->logPull($eventUid, 'ktv_members', $r);
+            $memberId = $this->resolveMemberId($eventUid);
+        }
+
+        // 2) sisa tabel mapping — UPSERT (insert bila belum ada), tidak ada yang di-skip
+        //    karena row belum ada. FK & kolom audit di-inject supaya baris child
+        //    nyambung ke member (tidak orphan) & lolos NOT NULL.
         foreach ($mapping as $table => $deMap) {
+            if ($table === 'ktv_members') {
+                continue; // sudah ditangani di atas
+            }
+
+            // hak akses partner->member: pakai PartnerID user pengirim (mapping
+            // apmPartnerID tidak reliable — ter-map ke kolom village).
+            if ($table === 'ktv_access_partner_member') {
+                $r = $this->ensurePartnerAccess($memberId, $userId, $now);
+                $this->logPull($eventUid, $table, $r);
+                continue;
+            }
+
+            // ambil hanya field yang benar-benar ada datanya di event ini
             $row = array();
             foreach ($deMap as $deUid => $field) {
                 if (! array_key_exists($deUid, $values)) {
@@ -311,17 +336,237 @@ class Msync_event extends CI_Model
             }
 
             if (empty($row)) {
+                // event ini memang tak punya data utk tabel tsb (bukan row_not_exists)
                 $this->logPull($eventUid, $table, array('action' => 'skip', 'reason' => 'no_matching_dataelement'));
                 continue;
             }
 
-            $row['uid'] = $eventUid;
+            // inject FK ke member + kolom audit (kolom yg tak ada otomatis dibuang
+            // oleh upsertByUid). FarmerID dipakai bbrp tabel sbg alias MemberID.
+            if ($memberId) {
+                $row['MemberID'] = $memberId;
+                $row['FarmerID'] = $memberId;
+            }
+            $row['uid']         = $eventUid;
+            $row['DateCreated'] = $now;
+            $row['CreatedBy']   = $userId;
 
-            // tabel relasional via mapping: hanya UPDATE baris yang sudah ada,
-            // jangan INSERT baris baru (butuh resolusi PK/FK milik consumer asli)
-            $r = $this->upsertByUid($table, $row, 'uid', $eventUid, false);
+            $cols = $this->tableColumns($table);
+
+            // butuh kolom kunci uid utk upsert; tanpa itu tak bisa di-upsert aman
+            if (! array_key_exists('uid', $cols)) {
+                $this->logPull($eventUid, $table, array('action' => 'skip', 'reason' => 'no_uid_key'));
+                continue;
+            }
+
+            // bila baris belum ada → akan INSERT. Pastikan semua kolom WAJIB
+            // (NOT NULL tanpa default) terisi, supaya insert tidak gagal &
+            // menggagalkan transaksi seluruh event.
+            $exists = $this->db->where('uid', $eventUid)->count_all_results($table) > 0;
+            if (! $exists) {
+                $missing = array();
+                foreach ($this->requiredColumns($table) as $req) {
+                    if ($req === 'uid') {
+                        continue;
+                    }
+                    if (! isset($row[$req]) || $row[$req] === '' || $row[$req] === null) {
+                        $missing[] = $req;
+                    }
+                }
+                if (! empty($missing)) {
+                    $this->logPull($eventUid, $table, array('action' => 'skip', 'reason' => 'missing_required:'.implode(',', $missing)));
+                    continue;
+                }
+            }
+
+            // UPSERT: insert bila belum ada (allowInsert = true)
+            $r = $this->upsertByUid($table, $row, 'uid', $eventUid, true);
             $this->logPull($eventUid, $table, $r);
         }
+    }
+
+    /**
+     * Simpan/registrasi petani ke ktv_members dari event mobile.
+     *
+     * Bila petani (uid = eventUid) BELUM ada → INSERT baris baru lengkap dengan
+     * identitas yang di-generate server (MemberID/MemberDisplayID), PartnerID
+     * milik user pengirim, role Petani (ktv_member_role MRoleID=1), dan hak akses
+     * partner (ktv_access_partner_member) — supaya muncul di grid grower web.
+     * Bila sudah ada → hanya UPDATE field hasil mapping.
+     *
+     * Kolom identitas/partner SENGAJA tidak diambil dari mapping karena mw_mapping
+     * program ini tidak reliable (mis. VillageName ter-map sekaligus ke PartnerID,
+     * MemberDisplayID, dan apmPartnerID).
+     */
+    private function saveGrowerBaseTable($eventUid, $deMap, $values, $userId, $now)
+    {
+        // kolom identitas/partner: jangan pernah diambil dari mapping
+        $protected = array(
+            'MemberID', 'MemberDisplayID', 'MemberUID', 'PartnerID',
+            'uid', 'StatusCode', 'DateCollection', 'DateCreated', 'CreatedBy',
+        );
+
+        $row = array();
+        foreach ($deMap as $deUid => $field) {
+            if (in_array($field, $protected, true)) {
+                continue;
+            }
+            if (! array_key_exists($deUid, $values)) {
+                continue;
+            }
+            $row[$field] = $this->normalizeBool($values[$deUid]);
+        }
+        if (isset($row['Gender'])) {
+            $row['Gender'] = $this->normalizeGender($row['Gender']);
+        }
+
+        $exists = $this->db->where('uid', $eventUid)->count_all_results('ktv_members') > 0;
+
+        // petani sudah ada → cukup update field mapping (identitas tak disentuh)
+        if ($exists) {
+            if (empty($row)) {
+                return array('action' => 'skip', 'reason' => 'no_matching_dataelement');
+            }
+            return $this->upsertByUid('ktv_members', $row, 'uid', $eventUid, false);
+        }
+
+        // ---- petani BARU : siapkan kolom wajib (NOT NULL) + identitas server ----
+        $memberName = isset($row['MemberName']) ? trim((string) $row['MemberName']) : '';
+        if ($memberName === '') {
+            return array('action' => 'skip', 'reason' => 'missing_member_name');
+        }
+        if (! isset($row['DateOfBirth']) || $row['DateOfBirth'] === '') {
+            // DateOfBirth NOT NULL tanpa default -> tak bisa insert
+            return array('action' => 'skip', 'reason' => 'missing_date_of_birth');
+        }
+
+        $partnerId = $this->getUserPartnerId($userId);
+        if (! $partnerId) {
+            return array('action' => 'skip', 'reason' => 'no_partner_for_user');
+        }
+
+        if (! isset($row['Gender']) || $row['Gender'] === '') {
+            $row['Gender'] = 'm';
+        }
+
+        $villageId = isset($row['VillageID']) ? $row['VillageID'] : null;
+        $gen = $this->generateMemberId($villageId);
+
+        $row['MemberID']        = $gen['MemberID'];
+        $row['MemberDisplayID'] = $gen['MemberDisplayID'];
+        $row['MemberUID']       = $eventUid;
+        $row['PartnerID']       = $partnerId;
+        $row['StatusCode']      = 'active';
+        $row['DateCollection']  = $now;
+        $row['DateCreated']     = $now;
+        $row['DateSync']        = $now;
+        $row['CreatedBy']       = $userId;
+
+        $r = $this->upsertByUid('ktv_members', $row, 'uid', $eventUid, true);
+
+        if (isset($r['action']) && $r['action'] === 'insert') {
+            // role Petani -> wajib utk INNER JOIN ktv_member_role di grid grower
+            $this->db->insert('ktv_member_role', array(
+                'MemberID'    => $gen['MemberID'],
+                'MRoleID'     => 1,
+                'DateCreated' => $now,
+                'CreatedBy'   => $userId,
+            ));
+            // hak akses partner -> member dibuat di ensurePartnerAccess() (dipanggil
+            // dari loop mapping) supaya tidak dobel.
+        }
+
+        return $r;
+    }
+
+    /** MemberID milik petani berdasarkan uid event (FK utk tabel child). */
+    private function resolveMemberId($eventUid)
+    {
+        $row = $this->db->select('MemberID')->where('uid', $eventUid)->get('ktv_members')->row();
+
+        return $row ? $row->MemberID : null;
+    }
+
+    /**
+     * Pastikan baris hak akses partner->member ada (ktv_access_partner_member),
+     * pakai PartnerID milik user pengirim. Wajib utk INNER JOIN hak akses di grid web.
+     */
+    private function ensurePartnerAccess($memberId, $userId, $now)
+    {
+        if (! $memberId) {
+            return array('action' => 'skip', 'reason' => 'no_member');
+        }
+        $partnerId = $this->getUserPartnerId($userId);
+        if (! $partnerId) {
+            return array('action' => 'skip', 'reason' => 'no_partner_for_user');
+        }
+
+        $exists = $this->db->where('apmMemberID', $memberId)
+            ->where('apmPartnerID', $partnerId)
+            ->count_all_results('ktv_access_partner_member') > 0;
+        if ($exists) {
+            return array('action' => 'skip', 'reason' => 'already_exists');
+        }
+
+        $this->db->insert('ktv_access_partner_member', array(
+            'apmPartnerID' => $partnerId,
+            'apmMemberID'  => $memberId,
+            'DateCreated'  => $now,
+            'CreatedBy'    => $userId,
+        ));
+
+        return array('action' => 'insert', 'fields' => 2);
+    }
+
+    /**
+     * Generate MemberID (auto-increment manual) & MemberDisplayID, mengikuti
+     * konvensi Mgrower::genMemberID (prefix 'F' + 4 digit awal VillageID + nomor
+     * urut 9 digit). Dipakai saat registrasi petani baru via sync.
+     */
+    private function generateMemberId($villageId)
+    {
+        $r = $this->db->query('SELECT MAX(MemberID) AS m FROM ktv_members')->row();
+        $memberId = ($r && $r->m) ? ((int) $r->m + 1) : 1;
+
+        $prefix = 'F'.substr((string) $villageId, 0, 4);
+        $display = $prefix.str_pad((string) $memberId, 9, '0', STR_PAD_LEFT);
+
+        return array('MemberID' => $memberId, 'MemberDisplayID' => $display);
+    }
+
+    /**
+     * PartnerID milik user (mengikuti logika login mcommon): staff private/program
+     * pakai ObjID, selain itu pakai PartnerID dari view_tc_supplychain_staff.
+     */
+    private function getUserPartnerId($userId)
+    {
+        if (! $userId) {
+            return null;
+        }
+        $sql = "SELECT IF(st.ObjType IN ('private','program'), st.ObjID, vss.PartnerID) AS PartnerID
+                FROM sys_user a
+                LEFT JOIN ktv_persons p ON p.UserID = a.UserId
+                LEFT JOIN ktv_staffs st ON p.PersonID = st.PersonID
+                LEFT JOIN view_tc_supplychain_staff vss ON vss.UserID = a.UserId
+                WHERE a.UserId = ?
+                LIMIT 1";
+        $row = $this->db->query($sql, array($userId))->row();
+
+        return ($row && $row->PartnerID) ? $row->PartnerID : null;
+    }
+
+    /** Konversi nilai gender mobile (1/2/male/female) ke enum ktv_members('m','f'). */
+    private function normalizeGender($value)
+    {
+        $v = strtolower(trim((string) $value));
+        if (in_array($v, array('1', 'm', 'male', 'laki-laki', 'l'), true)) {
+            return 'm';
+        }
+        if (in_array($v, array('2', 'f', 'female', 'perempuan', 'p'), true)) {
+            return 'f';
+        }
+
+        return 'm';
     }
 
     /* =====================================================================
@@ -952,6 +1197,38 @@ class Msync_event extends CI_Model
         $this->columnCache[$table] = $cols;
 
         return $cols;
+    }
+
+    /** cache kolom wajib (NOT NULL, tanpa default, bukan auto_increment) per tabel */
+    private $requiredCache = array();
+
+    /**
+     * Daftar kolom yang WAJIB diisi saat INSERT (NOT NULL, tanpa default,
+     * bukan auto_increment). Dipakai guard generic upsert supaya insert yang
+     * pasti gagal (NOT NULL kosong) di-skip terkontrol — bukan menggagalkan
+     * transaksi seluruh event.
+     */
+    private function requiredColumns($table)
+    {
+        if (isset($this->requiredCache[$table])) {
+            return $this->requiredCache[$table];
+        }
+
+        $sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?
+                  AND IS_NULLABLE = 'NO'
+                  AND COLUMN_DEFAULT IS NULL
+                  AND EXTRA NOT LIKE '%auto_increment%'";
+        $rows = $this->db->query($sql, array($table))->result_array();
+
+        $req = array();
+        foreach ($rows as $r) {
+            $req[] = $r['COLUMN_NAME'];
+        }
+
+        $this->requiredCache[$table] = $req;
+
+        return $req;
     }
 
     private function findDataValue($dataValues, $deUid)
