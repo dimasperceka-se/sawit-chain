@@ -5,7 +5,7 @@
  *   1. Tarik GeoJSON plot petani dari dashboard (DASHBOARD_GEOJSON_URL).
  *   2. Normalisasi koordinat ke [lng, lat] standar GeoJSON (DB simpan [lat, lng]).
  *   3. POST FeatureCollection ke API compliance:
- *        {COMPLIANCE_API_BASE}/api/v1/deforestation
+ *        {COMPLIANCE_API_BASE}/api/v1/upload-geojson-notrounded-nobrwa
  *        {COMPLIANCE_API_BASE}/api/v1/protected-area
  *   4. Cocokkan hasil per-plot (by plot_uid -> id -> index).
  *   5. UPSERT ke tabel twin_plots (Postgres/PostGIS), prune plot yang sudah hilang.
@@ -185,7 +185,7 @@ async function main() {
   await runPool(chunks, CHUNK_CONCURRENCY, async (chunk, ci) => {
     const fc: FC = { type: "FeatureCollection", features: chunk };
     const [defor, prot] = await Promise.all([
-      postCompliance("/api/v1/deforestation", fc),
+      postCompliance("/api/v1/upload-geojson-notrounded-nobrwa", fc),
       postCompliance("/api/v1/protected-area", fc),
     ]);
     if (defor) {
