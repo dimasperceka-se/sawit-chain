@@ -240,7 +240,7 @@ const LAYER_META: { key: LayerKey; label: string; icon: any }[] = [
 
 // ---- GEE forest / deforestation raster tile layers ----
 // Source: https://global-compliance-system.com (Google Earth Engine tile service).
-const GEE_API = "https://global-compliance-system.com/api/v1/gee";
+const GEE_API = "https://api.sawitchain.com/api/v1/gee";
 
 type GeeDataset = { key: string; name: string; type: string; color: string };
 
@@ -1565,7 +1565,7 @@ export default function PalmOilDigitalTwin() {
         const tl = L.tileLayer(`${GEE_API}/tiles/indonesia/${key}/{z}/{x}/{y}`, {
           opacity: 0.85,
           maxNativeZoom: 18,
-          attribution: "GEE · global-compliance-system.com",
+          attribution: "GEE · api.sawitchain.com",
         });
         tl.setZIndex(2); // above basemap (0) & KLHK (1), below vector overlays
         tl.addTo(map);
