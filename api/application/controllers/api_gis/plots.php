@@ -21,6 +21,16 @@ class Plots extends REST_Controller {
     }
 
     public function geojson_get() {
+        // Proteksi opsional: bila env PLOTS_GEOJSON_KEY di-set, wajib cocok dgn ?key=.
+        // Bila tidak di-set, endpoint terbuka (whitelist di REST_Controller).
+        $secret = getenv('PLOTS_GEOJSON_KEY');
+        if ($secret !== false && $secret !== '') {
+            if ((string) $this->get('key') !== (string) $secret) {
+                $this->response(array('success' => false, 'error' => 'Forbidden'), 403);
+                return;
+            }
+        }
+
         $provinceId = $this->get('province');
         $limit      = intval($this->get('limit'));
 
