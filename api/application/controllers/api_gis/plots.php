@@ -3,8 +3,8 @@
 /**
  * Endpoint GeoJSON plot petani untuk Palm Oil Digital Twin.
  *
- *   GET /api_gis/plots/geojson            -> semua plot aktif
- *   GET /api_gis/plots/geojson?province=12  (filter ProvinceID, opsional)
+ *   GET /api_gis/plots/geojson              -> plot petani Partner 232 (default)
+ *   GET /api_gis/plots/geojson?partner=232  (scope PartnerID, default 232)
  *   GET /api_gis/plots/geojson?limit=500    (batas baris, opsional)
  *
  * Output: GeoJSON FeatureCollection. Tiap feature membawa `properties.plot_uid`
@@ -31,10 +31,14 @@ class Plots extends REST_Controller {
             }
         }
 
-        $provinceId = $this->get('province');
-        $limit      = intval($this->get('limit'));
+        // Scope ke Partner (default 232 -- sama seperti Dashboard KPI).
+        $partnerId = $this->get('partner');
+        if ($partnerId === null || $partnerId === '') {
+            $partnerId = 232;
+        }
+        $limit = intval($this->get('limit'));
 
-        $rows = $this->mplots->getPlotsGeoJSON($provinceId, $limit);
+        $rows = $this->mplots->getPlotsGeoJSON($partnerId, $limit);
 
         $features = array();
         $seq = 0;
