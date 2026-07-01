@@ -220,6 +220,7 @@ const BASEMAP_LABELS: Record<Basemap, string> = {
 // lets the user add/remove these via checkboxes.
 type LayerKey =
   | "plots"
+  | "petani"
   | "mills"
   | "fires"
   | "peatland"
@@ -228,7 +229,7 @@ type LayerKey =
   | "millradius";
 
 const LAYER_META: { key: LayerKey; label: string; icon: any }[] = [
-  { key: "plots", label: "Kebun Sawit", icon: Trees },
+  { key: "petani", label: "Kebun Petani", icon: Trees },
   { key: "mills", label: "Palm Oil Mills", icon: Factory },
   { key: "fires", label: "Fire Hotspots", icon: Flame },
   { key: "peatland", label: "Peatland Areas", icon: Layers },
@@ -523,6 +524,102 @@ const plotPopupHtml = (p: any) => {
     </div>`;
 };
 
+// ---- Kebun Petani (api/twin-plots) — compliance-colored polygons ----
+type PetaniStatus = "non-compliant" | "indicative" | "compliant" | "unknown";
+
+const petaniStatus = (p: any): PetaniStatus => {
+  if (
+    p?.eudr_compliant === false ||
+    p?.risk_level === "High" ||
+    p?.wdpa_status === "non-compliant"
+  )
+    return "non-compliant";
+  if (p?.wdpa_status === "indicative") return "indicative";
+  if (p?.last_checked != null) return "compliant";
+  return "unknown";
+};
+
+// fill color + darker stroke color per status
+const PETANI_COLORS: Record<PetaniStatus, { fill: string; stroke: string }> = {
+  "non-compliant": { fill: "#dc2626", stroke: "#991b1b" },
+  indicative: { fill: "#f59e0b", stroke: "#b45309" },
+  compliant: { fill: "#16a34a", stroke: "#15803d" },
+  unknown: { fill: "#9ca3af", stroke: "#6b7280" },
+};
+
+const petaniPopupHtml = (p: any) => {
+  const fmtHa = (v: any) =>
+    v !== null && v !== undefined && v !== ""
+      ? `${Number(v).toLocaleString("id-ID", { maximumFractionDigits: 2 })} Ha`
+      : "—";
+  const row = (label: string, value: any) =>
+    `<div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-top:1px solid #eef2e6"><span style="font-size:9px;color:#9ca3af;min-width:64px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;padding-top:1px">${label}</span><span style="font-size:12px;color:#1f2937;font-weight:600;flex:1;line-height:1.35">${escapeHtml(
+      value && String(value).trim() ? value : "—"
+    )}</span></div>`;
+  const colorRow = (label: string, value: string, color: string) =>
+    `<div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-top:1px solid #eef2e6"><span style="font-size:9px;color:#9ca3af;min-width:64px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;padding-top:1px">${label}</span><span style="font-size:12px;color:${color};font-weight:700;flex:1;line-height:1.35">${escapeHtml(
+      value
+    )}</span></div>`;
+
+  const eudr =
+    p.eudr_compliant === true
+      ? colorRow("Status EUDR", "Compliant", "#16a34a")
+      : p.eudr_compliant === false
+        ? colorRow("Status EUDR", "Non-Compliant", "#dc2626")
+        : row("Status EUDR", null);
+  const risk = row("Risk", p.risk_level);
+  const defor = row(
+    "Deforestasi",
+    p.deforestation_detected === true
+      ? "Ya"
+      : p.deforestation_detected === false
+        ? "Tidak"
+        : null
+  );
+  const cats =
+    Array.isArray(p.wdpa_categories) && p.wdpa_categories.length
+      ? p.wdpa_categories.join(", ")
+      : null;
+  const wdpa = row(
+    "WDPA",
+    p.wdpa_status
+      ? cats
+        ? `${p.wdpa_status} · ${cats}`
+        : p.wdpa_status
+      : null
+  );
+  const note =
+    p.last_checked == null
+      ? `<div style="font-size:10px;color:#9ca3af;font-style:italic;padding-top:6px;border-top:1px solid #eef2e6">Belum di-skor compliance</div>`
+      : "";
+
+  return `<div style="min-width:214px;max-width:280px;font-family:inherit;padding:2px">
+      <div style="display:flex;align-items:center;gap:9px;padding-bottom:9px">
+        <div style="height:34px;width:34px;border-radius:10px;background:linear-gradient(135deg,#65a30d,#3f6212);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px rgba(63,98,18,.4)">${leafGlyph(
+          18
+        )}</div>
+        <div style="min-width:0">
+          <div style="font-size:8.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#4d7c0f">Kebun Petani</div>
+          <div style="font-size:12.5px;font-weight:800;color:#111827;line-height:1.2;word-break:break-all">${escapeHtml(
+            p.farmer && String(p.farmer).trim() ? p.farmer : "—"
+          )}</div>
+        </div>
+      </div>
+      ${row("Plot UID", p.plot_uid)}
+      ${row("Province", p.province)}
+      ${row("District", p.district)}
+      ${row("Luas", fmtHa(p.area_ha))}
+      ${eudr}
+      ${risk}
+      ${defor}
+      ${row("GFW loss", fmtHa(p.gfw_loss_ha))}
+      ${row("JRC loss", fmtHa(p.jrc_loss_ha))}
+      ${row("SBTN loss", fmtHa(p.sbtn_loss_ha))}
+      ${wdpa}
+      ${note}
+    </div>`;
+};
+
 const todayISO = () => new Date().toISOString().slice(0, 10);
 const daysAgoISO = (n: number) => {
   const d = new Date();
@@ -738,9 +835,133 @@ const buildDeforestationCards = (defor: any): StatCard[] => {
 
 const DEFORESTATION_CARDS: StatCard[] = buildDeforestationCards(DEFORESTATION);
 
-// Dummy data per theme (except Deforestation, which uses real EUDR data).
-const buildThemes = (prov: string): Record<ThemeKey, StatCard[]> => ({
-  Deforestation: DEFORESTATION_CARDS,
+// Live deforestation cards from api/twin-plots/summary. Falls back to the static
+// EUDR cards (DEFORESTATION_CARDS) when the summary hasn't loaded yet.
+const buildDeforestationCardsLive = (summary: any): StatCard[] => {
+  if (!summary) return DEFORESTATION_CARDS;
+  const fmtInt = (n: any) => Number(n || 0).toLocaleString("id-ID");
+  const fmtHa = (n: any) =>
+    Number(n || 0).toLocaleString("id-ID", { maximumFractionDigits: 2 });
+  return [
+    {
+      kind: "breakdown",
+      icon: Trees,
+      label: "Plot Dianalisis",
+      highlight: true,
+      rows: [
+        { label: "Total plot", value: `${fmtInt(summary.total)} plot` },
+        { label: "Risiko tinggi", value: `${fmtInt(summary.high_risk)} plot` },
+        { label: "Risiko rendah", value: `${fmtInt(summary.low_risk)} plot` },
+      ],
+    },
+    {
+      kind: "breakdown",
+      icon: Shield,
+      label: "EUDR",
+      rows: [
+        {
+          label: "Compliant",
+          value: `${fmtInt(summary.eudr_compliant)} plot`,
+        },
+        {
+          label: "Non-Compliant",
+          value: `${fmtInt(summary.eudr_non_compliant)} plot`,
+        },
+        {
+          label: "Deforestasi terdeteksi",
+          value: `${fmtInt(summary.deforestation_detected)} plot`,
+        },
+      ],
+    },
+    {
+      kind: "breakdown",
+      icon: AlertTriangle,
+      label: "Total Forest Loss",
+      rows: [
+        { label: "GFW", value: `${fmtHa(summary.total_gfw_loss_ha)} ha` },
+        { label: "JRC", value: `${fmtHa(summary.total_jrc_loss_ha)} ha` },
+        { label: "SBTN", value: `${fmtHa(summary.total_sbtn_loss_ha)} ha` },
+      ],
+    },
+    {
+      kind: "metric",
+      icon: Layers,
+      label: "Total Luas Kebun",
+      value: fmtHa(summary.total_area_ha),
+      unit: "ha",
+      sub: "akumulasi luas plot petani dianalisis",
+    },
+  ];
+};
+
+// Live Protected Area (WDPA) cards from summary. Falls back to dummy when null.
+const buildProtectedAreaCardsLive = (summary: any): StatCard[] => {
+  const fmtInt = (n: any) => Number(n || 0).toLocaleString("id-ID");
+  if (!summary)
+    return [
+      {
+        kind: "metric",
+        icon: Trees,
+        label: "Kebun di Kawasan Hutan",
+        value: "53",
+        unit: "plot",
+        sub: "≈ 198,6 ha di dalam kawasan hutan",
+        highlight: true,
+      },
+      {
+        kind: "metric",
+        icon: Factory,
+        label: "Mill di Kawasan Hutan",
+        value: "4",
+        unit: "mill",
+        sub: "berada di dalam kawasan hutan",
+      },
+      {
+        kind: "metric",
+        icon: Shield,
+        label: "Pasokan dari Kawasan Hutan",
+        value: "12,8",
+        unit: "%",
+        sub: "estimasi pasokan mill dari kawasan hutan",
+        wide: true,
+      },
+    ];
+  return [
+    {
+      kind: "metric",
+      icon: Shield,
+      label: "WDPA Non-Compliant",
+      value: fmtInt(summary.wdpa_non_compliant),
+      unit: "plot",
+      sub: `dari total ${fmtInt(summary.total)} plot dianalisis`,
+      highlight: true,
+    },
+    {
+      kind: "metric",
+      icon: AlertTriangle,
+      label: "WDPA Indicative",
+      value: fmtInt(summary.wdpa_indicative),
+      unit: "plot",
+      sub: "indikasi tumpang tindih kawasan lindung",
+    },
+    {
+      kind: "metric",
+      icon: Check,
+      label: "WDPA Compliant",
+      value: fmtInt(summary.wdpa_compliant),
+      unit: "plot",
+      sub: "di luar kawasan lindung WDPA",
+      wide: true,
+    },
+  ];
+};
+
+// Dummy data per theme (Deforestation & Protected Area use live summary data).
+const buildThemes = (
+  prov: string,
+  summary: any
+): Record<ThemeKey, StatCard[]> => ({
+  Deforestation: buildDeforestationCardsLive(summary),
   Hotspot: [
     {
       kind: "breakdown",
@@ -797,34 +1018,7 @@ const buildThemes = (prov: string): Record<ThemeKey, StatCard[]> => ({
       ],
     },
   ],
-  "Protected Area": [
-    {
-      kind: "metric",
-      icon: Trees,
-      label: "Kebun di Kawasan Hutan",
-      value: "53",
-      unit: "plot",
-      sub: "≈ 198,6 ha di dalam kawasan hutan",
-      highlight: true,
-    },
-    {
-      kind: "metric",
-      icon: Factory,
-      label: "Mill di Kawasan Hutan",
-      value: "4",
-      unit: "mill",
-      sub: "berada di dalam kawasan hutan",
-    },
-    {
-      kind: "metric",
-      icon: Shield,
-      label: "Pasokan dari Kawasan Hutan",
-      value: "12,8",
-      unit: "%",
-      sub: "estimasi pasokan mill dari kawasan hutan",
-      wide: true,
-    },
-  ],
+  "Protected Area": buildProtectedAreaCardsLive(summary),
   Peatland: [
     {
       kind: "metric",
@@ -907,6 +1101,7 @@ export default function PalmOilDigitalTwin() {
   const millLayerRef = useRef<L.Layer | null>(null);
   const plotLayerRef = useRef<L.GeoJSON | null>(null);
   const plotCentroidLayerRef = useRef<L.Layer | null>(null);
+  const petaniLayerRef = useRef<L.GeoJSON | null>(null);
   const klhkLayerRef = useRef<L.Layer | null>(null);
   const radiusLayerRef = useRef<L.Layer | null>(null);
   const millRadiusLayerRef = useRef<L.Layer | null>(null);
@@ -927,6 +1122,22 @@ export default function PalmOilDigitalTwin() {
   const [plotProvinces, setPlotProvinces] = useState<
     { province: string; count: number; w: number; s: number; e: number; n: number }[]
   >([]);
+  // Kebun Petani layer (api/twin-plots) — compliance-colored, shown by default.
+  const [showPetani, setShowPetani] = useState<boolean>(true);
+  const [expPetani, setExpPetani] = useState<boolean>(false);
+  const [petaniProvince, setPetaniProvince] = useState<string>("");
+  const [petaniCount, setPetaniCount] = useState<number>(0);
+  const [petaniProvinces, setPetaniProvinces] = useState<
+    {
+      province: string;
+      count: number;
+      w: number | null;
+      s: number | null;
+      e: number | null;
+      n: number | null;
+    }[]
+  >([]);
+  const [summary, setSummary] = useState<any>(null);
   const [startDate, setStartDate] = useState<string>(daysAgoISO(30));
   const [endDate, setEndDate] = useState<string>(todayISO());
   const [showPeatland, setShowPeatland] = useState<boolean>(false);
@@ -959,7 +1170,7 @@ export default function PalmOilDigitalTwin() {
   // Which layer cards are shown in the bottom-left stack. Kebun Sawit is
   // hidden by default and added via the "+" button.
   const [panelLayers, setPanelLayers] = useState<Set<LayerKey>>(
-    () => new Set<LayerKey>(["mills", "fires", "peatland"])
+    () => new Set<LayerKey>(["petani", "mills", "fires", "peatland"])
   );
   const [showAddLayer, setShowAddLayer] = useState<boolean>(false);
   const [selectedFire, setSelectedFire] = useState<Record<string, any> | null>(
@@ -976,6 +1187,7 @@ export default function PalmOilDigitalTwin() {
     // Removing a layer from the panel also turns its map visibility off.
     if (!present) {
       if (key === "plots") setShowPlots(false);
+      else if (key === "petani") setShowPetani(false);
       else if (key === "mills") setShowMills(false);
       else if (key === "fires") setShowFires(false);
       else if (key === "peatland") setShowPeatland(false);
@@ -1833,6 +2045,128 @@ export default function PalmOilDigitalTwin() {
     return removePlots;
   }, [showPlots, plotProvince]);
 
+  // Kebun Petani province list (for the filter dropdown) — from api/twin-plots/provinces
+  useEffect(() => {
+    fetch(`${import.meta.env.BASE_URL}api/twin-plots/provinces`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data)) setPetaniProvinces(data);
+      })
+      .catch(() => {});
+  }, []);
+
+  // Live compliance summary (api/twin-plots/summary) — refetched on province change.
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (petaniProvince) params.set("province", petaniProvince);
+    fetch(`${import.meta.env.BASE_URL}api/twin-plots/summary?${params.toString()}`)
+      .then((r) => r.json())
+      .then((data) => setSummary(data || null))
+      .catch(() => {});
+  }, [petaniProvince]);
+
+  // Kebun Petani layer — GeoJSON from api/twin-plots, colored by compliance status.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    const removePetani = () => {
+      if (petaniLayerRef.current) {
+        map.removeLayer(petaniLayerRef.current);
+        petaniLayerRef.current = null;
+      }
+    };
+
+    removePetani();
+    if (!showPetani) {
+      setPetaniCount(0);
+      return;
+    }
+
+    let cancelled = false;
+    let reqId = 0;
+
+    const petaniStyle = (feat: any) => {
+      const c = PETANI_COLORS[petaniStatus(feat?.properties || {})];
+      return {
+        color: c.stroke,
+        weight: 1,
+        fillColor: c.fill,
+        fillOpacity: 0.45,
+      };
+    };
+
+    const loadPetani = async () => {
+      const id = ++reqId;
+      const params = new URLSearchParams();
+      if (petaniProvince) {
+        params.set("province", petaniProvince);
+      } else {
+        const b = map.getBounds();
+        params.set(
+          "bbox",
+          `${b.getWest()},${b.getSouth()},${b.getEast()},${b.getNorth()}`
+        );
+      }
+
+      try {
+        const res = await fetch(
+          `${import.meta.env.BASE_URL}api/twin-plots?${params.toString()}`
+        );
+        if (!res.ok) return;
+        const geojson = await res.json();
+        if (cancelled || id !== reqId) return;
+
+        if (petaniLayerRef.current) {
+          map.removeLayer(petaniLayerRef.current);
+          petaniLayerRef.current = null;
+        }
+
+        const layer = L.geoJSON(geojson, {
+          style: petaniStyle,
+          onEachFeature: (feat, lyr) => {
+            const p: any = feat.properties || {};
+            lyr.bindPopup(petaniPopupHtml(p), {
+              className: "mill-popup",
+              maxWidth: 300,
+              closeButton: true,
+            });
+            lyr.on("mouseover", (e: any) => {
+              e.target.setStyle({ weight: 2, fillOpacity: 0.6 });
+              e.target.bringToFront();
+            });
+            lyr.on("mouseout", () => layer.resetStyle(lyr));
+          },
+        });
+
+        layer.addTo(map);
+        petaniLayerRef.current = layer;
+        setPetaniCount(geojson?.features?.length || 0);
+
+        if (petaniProvince && geojson?.features?.length) {
+          try {
+            map.fitBounds(layer.getBounds(), { padding: [40, 40], maxZoom: 12 });
+          } catch {}
+        }
+      } catch {
+        // ignore
+      }
+    };
+
+    loadPetani();
+
+    const onMoveEnd = () => {
+      if (!petaniProvince) loadPetani();
+    };
+    map.on("moveend", onMoveEnd);
+
+    return () => {
+      cancelled = true;
+      map.off("moveend", onMoveEnd);
+      removePetani();
+    };
+  }, [showPetani, petaniProvince]);
+
   return (
     <div className="min-h-screen bg-[#eef1ec] font-sans flex flex-col h-screen overflow-hidden">
       {/* Header */}
@@ -1989,84 +2323,95 @@ export default function PalmOilDigitalTwin() {
 
               {/* Layer control stack (bottom-left, vertical, collapsible) */}
               <div className="absolute bottom-3 left-3 z-[400] flex flex-col gap-2 w-[270px]">
-                {/* Kebun Sawit (oil-palm plots) — requires province filter */}
-                {panelLayers.has("plots") && (
+                {/* Kebun Petani (api/twin-plots) — colored by compliance status */}
+                {panelLayers.has("petani") && (
                 <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-sm overflow-hidden">
                   <div className="px-2.5 py-2 flex items-center gap-2">
                     <Trees
                       className={`h-3.5 w-3.5 ${
-                        showPlots ? "text-lime-600" : "text-gray-400"
+                        showPetani ? "text-lime-600" : "text-gray-400"
                       }`}
                     />
                     <span className="text-[11px] font-semibold text-gray-700 flex-1">
-                      Kebun Sawit
+                      Kebun Petani
                     </span>
-                    {showPlots && plotCount > 0 && (
+                    {showPetani && petaniCount > 0 && (
                       <span className="text-[10px] font-bold text-lime-700 bg-lime-50 rounded-full px-1.5 py-0.5">
-                        {plotCount.toLocaleString("id-ID")}
+                        {petaniCount.toLocaleString("id-ID")}
                       </span>
                     )}
                     <button
                       onClick={() =>
-                        setShowPlots((v) => {
+                        setShowPetani((v) => {
                           const nv = !v;
-                          if (nv) setExpPlots(true);
+                          if (nv) setExpPetani(true);
                           return nv;
                         })
                       }
                       className={`relative h-4 w-7 rounded-full transition-colors ${
-                        showPlots ? "bg-lime-600" : "bg-gray-300"
+                        showPetani ? "bg-lime-600" : "bg-gray-300"
                       }`}
                     >
                       <span
                         className={`absolute top-0.5 left-0.5 h-3 w-3 bg-white rounded-full shadow transition-transform ${
-                          showPlots ? "translate-x-3" : "translate-x-0"
+                          showPetani ? "translate-x-3" : "translate-x-0"
                         }`}
                       />
                     </button>
                     <button
-                      onClick={() => setExpPlots((v) => !v)}
+                      onClick={() => setExpPetani((v) => !v)}
                       className="h-5 w-5 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-700"
                     >
-                      {expPlots ? (
+                      {expPetani ? (
                         <ChevronUp className="h-3.5 w-3.5" />
                       ) : (
                         <ChevronDown className="h-3.5 w-3.5" />
                       )}
                     </button>
                   </div>
-                  {expPlots && (
+                  {expPetani && (
                     <div className="px-2.5 pb-2 pt-1.5 border-t border-gray-100 flex flex-col gap-1.5">
                       <select
-                        value={plotProvince}
-                        onChange={(e) => setPlotProvince(e.target.value)}
-                        disabled={!showPlots}
+                        value={petaniProvince}
+                        onChange={(e) => setPetaniProvince(e.target.value)}
+                        disabled={!showPetani}
                         className="h-7 rounded-md border border-gray-200 bg-white px-2 text-[10px] text-gray-700 disabled:opacity-50 focus:outline-none focus:border-lime-500"
                       >
                         <option value="">Semua Province</option>
-                        {plotProvinces.map((p) => (
+                        {petaniProvinces.map((p) => (
                           <option key={p.province} value={p.province}>
                             {p.province} ({p.count.toLocaleString("id-ID")})
                           </option>
                         ))}
                       </select>
-                      {showPlots && (
+                      {showPetani && (
                         <p className="text-[10px] text-gray-500 leading-snug">
-                          Menampilkan {plotCount.toLocaleString("id-ID")} plot
-                          (data sample · filter province opsional).
+                          Menampilkan {petaniCount.toLocaleString("id-ID")} plot
+                          petani (filter province opsional).
                         </p>
                       )}
-                      <div className="flex items-center gap-1.5 pt-1 border-t border-gray-100">
-                        <span
-                          className="h-2.5 w-2.5 rounded-sm"
-                          style={{
-                            background: "rgba(132,204,22,0.5)",
-                            border: "1px solid #3f6212",
-                          }}
-                        />
-                        <span className="text-[9px] text-gray-600">
-                          Plot kebun sawit · klik untuk detail
-                        </span>
+                      <div className="grid grid-cols-2 gap-x-2 gap-y-1 pt-1 border-t border-gray-100">
+                        {(
+                          [
+                            { key: "non-compliant", label: "Non-Compliant" },
+                            { key: "indicative", label: "Indicative" },
+                            { key: "compliant", label: "Compliant" },
+                            { key: "unknown", label: "Belum dicek" },
+                          ] as { key: PetaniStatus; label: string }[]
+                        ).map((s) => (
+                          <div key={s.key} className="flex items-center gap-1.5">
+                            <span
+                              className="h-2.5 w-2.5 rounded-sm"
+                              style={{
+                                background: PETANI_COLORS[s.key].fill,
+                                border: `1px solid ${PETANI_COLORS[s.key].stroke}`,
+                              }}
+                            />
+                            <span className="text-[9px] text-gray-600">
+                              {s.label}
+                            </span>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   )}
@@ -2595,8 +2940,8 @@ export default function PalmOilDigitalTwin() {
 
             {/* Theme-driven analysis cards (header tabs) — dummy data */}
             {(() => {
-              const provLabel = plotProvince || "semua provinsi";
-              const themeCards = buildThemes(provLabel)[activeTab];
+              const provLabel = petaniProvince || plotProvince || "semua provinsi";
+              const themeCards = buildThemes(provLabel, summary)[activeTab];
               const accentKey = TABS.find((t) => t.label === activeTab)!.accent;
               const accent = ACCENT[accentKey];
               return (
@@ -2605,15 +2950,22 @@ export default function PalmOilDigitalTwin() {
                     <span className="text-sm font-semibold text-gray-900">
                       {activeTab}
                     </span>
-                    <span
-                      className={`text-[10px] font-medium rounded-full px-2 py-0.5 ${
-                        activeTab === "Deforestation"
-                          ? "text-emerald-700 bg-emerald-50"
-                          : "text-gray-400 bg-gray-100"
-                      }`}
-                    >
-                      {activeTab === "Deforestation" ? "data nyata · EUDR" : "data dummy"}
-                    </span>
+                    {(() => {
+                      const live =
+                        activeTab === "Deforestation" ||
+                        (activeTab === "Protected Area" && summary);
+                      return (
+                        <span
+                          className={`text-[10px] font-medium rounded-full px-2 py-0.5 ${
+                            live
+                              ? "text-emerald-700 bg-emerald-50"
+                              : "text-gray-400 bg-gray-100"
+                          }`}
+                        >
+                          {live ? "data nyata · EUDR" : "data dummy"}
+                        </span>
+                      );
+                    })()}
                   </div>
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                     {themeCards.map((card, i) => {
@@ -2938,13 +3290,25 @@ export default function PalmOilDigitalTwin() {
                 Plot Dianalisis (EUDR)
               </div>
               <div className="text-4xl font-light leading-none mb-2">
-                {DEFOR_SUMMARY.total.toLocaleString("id-ID")}
+                {(summary?.total ?? DEFOR_SUMMARY.total).toLocaleString("id-ID")}
                 <span className="text-2xl opacity-80"> plot</span>
               </div>
               <p className="text-[11px] opacity-85">
-                {DEFOR_SUMMARY.high} risiko tinggi · {DEFOR_SUMMARY.low} risiko
-                rendah
+                {(summary?.high_risk ?? DEFOR_SUMMARY.high).toLocaleString(
+                  "id-ID"
+                )}{" "}
+                risiko tinggi ·{" "}
+                {(summary?.low_risk ?? DEFOR_SUMMARY.low).toLocaleString(
+                  "id-ID"
+                )}{" "}
+                risiko rendah
               </p>
+              {summary?.last_checked && (
+                <p className="text-[10px] opacity-70 mt-2">
+                  Diperbarui:{" "}
+                  {new Date(summary.last_checked).toLocaleString("id-ID")}
+                </p>
+              )}
             </div>
           )}
 
