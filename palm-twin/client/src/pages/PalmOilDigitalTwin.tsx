@@ -41,6 +41,7 @@ import {
   Target,
   Crosshair,
   LogOut,
+  Download,
 } from "lucide-react";
 import plotsGeojsonRaw from "@/plot_kebun_sawit_sample100.geojson?raw";
 import deforestationRaw from "@/deforestation.json?raw";
@@ -49,6 +50,7 @@ import radiusVisRaw from "@/radius_vis_polygon.geojson?raw";
 import pointRadiusHotspotRaw from "@/point_radius_hotspot.geojson?raw";
 // Large file (~15 MB) — imported as a URL and fetched lazily on first toggle.
 import radiusVisPointUrl from "@/radius_vis_point.geojson?url";
+import * as XLSX from "xlsx";
 
 // Real data shipped with the client.
 const PLOTS_GEOJSON: any = JSON.parse(plotsGeojsonRaw);
@@ -1400,7 +1402,8 @@ export default function PalmOilDigitalTwin() {
     return removeLayer;
   }, [showKlhk]);
 
-  // Kebun radius buffers (1 km & 5 km) — real polygons from radius_vis_polygon.geojson
+  // Kebun radius buffers (1 km & 5 km) — dihitung dari centroid plot twin_plots
+  // yang sedang aktif, jadi selalu align dengan kebun-nya (bukan sample statis).
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
@@ -1415,47 +1418,63 @@ export default function PalmOilDigitalTwin() {
     removeRadius();
     if (!showRadius) return;
 
-    const feats: any[] = RADIUS_VIS.features || [];
-    const ring5 = feats.filter((f) => Number(f?.properties?.radius_km) === 5);
-    const ring1 = feats.filter((f) => Number(f?.properties?.radius_km) === 1);
-
+    let cancelled = false;
     const style5 = {
+      radius: 5000,
       color: "#f59e0b",
       weight: 1,
       opacity: 0.7,
       fillColor: "#fbbf24",
       fillOpacity: 0.06,
       dashArray: "4 3",
+      interactive: false,
     };
     const style1 = {
+      radius: 1000,
       color: "#ea580c",
       weight: 1.4,
       opacity: 0.85,
       fillColor: "#f97316",
       fillOpacity: 0.12,
+      interactive: false,
     };
 
-    // 5 km drawn first (underneath), then 1 km on top. Non-interactive so the
-    // buffers never block clicks on the plots/mills beneath them.
-    const group = L.featureGroup();
-    L.geoJSON({ type: "FeatureCollection", features: ring5 } as any, {
-      style: style5,
-      interactive: false,
-    }).addTo(group);
-    L.geoJSON({ type: "FeatureCollection", features: ring1 } as any, {
-      style: style1,
-      interactive: false,
-    }).addTo(group);
-    group.addTo(map);
-    radiusLayerRef.current = group;
+    (async () => {
+      const params = new URLSearchParams();
+      if (petaniProvince) params.set("province", petaniProvince);
+      try {
+        const res = await fetch(
+          `${import.meta.env.BASE_URL}api/twin-plots?${params.toString()}`
+        );
+        const fc = await res.json();
+        if (cancelled) return;
+        const feats: any[] = fc?.features || [];
+        const centers: [number, number][] = [];
+        for (const f of feats) {
+          const bb = featureBbox(f);
+          if (!bb) continue;
+          centers.push([(bb[1] + bb[3]) / 2, (bb[0] + bb[2]) / 2]);
+        }
+        // 5 km dulu (di bawah), lalu 1 km di atas.
+        const group = L.featureGroup();
+        for (const c of centers) L.circle(c, style5 as any).addTo(group);
+        for (const c of centers) L.circle(c, style1 as any).addTo(group);
+        group.addTo(map);
+        radiusLayerRef.current = group;
+        try {
+          const b = group.getBounds();
+          if (b.isValid()) map.fitBounds(b, { padding: [40, 40], maxZoom: 13 });
+        } catch {}
+      } catch {
+        // ignore
+      }
+    })();
 
-    try {
-      const b = group.getBounds();
-      if (b.isValid()) map.fitBounds(b, { padding: [40, 40], maxZoom: 13 });
-    } catch {}
-
-    return removeRadius;
-  }, [showRadius]);
+    return () => {
+      cancelled = true;
+      removeRadius();
+    };
+  }, [showRadius, petaniProvince]);
 
   // Mill radius buffers (10/20/30/50 km) — Indonesia only, from radius_vis_point.geojson.
   // 14 MB file: fetched lazily on first toggle (cached), rendered on a canvas.
@@ -2185,6 +2204,69 @@ export default function PalmOilDigitalTwin() {
     };
   }, [showPetani, petaniProvince]);
 
+  // ---- Export data kebun + compliance (Excel / GeoJSON) ----
+  const [exporting, setExporting] = useState<null | "xlsx" | "geojson">(null);
+  const exportPlots = async (format: "xlsx" | "geojson") => {
+    if (exporting) return;
+    setExporting(format);
+    try {
+      const params = new URLSearchParams();
+      if (petaniProvince) params.set("province", petaniProvince);
+      const res = await fetch(
+        `${import.meta.env.BASE_URL}api/twin-plots?${params.toString()}`
+      );
+      const fc = await res.json();
+      const feats: any[] = fc?.features || [];
+      const stamp = new Date().toISOString().slice(0, 10);
+      const fname = `kebun-petani-compliance-${stamp}`;
+
+      if (format === "geojson") {
+        const blob = new Blob([JSON.stringify(fc, null, 2)], {
+          type: "application/geo+json",
+        });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `${fname}.geojson`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        return;
+      }
+
+      const yn = (v: any) =>
+        v === null || v === undefined ? "" : v ? "Ya" : "Tidak";
+      const rows = feats.map((f) => {
+        const p = f.properties || {};
+        return {
+          "Plot UID": p.plot_uid ?? "",
+          Petani: p.farmer ?? "",
+          Provinsi: p.province ?? "",
+          Distrik: p.district ?? "",
+          "Luas (Ha)": p.area_ha ?? "",
+          "Risk Level": p.risk_level ?? "",
+          "EUDR Compliant": yn(p.eudr_compliant),
+          "Deforestasi Terdeteksi": yn(p.deforestation_detected),
+          "GFW Loss (Ha)": p.gfw_loss_ha ?? "",
+          "JRC Loss (Ha)": p.jrc_loss_ha ?? "",
+          "SBTN Loss (Ha)": p.sbtn_loss_ha ?? "",
+          "WDPA Status": p.wdpa_status ?? "",
+          "WDPA Kategori": Array.isArray(p.wdpa_categories)
+            ? p.wdpa_categories.join(", ")
+            : "",
+          "Terakhir Dicek": p.last_checked ?? "",
+        };
+      });
+      const ws = XLSX.utils.json_to_sheet(rows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Kebun Petani");
+      XLSX.writeFile(wb, `${fname}.xlsx`);
+    } catch (e) {
+      console.error("Export gagal:", e);
+      alert("Export gagal — cek koneksi/console.");
+    } finally {
+      setExporting(null);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#eef1ec] font-sans flex flex-col h-screen overflow-hidden">
       {/* Header */}
@@ -2336,6 +2418,32 @@ export default function PalmOilDigitalTwin() {
                       })}
                     </div>
                   )}
+                </div>
+
+                {/* Export data (Excel / GeoJSON) */}
+                <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-sm overflow-hidden">
+                  <div className="px-2.5 py-2 flex items-center gap-2">
+                    <Download className="h-3.5 w-3.5 text-gray-500" />
+                    <span className="text-[11px] font-semibold text-gray-700 flex-1">
+                      Export Data
+                    </span>
+                  </div>
+                  <div className="px-2.5 pb-2 flex gap-1">
+                    <button
+                      onClick={() => exportPlots("xlsx")}
+                      disabled={!!exporting}
+                      className="flex-1 h-7 rounded-md text-[10px] font-semibold bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50"
+                    >
+                      {exporting === "xlsx" ? "…" : "Excel"}
+                    </button>
+                    <button
+                      onClick={() => exportPlots("geojson")}
+                      disabled={!!exporting}
+                      className="flex-1 h-7 rounded-md text-[10px] font-semibold bg-lime-600 text-white hover:bg-lime-700 disabled:opacity-50"
+                    >
+                      {exporting === "geojson" ? "…" : "GeoJSON"}
+                    </button>
+                  </div>
                 </div>
               </div>
 
