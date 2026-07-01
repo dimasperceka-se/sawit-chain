@@ -434,6 +434,13 @@ class Msync_event extends CI_Model
      * Hitung nilai sebuah field mapping. Bila ada custom_function, panggil SQL
      * function tsb dgn signature seragam (eventuid, proguid, dataelementuid, value).
      * Bila tidak ada, kembalikan value mentah. Aman thd error -> fallback value.
+     *
+     * PENTING: satu custom_function yang gagal (mis. setAPM meng-insert MemberID
+     * NULL) TIDAK boleh menjatuhkan seluruh request jadi HTTP 500 maupun me-rollback
+     * data petani yang sudah valid. Dengan db_debug=TRUE (server dev), error query CI
+     * memanggil show_error()->exit SEBELUM try/catch sempat jalan. Karena itu db_debug
+     * dimatikan sementara di sekitar panggilan ini supaya kegagalan mengembalikan FALSE
+     * (di-log & di-skip), lalu _trans_status dipulihkan agar baris valid tetap commit.
      */
     private function applyCustomFunction($eventUid, $programUid, $deUid, $rawValue, $fn)
     {
@@ -445,15 +452,35 @@ class Msync_event extends CI_Model
             log_message('error', 'custom_function nama tak valid: '.$fn);
             return $rawValue;
         }
+
+        // matikan db_debug sementara supaya error function tak memicu exit(500);
+        // catat _trans_status agar bisa dipulihkan bila HANYA panggilan ini yang gagal.
+        $prevDebug = $this->db->db_debug;
+        $prevTrans = $this->db->_trans_status;
+        $this->db->db_debug = false;
+
+        $q = false;
         try {
             $q = $this->db->query('SELECT `'.$fn.'`(?, ?, ?, ?) AS v',
                 array($eventUid, $programUid, $deUid, $rawValue));
-            $r = $q ? $q->row() : null;
-            return $r ? $r->v : null;
         } catch (Exception $e) {
-            log_message('error', 'custom_function '.$fn.' gagal: '.$e->getMessage());
+            log_message('error', 'custom_function '.$fn.' exception: '.$e->getMessage());
+        }
+
+        $this->db->db_debug = $prevDebug;
+
+        if ($q === false) {
+            // query gagal: pulihkan status transaksi (batalkan "racun" dari baris ini
+            // saja -- kalau ada kegagalan lain sebelumnya, statusnya tetap terjaga),
+            // log, dan kembalikan value mentah sebagai fallback.
+            $this->db->_trans_status = $prevTrans;
+            log_message('error', 'custom_function '.$fn.' gagal: '
+                .$this->db->_error_message().' (code '.$this->db->_error_number().')');
             return $rawValue;
         }
+
+        $r = $q->row();
+        return $r ? $r->v : null;
     }
 
     /**
