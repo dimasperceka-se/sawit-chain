@@ -66,6 +66,6 @@ class Plots extends REST_Controller {
             'features' => $features,
         );
 
-        $this->response($payload, REST_Controller::HTTP_OK);
+        $this->response($payload, 200);
     }
 }
