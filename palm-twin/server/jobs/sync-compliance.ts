@@ -222,10 +222,28 @@ async function main() {
 
       const d = deforByUid.get(uid) || {};
       const oc = d.overall_compliance || {};
+      // Skema respons API nyata:
+      //   overall_compliance: { compliance_status: 'COMPLIANT'|'NON_COMPLIANT',
+      //                         overall_risk: 'low'|'high', ... }
+      //   <ds>_loss: { <ds>_loss_area, <ds>_loss_percent, <ds>_loss_stat,
+      //                <ds>_loss_year_compilation }
+      const riskLevel = oc.overall_risk
+        ? String(oc.overall_risk).toLowerCase() === "high"
+          ? "High"
+          : "Low"
+        : null;
+      const eudrCompliant =
+        oc.compliance_status != null
+          ? String(oc.compliance_status).toUpperCase() === "COMPLIANT"
+          : null;
+      const deforDetected =
+        oc.compliance_status != null
+          ? String(oc.compliance_status).toUpperCase() !== "COMPLIANT"
+          : null;
       const yearly = {
-        gfw: d.gfw_loss?.yearly ?? null,
-        jrc: d.jrc_loss?.yearly ?? null,
-        sbtn: d.sbtn_loss?.yearly ?? null,
+        gfw: d.gfw_loss?.gfw_loss_year_compilation ?? null,
+        jrc: d.jrc_loss?.jrc_loss_year_compilation ?? null,
+        sbtn: d.sbtn_loss?.sbtn_loss_year_compilation ?? null,
       };
       const w = protByUid.get(uid) || {};
 
@@ -261,12 +279,12 @@ async function main() {
           pr.district ?? null,
           num(pr.area_ha),
           JSON.stringify(f.geometry),
-          oc.eudr_compliant ?? null,
-          oc.deforestation_detected ?? null,
-          d.risk_level ?? null,
-          num(d.gfw_loss?.area_ha),
-          num(d.jrc_loss?.area_ha),
-          num(d.sbtn_loss?.area_ha),
+          eudrCompliant,
+          deforDetected,
+          riskLevel,
+          num(d.gfw_loss?.gfw_loss_area),
+          num(d.jrc_loss?.jrc_loss_area),
+          num(d.sbtn_loss?.sbtn_loss_area),
           JSON.stringify(yearly),
           w.wdpa_status ?? null,
           JSON.stringify(w.wdpa_categories ?? []),
