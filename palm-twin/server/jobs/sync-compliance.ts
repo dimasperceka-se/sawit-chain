@@ -24,6 +24,15 @@ const DASHBOARD_GEOJSON_URL =
 const COMPLIANCE_API_BASE =
   process.env.COMPLIANCE_API_BASE || "https://global-compliance-system.com";
 
+// API compliance timeout kalau dikirim ribuan fitur sekaligus -> kirim per-chunk.
+// Semua tunable lewat env tanpa perlu rebuild image.
+const CHUNK_SIZE = parseInt(process.env.SYNC_CHUNK_SIZE || "100", 10);
+const CHUNK_CONCURRENCY = parseInt(process.env.SYNC_CHUNK_CONCURRENCY || "4", 10);
+const REQUEST_TIMEOUT_MS = parseInt(
+  process.env.SYNC_REQUEST_TIMEOUT_MS || "120000",
+  10
+);
+
 if (!process.env.DATABASE_URL) {
   console.error("❌ DATABASE_URL belum di-set");
   process.exit(1);
@@ -83,7 +92,11 @@ async function postCompliance(path: string, fc: FC): Promise<FC | null> {
     const blob = new Blob([JSON.stringify(fc)], { type: "application/json" });
     const form = new FormData();
     form.append("file", blob, "plots.geojson");
-    const res = await fetch(url, { method: "POST", body: form });
+    const res = await fetch(url, {
+      method: "POST",
+      body: form,
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
     if (!res.ok) {
       log(`⚠️  ${path} -> HTTP ${res.status}`, (await res.text()).slice(0, 300));
       return null;
@@ -96,23 +109,37 @@ async function postCompliance(path: string, fc: FC): Promise<FC | null> {
   }
 }
 
-/* ── 4. Index hasil agar bisa dicocokkan ke input ─────────────────────────
- * Prioritas: properties.plot_uid -> id -> urutan (index).                     */
-function indexResults(input: FC, result: FC | null): Map<string, any> {
-  const byUid = new Map<string, any>();
-  if (!result?.features) return byUid;
-  result.features.forEach((rf, i) => {
-    const p = rf.properties || {};
-    let uid: string | undefined = p.plot_uid;
-    if (!uid && (rf.id !== undefined || p.id !== undefined)) {
-      const fid = rf.id ?? p.id;
-      uid = input.features.find((f) => (f.id ?? f.properties?.id) === fid)
-        ?.properties?.plot_uid;
-    }
-    if (!uid) uid = input.features[i]?.properties?.plot_uid; // fallback index
-    if (uid) byUid.set(uid, p);
+/* ── 4. Gabung hasil satu chunk ke map berdasar POSISI ────────────────────
+ * API compliance mengembalikan fitur dgn urutan & jumlah sama dgn input
+ * (total_processed = features_count), jadi cocokkan per-index dalam chunk.
+ * plot_uid tidak di-echo API, index adalah cara paling andal.               */
+function mergeChunk(
+  chunkInput: Feature[],
+  result: FC | null,
+  target: Map<string, any>
+): void {
+  const feats = result?.features || [];
+  feats.forEach((rf, i) => {
+    const uid = chunkInput[i]?.properties?.plot_uid;
+    if (uid) target.set(uid, rf.properties || {});
   });
-  return byUid;
+}
+
+/* Jalankan `worker` atas `items` dgn batas konkurensi. */
+async function runPool<T>(
+  items: T[],
+  concurrency: number,
+  worker: (item: T, index: number) => Promise<void>
+): Promise<void> {
+  let idx = 0;
+  const n = Math.max(1, Math.min(concurrency, items.length));
+  const runners = Array.from({ length: n }, async () => {
+    while (idx < items.length) {
+      const my = idx++;
+      await worker(items[my], my);
+    }
+  });
+  await Promise.all(runners);
 }
 
 const num = (v: any): number | null =>
@@ -141,19 +168,44 @@ async function main() {
     return;
   }
 
-  // 3. panggil kedua endpoint compliance (paralel)
-  const [defor, prot] = await Promise.all([
-    postCompliance("/api/v1/deforestation", input),
-    postCompliance("/api/v1/protected-area", input),
-  ]);
+  // 3. bagi jadi chunk lalu panggil endpoint compliance per-chunk (konkuren).
+  const chunks: Feature[][] = [];
+  for (let i = 0; i < input.features.length; i += CHUNK_SIZE) {
+    chunks.push(input.features.slice(i, i + CHUNK_SIZE));
+  }
   log(
-    `deforestation: ${defor?.features?.length ?? "gagal"} · ` +
-      `protected-area: ${prot?.features?.length ?? "gagal"}`
+    `memproses ${chunks.length} chunk @${CHUNK_SIZE} (konkurensi ${CHUNK_CONCURRENCY})`
   );
 
-  // 4. cocokkan
-  const deforByUid = indexResults(input, defor);
-  const protByUid = indexResults(input, prot);
+  const deforByUid = new Map<string, any>();
+  const protByUid = new Map<string, any>();
+  let okDefor = 0;
+  let okProt = 0;
+
+  await runPool(chunks, CHUNK_CONCURRENCY, async (chunk, ci) => {
+    const fc: FC = { type: "FeatureCollection", features: chunk };
+    const [defor, prot] = await Promise.all([
+      postCompliance("/api/v1/deforestation", fc),
+      postCompliance("/api/v1/protected-area", fc),
+    ]);
+    if (defor) {
+      mergeChunk(chunk, defor, deforByUid);
+      okDefor++;
+    }
+    if (prot) {
+      mergeChunk(chunk, prot, protByUid);
+      okProt++;
+    }
+    if ((ci + 1) % 10 === 0 || ci + 1 === chunks.length) {
+      log(
+        `chunk ${ci + 1}/${chunks.length} — defor ok:${okDefor} prot ok:${okProt}`
+      );
+    }
+  });
+  log(
+    `chunk sukses: deforestation ${okDefor}/${chunks.length} · ` +
+      `protected-area ${okProt}/${chunks.length}`
+  );
 
   // 5. UPSERT per plot + prune
   const client = await pool.connect();
