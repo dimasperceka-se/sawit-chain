@@ -306,4 +306,139 @@ export async function registerRoutes(
       res.status(500).json({ error: error.message || "Failed to load plots" });
     }
   });
+
+  // ===== Plot petani + compliance (twin_plots) =====
+  // Diisi tiap jam oleh server/jobs/sync-compliance.ts.
+
+  // Ringkasan angka untuk panel dashboard (Deforestation, Protected Area, EUDR).
+  app.get("/api/twin-plots/summary", async (req, res) => {
+    try {
+      const { province } = req.query as Record<string, string>;
+      const params: any[] = [];
+      const where = province ? "WHERE province = $1" : "";
+      if (province) params.push(province);
+
+      const sql = `
+        SELECT
+          count(*)::int AS total,
+          count(*) FILTER (WHERE risk_level = 'High')::int AS high_risk,
+          count(*) FILTER (WHERE risk_level = 'Low')::int  AS low_risk,
+          count(*) FILTER (WHERE eudr_compliant IS TRUE)::int  AS eudr_compliant,
+          count(*) FILTER (WHERE eudr_compliant IS FALSE)::int AS eudr_non_compliant,
+          count(*) FILTER (WHERE deforestation_detected IS TRUE)::int AS deforestation_detected,
+          count(*) FILTER (WHERE wdpa_status = 'compliant')::int     AS wdpa_compliant,
+          count(*) FILTER (WHERE wdpa_status = 'indicative')::int    AS wdpa_indicative,
+          count(*) FILTER (WHERE wdpa_status = 'non-compliant')::int AS wdpa_non_compliant,
+          COALESCE(round(sum(area_ha)::numeric, 2), 0)     AS total_area_ha,
+          COALESCE(round(sum(gfw_loss_ha)::numeric, 2), 0) AS total_gfw_loss_ha,
+          COALESCE(round(sum(jrc_loss_ha)::numeric, 2), 0) AS total_jrc_loss_ha,
+          COALESCE(round(sum(sbtn_loss_ha)::numeric, 2), 0) AS total_sbtn_loss_ha,
+          max(last_checked) AS last_checked
+        FROM twin_plots
+        ${where}
+      `;
+      const result = await pool.query(sql, params);
+      res.json(result.rows[0] || {});
+    } catch (error: any) {
+      console.error("❌ twin-plots/summary:", error);
+      res.status(500).json({ error: error.message || "Failed to load summary" });
+    }
+  });
+
+  // Daftar provinsi (untuk dropdown filter) dengan extent.
+  app.get("/api/twin-plots/provinces", async (_req, res) => {
+    try {
+      const idnEnv = `ST_MakeEnvelope(94, -11, 142, 7, 4326)`;
+      const result = await pool.query(`
+        SELECT province,
+               count(*)::int AS count,
+               ST_XMin(ST_Extent(geom) FILTER (WHERE geom && ${idnEnv})) AS w,
+               ST_YMin(ST_Extent(geom) FILTER (WHERE geom && ${idnEnv})) AS s,
+               ST_XMax(ST_Extent(geom) FILTER (WHERE geom && ${idnEnv})) AS e,
+               ST_YMax(ST_Extent(geom) FILTER (WHERE geom && ${idnEnv})) AS n
+        FROM twin_plots
+        WHERE geom IS NOT NULL AND province IS NOT NULL
+        GROUP BY province
+        ORDER BY count DESC
+      `);
+      res.json(result.rows);
+    } catch (error: any) {
+      console.error("❌ twin-plots/provinces:", error);
+      res.status(500).json({ error: error.message || "Failed to load provinces" });
+    }
+  });
+
+  // Plot petani sebagai GeoJSON (+ properti compliance). Filter province/bbox opsional.
+  app.get("/api/twin-plots", async (req, res) => {
+    try {
+      const { province, bbox, limit } = req.query as Record<string, string>;
+      const conditions: string[] = ["geom IS NOT NULL"];
+      const params: any[] = [];
+      let p = 1;
+
+      if (province) {
+        conditions.push(`province = $${p++}`);
+        params.push(province);
+      }
+      if (bbox) {
+        const parts = bbox.split(",").map(Number);
+        if (parts.length === 4 && parts.every((n) => Number.isFinite(n))) {
+          const [w, s, e, n] = parts;
+          conditions.push(
+            `geom && ST_MakeEnvelope($${p++}, $${p++}, $${p++}, $${p++}, 4326)`
+          );
+          params.push(w, s, e, n);
+        }
+      }
+
+      const where = `WHERE ${conditions.join(" AND ")}`;
+      const cap = Math.min(parseInt(limit || "5000", 10) || 5000, 10000);
+
+      const sql = `
+        WITH rows AS (
+          SELECT plot_uid, farmer, province, district, area_ha,
+                 eudr_compliant, deforestation_detected, risk_level,
+                 gfw_loss_ha, jrc_loss_ha, sbtn_loss_ha, defor_yearly,
+                 wdpa_status, wdpa_categories, last_checked,
+                 ST_AsGeoJSON(geom)::json AS geometry
+          FROM twin_plots
+          ${where}
+          LIMIT ${cap}
+        )
+        SELECT json_build_object(
+          'type', 'FeatureCollection',
+          'features', COALESCE(json_agg(
+            json_build_object(
+              'type', 'Feature',
+              'geometry', geometry,
+              'properties', json_build_object(
+                'plot_uid', plot_uid,
+                'farmer', farmer,
+                'province', province,
+                'district', district,
+                'area_ha', area_ha,
+                'eudr_compliant', eudr_compliant,
+                'deforestation_detected', deforestation_detected,
+                'risk_level', risk_level,
+                'gfw_loss_ha', gfw_loss_ha,
+                'jrc_loss_ha', jrc_loss_ha,
+                'sbtn_loss_ha', sbtn_loss_ha,
+                'defor_yearly', defor_yearly,
+                'wdpa_status', wdpa_status,
+                'wdpa_categories', wdpa_categories,
+                'last_checked', last_checked
+              )
+            )
+          ), '[]'::json)
+        ) AS geojson
+        FROM rows
+      `;
+
+      const result = await pool.query(sql, params);
+      res.json(result.rows[0]?.geojson || { type: "FeatureCollection", features: [] });
+    } catch (error: any) {
+      console.error("❌ twin-plots:", error);
+      res.status(500).json({ error: error.message || "Failed to load twin plots" });
+    }
+  });
 }

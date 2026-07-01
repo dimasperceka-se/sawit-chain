@@ -301,6 +301,12 @@ abstract class REST_Controller extends CI_Controller
 			$authorized = true;
 		}
 
+		// 5b. Endpoint GeoJSON plot petani utk Palm Oil Digital Twin (dipanggil cron).
+		//     Proteksi opsional shared-secret di-handle di controller (env PLOTS_GEOJSON_KEY).
+		if ($class === 'plots' && $method === 'geojson') {
+			$authorized = true;
+		}
+
 		// 6. verifikasi token aws
 		if (!$authorized) {
 			$header = $this->input->request_headers();
