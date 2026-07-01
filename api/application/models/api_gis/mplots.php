@@ -56,7 +56,6 @@ class Mplots extends CI_Model {
                 LEFT JOIN ktv_district d        ON d.DistrictID = sd.DistrictID
                 LEFT JOIN ktv_province p        ON p.ProvinceID = d.ProvinceID
                 WHERE geo.rn = 1
-                  AND ST_IsValid(geo.Polygon) = 1
                   AND m.StatusCode = 'active'
                   {$where}
                 {$limitSql}";
