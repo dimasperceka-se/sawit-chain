@@ -1102,6 +1102,7 @@ export default function PalmOilDigitalTwin() {
   const plotLayerRef = useRef<L.GeoJSON | null>(null);
   const plotCentroidLayerRef = useRef<L.Layer | null>(null);
   const petaniLayerRef = useRef<L.GeoJSON | null>(null);
+  const petaniMarkersRef = useRef<any>(null);
   const klhkLayerRef = useRef<L.Layer | null>(null);
   const radiusLayerRef = useRef<L.Layer | null>(null);
   const millRadiusLayerRef = useRef<L.Layer | null>(null);
@@ -2075,6 +2076,10 @@ export default function PalmOilDigitalTwin() {
         map.removeLayer(petaniLayerRef.current);
         petaniLayerRef.current = null;
       }
+      if (petaniMarkersRef.current) {
+        map.removeLayer(petaniMarkersRef.current);
+        petaniMarkersRef.current = null;
+      }
     };
 
     removePetani();
@@ -2084,44 +2089,28 @@ export default function PalmOilDigitalTwin() {
     }
 
     let cancelled = false;
-    let reqId = 0;
 
     const petaniStyle = (feat: any) => {
       const c = PETANI_COLORS[petaniStatus(feat?.properties || {})];
-      return {
-        color: c.stroke,
-        weight: 1,
-        fillColor: c.fill,
-        fillOpacity: 0.45,
-      };
+      return { color: c.stroke, weight: 1, fillColor: c.fill, fillOpacity: 0.45 };
     };
 
+    // Set-nya kecil (scoped per partner) -> muat SEMUA (tanpa bbox), gambar
+    // polygon + marker centroid ter-cluster supaya plot kecil tetap kelihatan
+    // & bisa diklik/zoom di zoom berapa pun.
     const loadPetani = async () => {
-      const id = ++reqId;
       const params = new URLSearchParams();
-      if (petaniProvince) {
-        params.set("province", petaniProvince);
-      } else {
-        const b = map.getBounds();
-        params.set(
-          "bbox",
-          `${b.getWest()},${b.getSouth()},${b.getEast()},${b.getNorth()}`
-        );
-      }
-
+      if (petaniProvince) params.set("province", petaniProvince);
       try {
         const res = await fetch(
           `${import.meta.env.BASE_URL}api/twin-plots?${params.toString()}`
         );
         if (!res.ok) return;
         const geojson = await res.json();
-        if (cancelled || id !== reqId) return;
+        if (cancelled) return;
+        removePetani();
 
-        if (petaniLayerRef.current) {
-          map.removeLayer(petaniLayerRef.current);
-          petaniLayerRef.current = null;
-        }
-
+        // polygon
         const layer = L.geoJSON(geojson, {
           style: petaniStyle,
           onEachFeature: (feat, lyr) => {
@@ -2138,14 +2127,49 @@ export default function PalmOilDigitalTwin() {
             lyr.on("mouseout", () => layer.resetStyle(lyr));
           },
         });
-
         layer.addTo(map);
         petaniLayerRef.current = layer;
-        setPetaniCount(geojson?.features?.length || 0);
 
-        if (petaniProvince && geojson?.features?.length) {
+        // marker centroid (cluster) -> klik = zoom ke polygon plot
+        const markers = (L as any).markerClusterGroup({
+          maxClusterRadius: 40,
+          showCoverageOnHover: false,
+        });
+        const feats: any[] = geojson?.features || [];
+        for (const f of feats) {
+          const bb = featureBbox(f);
+          if (!bb) continue;
+          const center: [number, number] = [
+            (bb[1] + bb[3]) / 2,
+            (bb[0] + bb[2]) / 2,
+          ];
+          const c = PETANI_COLORS[petaniStatus(f.properties || {})];
+          const icon = L.divIcon({
+            className: "",
+            html: `<span style="display:block;width:13px;height:13px;border-radius:9999px;background:${c.fill};border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.5)"></span>`,
+            iconSize: [13, 13],
+          });
+          const m = L.marker(center, { icon });
+          m.bindPopup(petaniPopupHtml(f.properties || {}), {
+            className: "mill-popup",
+            maxWidth: 300,
+            closeButton: true,
+          });
+          const bounds = L.latLngBounds([bb[1], bb[0]], [bb[3], bb[2]]);
+          m.on("click", () => {
+            try {
+              map.fitBounds(bounds, { padding: [60, 60], maxZoom: 16 });
+            } catch {}
+          });
+          markers.addLayer(m);
+        }
+        markers.addTo(map);
+        petaniMarkersRef.current = markers;
+
+        setPetaniCount(feats.length);
+        if (feats.length) {
           try {
-            map.fitBounds(layer.getBounds(), { padding: [40, 40], maxZoom: 12 });
+            map.fitBounds(layer.getBounds(), { padding: [40, 40], maxZoom: 13 });
           } catch {}
         }
       } catch {
@@ -2155,14 +2179,8 @@ export default function PalmOilDigitalTwin() {
 
     loadPetani();
 
-    const onMoveEnd = () => {
-      if (!petaniProvince) loadPetani();
-    };
-    map.on("moveend", onMoveEnd);
-
     return () => {
       cancelled = true;
-      map.off("moveend", onMoveEnd);
       removePetani();
     };
   }, [showPetani, petaniProvince]);
