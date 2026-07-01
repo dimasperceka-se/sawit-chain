@@ -202,7 +202,7 @@ class Msync_event extends CI_Model
         $this->logPull($eventUid, 'ktv_survey_result', $r);
 
         // -- c. mapping ke table_reff per dataElement via mw_mapping
-        $this->saveToMappedTables($programUid, $eventUid, $dataValues, $userId, $now);
+        $this->saveToMappedTables($programUid, $eventUid, $dataValues, $userId, $now, $storedBy);
 
         // -- d. status sync sukses
         $syncUid = isset($event['syncUid']) ? $event['syncUid'] : null;
@@ -286,9 +286,10 @@ class Msync_event extends CI_Model
      * Mapping nilai dataElement ke kolom tabel sesuai mw_mapping (table_reff/field_reff).
      * Mirip getDataElementNameForKafka() + pullMiddlewareData(), tapi synchronous.
      */
-    private function saveToMappedTables($programUid, $eventUid, $dataValues, $userId, $now)
+    private function saveToMappedTables($programUid, $eventUid, $dataValues, $userId, $now, $storedBy = '')
     {
-        $mapping = $this->getMapping($programUid); // [table_reff => [de_uid => field_reff]]
+        // [table => [ {de, field, fn, priority}, ... ]] -- TIDAK di-collapse.
+        $mapping = $this->getMappingRows($programUid);
         if (empty($mapping)) {
             return;
         }
@@ -301,87 +302,157 @@ class Msync_event extends CI_Model
             }
         }
 
-        // 1) tabel grower (base) dulu — insert/update — supaya MemberID tersedia
-        //    sebagai FK untuk seluruh tabel child di bawahnya.
-        $memberId = null;
-        if (isset($mapping['ktv_members'])) {
-            $r = $this->saveGrowerBaseTable($eventUid, $mapping['ktv_members'], $values, $userId, $now);
-            $this->logPull($eventUid, 'ktv_members', $r);
-            $memberId = $this->resolveMemberId($eventUid);
+        // PENTING: beberapa custom_function (setAPMSTA3, setMemberDisplayID) MEMBACA
+        // tabel mw_event_values_temp. Isi dulu sebelum memanggil function apa pun.
+        $this->populateEventValuesTemp($eventUid, $programUid, $dataValues, $storedBy);
+
+        // Pisahkan tiap baris mapping sesuai aturan priority:
+        //  - priority 1            -> ikut INSERT/UPDATE kolom tabel (DML).
+        //  - priority >= 2 + fn    -> dijalankan sbg SELECT custom_function() (efek
+        //                             samping, mis. setAPMSTA3 -> akses partner + role).
+        //  - priority >= 2 tanpa fn -> diperlakukan DML ke tabelnya (fallback).
+        // custom_function pada baris DML dipakai utk MENGHITUNG nilai kolom.
+        $dmlTables   = array(); // [table => rows]
+        $sideEffects = array(); // rows priority>=2 ber-fn (sudah terurut priority dari query)
+        foreach ($mapping as $table => $rows) {
+            foreach ($rows as $m) {
+                if ($m['priority'] >= 2 && $m['fn'] !== null) {
+                    $sideEffects[] = $m;
+                } else {
+                    $dmlTables[$table][] = $m;
+                }
+            }
         }
 
-        // 2) sisa tabel mapping — UPSERT (insert bila belum ada), tidak ada yang di-skip
-        //    karena row belum ada. FK & kolom audit di-inject supaya baris child
-        //    nyambung ke member (tidak orphan) & lolos NOT NULL.
-        foreach ($mapping as $table => $deMap) {
-            if ($table === 'ktv_members') {
-                continue; // sudah ditangani di atas
-            }
+        // 1) ktv_members dulu (sumber FK MemberID utk tabel child).
+        $memberId = null;
+        if (isset($dmlTables['ktv_members'])) {
+            $r = $this->upsertMappedTable('ktv_members', $dmlTables['ktv_members'], $values, $eventUid, $programUid, $userId, $now, null);
+            $this->logPull($eventUid, 'ktv_members', $r);
+            $memberId = $this->resolveMemberId($eventUid);
+            unset($dmlTables['ktv_members']);
+        }
 
-            // hak akses partner->member: pakai PartnerID user pengirim (mapping
-            // apmPartnerID tidak reliable — ter-map ke kolom village).
-            if ($table === 'ktv_access_partner_member') {
-                $r = $this->ensurePartnerAccess($memberId, $userId, $now);
-                $this->logPull($eventUid, $table, $r);
-                continue;
-            }
-
-            // ambil hanya field yang benar-benar ada datanya di event ini
-            $row = array();
-            foreach ($deMap as $deUid => $field) {
-                if (! array_key_exists($deUid, $values)) {
-                    continue;
-                }
-                $row[$field] = $this->normalizeBool($values[$deUid]);
-            }
-
-            if (empty($row)) {
-                // event ini memang tak punya data utk tabel tsb (bukan row_not_exists)
-                $this->logPull($eventUid, $table, array('action' => 'skip', 'reason' => 'no_matching_dataelement'));
-                continue;
-            }
-
-            // inject FK ke member + kolom audit (kolom yg tak ada otomatis dibuang
-            // oleh upsertByUid). FarmerID dipakai bbrp tabel sbg alias MemberID.
-            if ($memberId) {
-                $row['MemberID'] = $memberId;
-                $row['FarmerID'] = $memberId;
-            }
-            $row['uid']         = $eventUid;
-            $row['DateCreated'] = $now;
-            $row['CreatedBy']   = $userId;
-
-            $cols = $this->tableColumns($table);
-
-            // butuh kolom kunci uid utk upsert; tanpa itu tak bisa di-upsert aman
-            if (! array_key_exists('uid', $cols)) {
-                $this->logPull($eventUid, $table, array('action' => 'skip', 'reason' => 'no_uid_key'));
-                continue;
-            }
-
-            // bila baris belum ada → akan INSERT. Pastikan semua kolom WAJIB
-            // (NOT NULL tanpa default) terisi, supaya insert tidak gagal &
-            // menggagalkan transaksi seluruh event.
-            $exists = $this->db->where('uid', $eventUid)->count_all_results($table) > 0;
-            if (! $exists) {
-                $missing = array();
-                foreach ($this->requiredColumns($table) as $req) {
-                    if ($req === 'uid') {
-                        continue;
-                    }
-                    if (! isset($row[$req]) || $row[$req] === '' || $row[$req] === null) {
-                        $missing[] = $req;
-                    }
-                }
-                if (! empty($missing)) {
-                    $this->logPull($eventUid, $table, array('action' => 'skip', 'reason' => 'missing_required:'.implode(',', $missing)));
-                    continue;
-                }
-            }
-
-            // UPSERT: insert bila belum ada (allowInsert = true)
-            $r = $this->upsertByUid($table, $row, 'uid', $eventUid, true);
+        // 2) tabel DML lain (priority 1 / priority>=2 tanpa fn) -> inject FK member.
+        foreach ($dmlTables as $table => $rows) {
+            $r = $this->upsertMappedTable($table, $rows, $values, $eventUid, $programUid, $userId, $now, $memberId);
             $this->logPull($eventUid, $table, $r);
+        }
+
+        // 3) side-effect functions (priority>=2) -> SELECT func(eventuid,proguid,deuid,value).
+        //    Dijalankan SETELAH baris tabel ada (mis. setAPMSTA3 butuh member by uid).
+        foreach ($sideEffects as $m) {
+            if (! array_key_exists($m['de'], $values)) {
+                $this->logPull($eventUid, $m['fn'], array('action' => 'skip', 'reason' => 'no_dataelement_value'));
+                continue;
+            }
+            $this->applyCustomFunction($eventUid, $programUid, $m['de'], $values[$m['de']], $m['fn']);
+            $this->logPull($eventUid, $m['fn'], array('action' => 'function'));
+        }
+    }
+
+    /**
+     * Bangun row dari baris mapping (DML), lalu UPSERT by uid.
+     * Tiap field: ada custom_function -> nilai = hasil function; tanpa -> normalizeBool.
+     * Untuk tabel child (bukan ktv_members) FK MemberID/FarmerID di-inject.
+     */
+    private function upsertMappedTable($table, $rows, $values, $eventUid, $programUid, $userId, $now, $memberId)
+    {
+        $row = array();
+        foreach ($rows as $m) {
+            if (! array_key_exists($m['de'], $values)) {
+                continue;
+            }
+            $val = $this->applyCustomFunction($eventUid, $programUid, $m['de'], $values[$m['de']], $m['fn']);
+            $row[$m['field']] = ($m['fn'] !== null) ? $val : $this->normalizeBool($val);
+        }
+
+        if (empty($row)) {
+            return array('action' => 'skip', 'reason' => 'no_matching_dataelement');
+        }
+
+        $cols = $this->tableColumns($table);
+        if (! array_key_exists('uid', $cols)) {
+            return array('action' => 'skip', 'reason' => 'no_uid_key');
+        }
+
+        // FK ke member utk tabel child (ktv_members dpt MemberID dari setMemberID).
+        if ($table !== 'ktv_members' && $memberId) {
+            if (array_key_exists('MemberID', $cols)) $row['MemberID'] = $memberId;
+            if (array_key_exists('FarmerID', $cols)) $row['FarmerID'] = $memberId;
+        }
+        $row['uid'] = $eventUid;
+
+        $exists = $this->db->where('uid', $eventUid)->count_all_results($table) > 0;
+        if (! $exists) {
+            // kolom audit/default utk INSERT baru.
+            if (array_key_exists('StatusCode', $cols) && ! isset($row['StatusCode'])) $row['StatusCode'] = 'active';
+            if (array_key_exists('DateCreated', $cols)) $row['DateCreated'] = $now;
+            if (array_key_exists('DateSync', $cols))    $row['DateSync']    = $now;
+            if (array_key_exists('CreatedBy', $cols))   $row['CreatedBy']   = $userId;
+
+            // guard NOT NULL: bila ada kolom wajib kosong, skip terkontrol (jangan
+            // gagalkan transaksi seluruh event).
+            $missing = array();
+            foreach ($this->requiredColumns($table) as $req) {
+                if ($req === 'uid') continue;
+                if (! isset($row[$req]) || $row[$req] === '' || $row[$req] === null) {
+                    $missing[] = $req;
+                }
+            }
+            if (! empty($missing)) {
+                return array('action' => 'skip', 'reason' => 'missing_required:'.implode(',', $missing));
+            }
+        }
+
+        return $this->upsertByUid($table, $row, 'uid', $eventUid, true);
+    }
+
+    /**
+     * Isi mw_event_values_temp dari dataValues event. Beberapa custom_function
+     * (setAPMSTA3, setMemberDisplayID) membaca tabel ini (kolom event, dataelement,
+     * datavalue, storedby). Idempoten: hapus dulu baris event ini.
+     */
+    private function populateEventValuesTemp($eventUid, $programUid, $dataValues, $storedBy)
+    {
+        $this->db->where('event', $eventUid)->delete('mw_event_values_temp');
+        foreach ($dataValues as $dv) {
+            if (! isset($dv['dataElement'])) {
+                continue;
+            }
+            $this->db->insert('mw_event_values_temp', array(
+                'event'       => $eventUid,
+                'program'     => $programUid,
+                'dataelement' => $dv['dataElement'],
+                'datavalue'   => isset($dv['value']) ? $dv['value'] : null,
+                'storedby'    => isset($dv['storedBy']) ? $dv['storedBy'] : $storedBy,
+            ));
+        }
+    }
+
+    /**
+     * Hitung nilai sebuah field mapping. Bila ada custom_function, panggil SQL
+     * function tsb dgn signature seragam (eventuid, proguid, dataelementuid, value).
+     * Bila tidak ada, kembalikan value mentah. Aman thd error -> fallback value.
+     */
+    private function applyCustomFunction($eventUid, $programUid, $deUid, $rawValue, $fn)
+    {
+        if ($fn === null || $fn === '') {
+            return $rawValue;
+        }
+        // whitelist nama fungsi (cegah injeksi -- nama tak bisa di-parameterkan).
+        if (! preg_match('/^[A-Za-z0-9_]+$/', $fn)) {
+            log_message('error', 'custom_function nama tak valid: '.$fn);
+            return $rawValue;
+        }
+        try {
+            $q = $this->db->query('SELECT `'.$fn.'`(?, ?, ?, ?) AS v',
+                array($eventUid, $programUid, $deUid, $rawValue));
+            $r = $q ? $q->row() : null;
+            return $r ? $r->v : null;
+        } catch (Exception $e) {
+            log_message('error', 'custom_function '.$fn.' gagal: '.$e->getMessage());
+            return $rawValue;
         }
     }
 
@@ -1041,16 +1112,55 @@ class Msync_event extends CI_Model
     /** mapping mw_mapping : [table_reff => [dataelement_uid => field_reff]] */
     private function getMapping($programUid)
     {
+        // Bila satu dataElement ter-map ke >1 field_reff pada tabel yang sama,
+        // hanya satu yang bisa menang (struktur [table][de_uid] = field). Pilih
+        // baris yang custom_function-nya KOSONG (penulisan kolom langsung) supaya
+        // menang atas baris berfungsi (mis. getPartnerID/setMemberDisplayID) yang
+        // menargetkan kolom identitas/turunan -- kolom itu sudah diisi server secara
+        // native. ORDER memastikan baris custom_function-kosong ditulis terakhir
+        // sehingga menimpa (last-wins). Tanpa ini, mis. Village (VillageID) kalah
+        // oleh PartnerID/MemberDisplayID yang protected -> village tak pernah masuk.
         $sql = 'SELECT table_reff, dataelement_uid, field_reff
                 FROM mw_mapping
                 WHERE program_uid = ?
                   AND table_reff IS NOT NULL AND table_reff <> \'\'
-                  AND field_reff IS NOT NULL AND field_reff <> \'\'';
+                  AND field_reff IS NOT NULL AND field_reff <> \'\'
+                ORDER BY (custom_function IS NULL OR custom_function = \'\') ASC, mw_mapping_id ASC';
         $rows = $this->db->query($sql, array($programUid))->result();
 
         $map = array();
         foreach ($rows as $r) {
             $map[$r->table_reff][$r->dataelement_uid] = $r->field_reff;
+        }
+
+        return $map;
+    }
+
+    /**
+     * Mapping mw_mapping LENGKAP (tidak di-collapse): satu dataElement boleh
+     * map ke banyak field/baris. Terurut priority supaya baris DML (priority 1)
+     * diproses sebelum side-effect (priority >= 2).
+     * Return: [table_reff => [ ['de'=>.., 'field'=>.., 'fn'=>..|null, 'priority'=>int], ... ]]
+     */
+    private function getMappingRows($programUid)
+    {
+        $sql = 'SELECT table_reff, dataelement_uid, field_reff, custom_function, priority
+                FROM mw_mapping
+                WHERE program_uid = ?
+                  AND table_reff IS NOT NULL AND table_reff <> \'\'
+                  AND field_reff IS NOT NULL AND field_reff <> \'\'
+                ORDER BY priority ASC, mw_mapping_id ASC';
+        $rows = $this->db->query($sql, array($programUid))->result();
+
+        $map = array();
+        foreach ($rows as $r) {
+            $fn = ($r->custom_function !== null && $r->custom_function !== '') ? $r->custom_function : null;
+            $map[$r->table_reff][] = array(
+                'de'       => $r->dataelement_uid,
+                'field'    => $r->field_reff,
+                'fn'       => $fn,
+                'priority' => (int) $r->priority,
+            );
         }
 
         return $map;

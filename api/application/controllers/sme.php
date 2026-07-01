@@ -140,8 +140,25 @@ class Sme extends REST_Controller {
         // Folder tmp pakai path ABSOLUT (FCPATH) supaya tidak bergantung pada
         // current working directory -- penyebab umum gagal tulis & 500 di server.
         $tmpDir = FCPATH . 'files/tmp/';
-        if (! is_dir($tmpDir)) {
-            @mkdir($tmpDir, 0775, true);
+        if (! is_dir($tmpDir) && ! @mkdir($tmpDir, 0775, true) && ! is_dir($tmpDir)) {
+            // Gagal buat folder -> fopen() di Spout pasti gagal dengan pesan
+            // "File pointer has not be opened" yang menyesatkan. Surface yg jelas.
+            ini_set('memory_limit', $mem_ini);
+            log_message('error', 'export_trader_farmers MemberID=' . $MemberID . ' : gagal membuat folder tmp ' . $tmpDir);
+            $this->response(array(
+                'success' => false,
+                'error'   => 'Folder tmp tidak dapat dibuat: ' . $tmpDir,
+            ), 500);
+            return;
+        }
+        if (! is_writable($tmpDir)) {
+            ini_set('memory_limit', $mem_ini);
+            log_message('error', 'export_trader_farmers MemberID=' . $MemberID . ' : folder tmp tidak writable ' . $tmpDir);
+            $this->response(array(
+                'success' => false,
+                'error'   => 'Folder tmp tidak dapat ditulis (periksa permission): ' . $tmpDir,
+            ), 500);
+            return;
         }
 
         try {
