@@ -1529,7 +1529,7 @@ export default function PalmOilDigitalTwin() {
 
   // Load the GEE forest/deforestation dataset list from the API.
   useEffect(() => {
-    fetch(`${GEE_API}/datasets`)
+    fetch(`${GEE_API}/palmtwin/datasets`)
       .then((r) => r.json())
       .then((d) => {
         const obj = d?.datasets || {};
@@ -1563,7 +1563,7 @@ export default function PalmOilDigitalTwin() {
         // Use the Indonesia-scoped tile endpoint: the generic /tiles/<key>
         // path redirects to a GEE map whose token is currently expired (401),
         // while /tiles/indonesia/<key> serves valid tiles.
-        const tl = L.tileLayer(`${GEE_API}/tiles/indonesia/${key}/{z}/{x}/{y}`, {
+        const tl = L.tileLayer(`${GEE_API}/palmtwin/tiles/${key}/{z}/{x}/{y}`, {
           opacity: 0.85,
           maxNativeZoom: 18,
           attribution: "GEE · api.sawitchain.com",
